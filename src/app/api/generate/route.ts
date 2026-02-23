@@ -151,10 +151,41 @@ function buildPrompt(answers: UserAnswers): string {
 }`;
 }
 
+// 入力バリデーション（フォームと API の型ズレを早期検出）
+function validateAnswers(body: unknown): body is UserAnswers {
+  if (!body || typeof body !== "object") return false;
+  const a = body as Record<string, unknown>;
+  return (
+    ["lose", "maintain", "gain"].includes(a.goal as string) &&
+    typeof a.currentWeight === "number" &&
+    typeof a.targetWeight === "number" &&
+    ["1month", "3months", "6months"].includes(a.period as string) &&
+    ["none", "light", "active"].includes(a.exercise as string) &&
+    ["none", "lowcarb", "lowfat"].includes(a.preference as string)
+  );
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const answers: UserAnswers = await req.json();
+    const body: unknown = await req.json();
 
+    // 受信データをログ出力（Vercel ログで確認可能）
+    console.log("[generate] received:", JSON.stringify(body));
+
+    if (!validateAnswers(body)) {
+      console.error("[generate] validation failed. received:", JSON.stringify(body));
+      console.error("[generate] expected fields: goal, currentWeight, targetWeight, period, exercise, preference");
+      return new Response(
+        JSON.stringify({
+          error: "入力データが不正です",
+          received: body,
+          expected: "goal, currentWeight, targetWeight, period, exercise, preference",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    const answers = body;
     const prompt = buildPrompt(answers);
 
     // Anthropic ストリーミングリクエスト
@@ -182,6 +213,8 @@ export async function POST(req: NextRequest) {
           }
           controller.close();
         } catch (err) {
+          const msg = err instanceof Error ? err.message : String(err);
+          console.error("[generate] stream error:", msg);
           controller.error(err);
         }
       },
@@ -191,13 +224,16 @@ export async function POST(req: NextRequest) {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "Transfer-Encoding": "chunked",
-        "X-Accel-Buffering": "no", // Vercel / nginx のバッファリングを無効化
+        "X-Accel-Buffering": "no",
       },
     });
   } catch (err) {
-    console.error("API Error:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : undefined;
+    console.error("[generate] API Error:", message);
+    if (stack) console.error("[generate] Stack:", stack);
     return new Response(
-      JSON.stringify({ error: "食事プランの生成に失敗しました" }),
+      JSON.stringify({ error: "食事プランの生成に失敗しました", detail: message }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
