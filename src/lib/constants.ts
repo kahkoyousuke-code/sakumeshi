@@ -44,72 +44,61 @@ export const ALLERGENS = [
   { value: "none", label: "なし" },
 ];
 
-// フォームのステップ定義
+// フォームのステップ定義（UserAnswers の6フィールドに対応）
 export const FORM_STEPS: FormStep[] = [
   {
-    id: "gender",
-    question: "性別を教えてください",
-    type: "radio",
-    options: [
-      { value: "male", label: "男性" },
-      { value: "female", label: "女性" },
-      { value: "other", label: "その他" },
-    ],
-  },
-  {
-    id: "age",
-    question: "年齢を教えてください",
-    type: "number",
-    placeholder: "例：25",
-    unit: "歳",
-  },
-  {
-    id: "height",
-    question: "身長を教えてください",
-    type: "number",
-    placeholder: "例：165",
-    unit: "cm",
-  },
-  {
-    id: "weight",
-    question: "体重を教えてください",
-    type: "number",
-    placeholder: "例：60",
-    unit: "kg",
-  },
-  {
-    id: "activityLevel",
-    question: "普段の活動レベルは？",
-    type: "select",
-    options: [
-      { value: "sedentary", label: "ほぼ座り仕事（運動なし）" },
-      { value: "light", label: "軽い運動（週1〜3回）" },
-      { value: "moderate", label: "中程度の運動（週3〜5回）" },
-      { value: "active", label: "ハードな運動（週6〜7回）" },
-      { value: "very_active", label: "非常にハード（肉体労働など）" },
-    ],
-  },
-  {
     id: "goal",
-    question: "目標は何ですか？",
+    question: "目標を教えてください",
     type: "radio",
     options: [
       { value: "lose", label: "体重を減らしたい" },
       { value: "maintain", label: "現状維持したい" },
-      { value: "gain", label: "筋肉をつけたい" },
+      { value: "gain", label: "筋肉・体重を増やしたい" },
     ],
   },
   {
-    id: "dietaryRestrictions",
-    question: "食事制限はありますか？",
-    type: "multiselect",
-    options: DIETARY_RESTRICTIONS,
+    id: "currentWeight",
+    question: "現在の体重を教えてください",
+    type: "number",
+    placeholder: "例：70",
+    unit: "kg",
   },
   {
-    id: "allergies",
-    question: "アレルギーはありますか？",
-    type: "multiselect",
-    options: ALLERGENS,
+    id: "targetWeight",
+    question: "目標体重を教えてください",
+    type: "number",
+    placeholder: "例：65",
+    unit: "kg",
+  },
+  {
+    id: "period",
+    question: "目標達成までの期間は？",
+    type: "radio",
+    options: [
+      { value: "1month", label: "1ヶ月" },
+      { value: "3months", label: "3ヶ月" },
+      { value: "6months", label: "6ヶ月" },
+    ],
+  },
+  {
+    id: "exercise",
+    question: "運動習慣はありますか？",
+    type: "radio",
+    options: [
+      { value: "none", label: "ほぼなし" },
+      { value: "light", label: "週1〜2回" },
+      { value: "active", label: "週3回以上" },
+    ],
+  },
+  {
+    id: "preference",
+    question: "食事の好みを教えてください",
+    type: "radio",
+    options: [
+      { value: "none", label: "制限なし" },
+      { value: "lowcarb", label: "低糖質（炭水化物を控えめに）" },
+      { value: "lowfat", label: "低脂質（脂質を控えめに）" },
+    ],
   },
 ];
 

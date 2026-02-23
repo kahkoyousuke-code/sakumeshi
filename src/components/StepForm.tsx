@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FORM_STEPS, TOTAL_STEPS } from "@/lib/constants";
-import { UserInput } from "@/lib/types";
+import { UserAnswers } from "@/lib/types";
 
 interface StepFormProps {
-  onSubmit: (input: UserInput) => void;
+  onSubmit: (input: UserAnswers) => void;
   isLoading: boolean;
 }
 
@@ -40,7 +40,7 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
     if (step < TOTAL_STEPS - 1) {
       setStep((s) => s + 1);
     } else {
-      onSubmit(answers as unknown as UserInput);
+      onSubmit(answers as unknown as UserAnswers);
     }
   };
 

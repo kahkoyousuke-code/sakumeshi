@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import StepForm from "@/components/StepForm";
-import { UserInput } from "@/lib/types";
+import { UserAnswers } from "@/lib/types";
 
 export default function FormPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [lastInput, setLastInput] = useState<UserInput | null>(null);
+  const [lastInput, setLastInput] = useState<UserAnswers | null>(null);
 
-  const handleSubmit = async (input: UserInput) => {
+  const handleSubmit = async (input: UserAnswers) => {
     setIsLoading(true);
     setHasError(false);
     setLastInput(input);
