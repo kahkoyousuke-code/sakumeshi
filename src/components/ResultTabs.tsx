@@ -1,59 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { DayPlan } from "@/lib/types";
+import { DayMenu } from "@/lib/types";
 import MealCard from "@/components/MealCard";
 
 interface ResultTabsProps {
-  dayPlan: DayPlan;
+  menus: DayMenu[];
 }
 
-const TABS = [
-  { id: "breakfast", label: "朝食" },
-  { id: "lunch", label: "昼食" },
-  { id: "dinner", label: "夕食" },
-  { id: "snack", label: "間食" },
-] as const;
+export default function ResultTabs({ menus }: ResultTabsProps) {
+  const [activeDay, setActiveDay] = useState(0);
 
-type TabId = (typeof TABS)[number]["id"];
-
-export default function ResultTabs({ dayPlan }: ResultTabsProps) {
-  const [activeTab, setActiveTab] = useState<TabId>("breakfast");
-
-  const mealMap = {
-    breakfast: { meal: dayPlan.breakfast, label: "朝食" },
-    lunch: { meal: dayPlan.lunch, label: "昼食" },
-    dinner: { meal: dayPlan.dinner, label: "夕食" },
-    snack: dayPlan.snack ? { meal: dayPlan.snack, label: "間食" } : null,
-  };
-
-  const activeMeal = mealMap[activeTab];
+  const currentDay = menus[activeDay];
 
   return (
     <div className="space-y-4">
-      {/* タブナビゲーション */}
-      <div className="flex gap-1 bg-pink-50 rounded-xl p-1">
-        {TABS.map((tab) => {
-          if (tab.id === "snack" && !dayPlan.snack) return null;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                activeTab === tab.id
-                  ? "bg-[var(--primary)] text-white shadow-sm"
-                  : "text-gray-500 hover:text-[var(--primary)]"
-              }`}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
+      {/* 曜日タブ（月〜日） */}
+      <div className="flex gap-1 overflow-x-auto pb-1">
+        {menus.map((menu, i) => (
+          <button
+            key={menu.day}
+            onClick={() => setActiveDay(i)}
+            className={`flex-shrink-0 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+              activeDay === i
+                ? "bg-[var(--primary)] text-white shadow-sm"
+                : "bg-pink-50 text-gray-500 hover:text-[var(--primary)]"
+            }`}
+          >
+            {menu.day}
+          </button>
+        ))}
       </div>
 
-      {/* コンテンツ */}
-      {activeMeal && (
-        <MealCard meal={activeMeal.meal} label={activeMeal.label} />
+      {/* 選択中の日の食事（朝・昼・夕） */}
+      {currentDay && (
+        <div className="space-y-3">
+          {currentDay.meals.map((meal) => (
+            <MealCard key={meal.time} meal={meal} />
+          ))}
+        </div>
       )}
     </div>
   );
