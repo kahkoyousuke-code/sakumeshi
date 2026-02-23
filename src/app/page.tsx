@@ -70,6 +70,7 @@ export default function HomePage() {
             width={150}
             height={150}
             className="drop-shadow-lg"
+            style={{ mixBlendMode: "multiply" }}
             priority
           />
         </motion.div>
