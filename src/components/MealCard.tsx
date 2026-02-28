@@ -12,7 +12,7 @@ const TIME_LABEL: Record<MealItem["time"], string> = {
 
 export default function MealCard({ meal }: MealCardProps) {
   return (
-    <div className="bg-white border border-pink-100 rounded-2xl p-5 shadow-sm space-y-3">
+    <div className="bg-white border border-green-100 rounded-2xl p-5 shadow-sm space-y-3">
       {/* ヘッダー：食事区分 + カロリー */}
       <div className="flex items-center justify-between">
         <span className="text-xs font-semibold text-white bg-[var(--primary)] px-3 py-1 rounded-full">

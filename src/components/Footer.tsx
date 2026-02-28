@@ -3,7 +3,7 @@ import { SAKU_TRAINING_URL } from "@/lib/constants";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-white border-t border-pink-100 py-6 text-center text-sm text-gray-400">
+    <footer className="w-full bg-white border-t border-green-100 py-6 text-center text-sm text-gray-400">
       <p>
         トレーニングもはじめよう →{" "}
         <Link

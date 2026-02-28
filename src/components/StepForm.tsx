@@ -56,7 +56,7 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
           <span>ステップ {step + 1} / {TOTAL_STEPS}</span>
           <span>{Math.round(((step + 1) / TOTAL_STEPS) * 100)}%</span>
         </div>
-        <div className="w-full bg-pink-100 rounded-full h-2">
+        <div className="w-full bg-green-100 rounded-full h-2">
           <motion.div
             className="bg-[var(--primary)] h-2 rounded-full"
             initial={{ width: 0 }}
@@ -87,8 +87,8 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
                   onClick={() => handleAnswer(opt.value)}
                   className={`w-full py-3 px-4 rounded-xl border-2 text-left font-medium transition-all ${
                     answers[currentStep.id] === opt.value
-                      ? "border-[var(--primary)] bg-pink-50 text-[var(--primary)]"
-                      : "border-gray-200 text-gray-600 hover:border-pink-200"
+                      ? "border-[var(--primary)] bg-green-50 text-[var(--primary)]"
+                      : "border-gray-200 text-gray-600 hover:border-green-200"
                   }`}
                 >
                   {opt.label}
@@ -142,7 +142,7 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
                     className={`py-2 px-4 rounded-full border-2 text-sm font-medium transition-all ${
                       selected
                         ? "border-[var(--primary)] bg-[var(--primary)] text-white"
-                        : "border-gray-200 text-gray-600 hover:border-pink-300"
+                        : "border-gray-200 text-gray-600 hover:border-green-300"
                     }`}
                   >
                     {opt.label}
@@ -159,7 +159,7 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
         {step > 0 && (
           <button
             onClick={handleBack}
-            className="flex-1 py-3 border-2 border-gray-200 text-gray-500 font-semibold rounded-xl hover:border-pink-200 transition-colors"
+            className="flex-1 py-3 border-2 border-gray-200 text-gray-500 font-semibold rounded-xl hover:border-green-200 transition-colors"
           >
             戻る
           </button>

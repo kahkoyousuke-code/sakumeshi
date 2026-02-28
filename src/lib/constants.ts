@@ -4,7 +4,7 @@ export const APP_NAME = "sakumeshi";
 export const APP_DESCRIPTION = "あなたにぴったりの食事メニューをAIが提案します";
 
 export const SAKU_TRAINING_URL =
-  process.env.NEXT_PUBLIC_SAKUTORE_URL ?? "https://sakutraining.jp";
+  process.env.NEXT_PUBLIC_SAKUTORE_URL ?? "https://sakutore.vercel.app/";
 
 // 活動レベルの係数（ハリス・ベネディクト方程式）
 export const ACTIVITY_MULTIPLIERS = {

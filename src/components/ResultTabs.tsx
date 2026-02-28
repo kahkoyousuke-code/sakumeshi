@@ -24,7 +24,7 @@ export default function ResultTabs({ menus }: ResultTabsProps) {
             className={`flex-shrink-0 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
               activeDay === i
                 ? "bg-[var(--primary)] text-white shadow-sm"
-                : "bg-pink-50 text-gray-500 hover:text-[var(--primary)]"
+                : "bg-green-50 text-gray-500 hover:text-[var(--primary)]"
             }`}
           >
             {menu.day}

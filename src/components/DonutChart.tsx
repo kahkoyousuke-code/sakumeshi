@@ -7,9 +7,9 @@ interface DonutChartProps {
 }
 
 const COLORS = {
-  protein: "#e85d8a",
-  fat: "#f6c90e",
-  carbs: "#7ec8c8",
+  protein: "#4CAF50",
+  fat: "#81C784",
+  carbs: "#2E7D32",
 };
 
 function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
