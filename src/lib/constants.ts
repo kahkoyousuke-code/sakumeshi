@@ -1,6 +1,6 @@
 import { FormStep } from "./types";
 
-export const APP_NAME = "sakumeshi";
+export const APP_NAME = "サクメシ";
 export const APP_DESCRIPTION = "あなたにぴったりの食事メニューをAIが提案します";
 
 export const SAKU_TRAINING_URL =

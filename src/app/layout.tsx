@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "sakumeshi | AIが提案する食事メニュー",
+  title: "サクメシ - AIでサクッとダイエット計画を作成",
   description:
     "あなたの体型・目標・制限に合わせて、AIが最適な食事プランを提案するサービスです。",
   keywords: ["食事管理", "ダイエット", "栄養", "AI", "メニュー提案"],
