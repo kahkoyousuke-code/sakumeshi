@@ -164,6 +164,30 @@ function buildPrompt(answers: UserAnswers): string {
 }`;
 }
 
+// ── 簡易レート制限（IPごとに1時間あたり5回まで） ──────────────────────────
+// Vercel サーバーレスのためデプロイごとにリセットされるが、最低限の防御として機能する
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1時間
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true; // OK
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX) {
+    return false; // 制限超過
+  }
+
+  entry.count += 1;
+  return true; // OK
+}
+
 // 入力バリデーション（フォームと API の型ズレを早期検出）
 function validateAnswers(body: unknown): body is UserAnswers {
   if (!body || typeof body !== "object") return false;
@@ -180,6 +204,20 @@ function validateAnswers(body: unknown): body is UserAnswers {
 
 export async function POST(req: NextRequest) {
   try {
+    // レート制限チェック
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+      req.headers.get("x-real-ip") ??
+      "unknown";
+
+    if (!checkRateLimit(ip)) {
+      console.warn("[generate] rate limit exceeded:", ip);
+      return new Response(
+        JSON.stringify({ error: "しばらく時間をおいてお試しください" }),
+        { status: 429, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const body: unknown = await req.json();
 
     // 受信データをログ出力（Vercel ログで確認可能）
@@ -204,7 +242,7 @@ export async function POST(req: NextRequest) {
     // Anthropic ストリーミングリクエスト
     const stream = anthropic.messages.stream({
       model: "claude-sonnet-4-6",
-      max_tokens: 8192,
+      max_tokens: 4000,
       system:
         "あなたは管理栄養士です。指定された JSON 形式のみで回答してください。マークダウンやコードブロックは使用しないでください。",
       messages: [{ role: "user", content: prompt }],
