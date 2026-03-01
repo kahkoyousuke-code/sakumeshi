@@ -32,7 +32,7 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
   const canProceed = () => {
     const val = answers[currentStep.id];
     if (currentStep.type === "multiselect") return Array.isArray(val) && val.length > 0;
-    if (currentStep.type === "number") return typeof val === "number" && val > 0;
+    if (currentStep.type === "number") return !!val && Number(val) > 0;
     return !!val;
   };
 
@@ -128,10 +128,16 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
             <div className="flex items-center gap-2">
               <input
                 type="number"
+                inputMode="decimal"
                 className="flex-1 py-3 px-4 rounded-xl border-2 border-gray-200 text-gray-700 focus:border-[var(--primary)] outline-none text-lg"
                 placeholder={currentStep.placeholder}
-                value={(answers[currentStep.id] as number) || ""}
-                onChange={(e) => handleAnswer(Number(e.target.value))}
+                value={(answers[currentStep.id] as string) || ""}
+                onChange={(e) => {
+                  // スマホIMEで onChange が複数回発火しても前の値に追加せず
+                  // e.target.value をそのままセット（数値以外の文字は除去）
+                  const cleaned = e.target.value.replace(/[^0-9.]/g, "");
+                  setAnswers((prev) => ({ ...prev, [currentStep.id]: cleaned }));
+                }}
                 min={0}
               />
               {currentStep.unit && (
