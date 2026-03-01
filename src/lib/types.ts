@@ -3,6 +3,7 @@
 export interface FormOption {
   value: string;
   label: string;
+  description?: string;
 }
 
 export interface FormStep {

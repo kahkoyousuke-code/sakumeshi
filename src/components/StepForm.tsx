@@ -92,13 +92,16 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
                 <button
                   key={opt.value}
                   onClick={() => handleAnswer(opt.value)}
-                  className={`w-full py-3 px-4 rounded-xl border-2 text-left font-medium transition-all ${
+                  className={`w-full py-3 px-4 rounded-xl border-2 text-left transition-all ${
                     answers[currentStep.id] === opt.value
                       ? "border-[var(--primary)] bg-green-50 text-[var(--primary)]"
                       : "border-gray-200 text-gray-600 hover:border-green-200"
                   }`}
                 >
-                  {opt.label}
+                  <span className="font-medium">{opt.label}</span>
+                  {opt.description && (
+                    <span className="block text-xs mt-0.5 opacity-70">{opt.description}</span>
+                  )}
                 </button>
               ))}
             </div>

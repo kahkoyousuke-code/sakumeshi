@@ -95,9 +95,9 @@ export const FORM_STEPS: FormStep[] = [
     question: "食事の好みを教えてください",
     type: "radio",
     options: [
-      { value: "none", label: "制限なし" },
-      { value: "lowcarb", label: "低糖質（炭水化物を控えめに）" },
-      { value: "lowfat", label: "低脂質（脂質を控えめに）" },
+      { value: "none", label: "制限なし", description: "なんでもバランスよく食べる" },
+      { value: "lowcarb", label: "低糖質", description: "ごはん・パン・麺を控えめに" },
+      { value: "lowfat", label: "低脂質", description: "揚げ物・油っこいものを控えめに" },
     ],
   },
 ];
