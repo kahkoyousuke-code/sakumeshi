@@ -39,10 +39,23 @@ function calcNutrition(answers: UserAnswers) {
   const AGE = 35;
   const HEIGHT = 170;
 
-  // BMR（ハリス・ベネディクト / 男性）
+  // 入力値を必ず数値に変換（文字列が混入しても安全に計算できるようにする）
+  const weight = Number(answers.currentWeight);
+
+  if (isNaN(weight) || weight <= 0) {
+    throw new Error(`体重の値が不正です: ${answers.currentWeight}`);
+  }
+
+  // BMR（改訂ハリス・ベネディクト / 男性）
+  // 88.362 + (13.397 × 体重kg) + (4.799 × 身長cm) - (5.677 × 年齢)
   const bmr = Math.round(
-    66.47 + 13.75 * answers.currentWeight + 5.003 * HEIGHT - 6.755 * AGE
+    88.362 + 13.397 * weight + 4.799 * HEIGHT - 5.677 * AGE
   );
+
+  // BMR 異常値チェック（成人の現実的な範囲: 1000〜3000kcal）
+  if (bmr < 1000 || bmr > 3000) {
+    throw new Error(`BMR値が異常です（${bmr}kcal）。体重の入力値を確認してください: ${weight}kg`);
+  }
 
   // TDEE
   const tdee = Math.round(bmr * ACTIVITY_MULTIPLIER[answers.exercise]);
