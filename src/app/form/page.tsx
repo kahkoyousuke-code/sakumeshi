@@ -17,7 +17,6 @@ export default function FormPage() {
     setLastInput(input);
 
     try {
-      console.log("[FormPage] API送信データ:", JSON.stringify(input));
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

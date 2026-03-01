@@ -47,7 +47,6 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
         currentWeight: Number(answers.currentWeight),
         targetWeight: Number(answers.targetWeight),
       };
-      console.log("[StepForm] 送信データ:", JSON.stringify(sanitized));
       onSubmit(sanitized as unknown as UserAnswers);
     }
   };
