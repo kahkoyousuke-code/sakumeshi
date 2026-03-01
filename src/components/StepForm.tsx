@@ -40,7 +40,15 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
     if (step < TOTAL_STEPS - 1) {
       setStep((s) => s + 1);
     } else {
-      onSubmit(answers as unknown as UserAnswers);
+      // 数値フィールドを明示的に Number() 変換してから送信
+      // （文字列が混入しても "53" + "53" = "5353" にならないようにする）
+      const sanitized = {
+        ...answers,
+        currentWeight: Number(answers.currentWeight),
+        targetWeight: Number(answers.targetWeight),
+      };
+      console.log("[StepForm] 送信データ:", JSON.stringify(sanitized));
+      onSubmit(sanitized as unknown as UserAnswers);
     }
   };
 
