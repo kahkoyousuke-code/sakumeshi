@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 
+export const maxDuration = 60;
+
 // UserAnswers 型定義（types.ts と同期）
 type Goal = "lose" | "maintain" | "gain";
 type Exercise = "none" | "light" | "active";
@@ -240,6 +242,7 @@ export async function POST(req: NextRequest) {
     const prompt = buildPrompt(answers);
 
     // Anthropic ストリーミングリクエスト
+    console.log("[generate] stream started");
     const stream = anthropic.messages.stream({
       model: "claude-sonnet-4-6",
       max_tokens: 4000,
@@ -262,6 +265,7 @@ export async function POST(req: NextRequest) {
               controller.enqueue(encoder.encode(chunk.delta.text));
             }
           }
+          console.log("[generate] stream completed");
           controller.close();
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err);
