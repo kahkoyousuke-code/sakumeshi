@@ -119,6 +119,14 @@ export default function ResultPage() {
         </ul>
       </section>
 
+      {/* 7日間の食事メニュー */}
+      <section className="bg-white rounded-2xl shadow-md p-6">
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          7日間の食事メニュー
+        </h3>
+        <ResultTabs menus={result.menus} />
+      </section>
+
       {/* おすすめ間食 */}
       <section className="bg-white rounded-2xl shadow-md p-6">
         <h3 className="text-lg font-semibold mb-4 text-gray-700">🥗 おすすめ間食</h3>
@@ -136,14 +144,6 @@ export default function ResultPage() {
             </div>
           ))}
         </div>
-      </section>
-
-      {/* 7日間の食事メニュー */}
-      <section className="bg-white rounded-2xl shadow-md p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">
-          7日間の食事メニュー
-        </h3>
-        <ResultTabs menus={result.menus} />
       </section>
 
       <div className="text-center">
