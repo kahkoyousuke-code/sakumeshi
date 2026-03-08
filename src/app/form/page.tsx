@@ -55,7 +55,18 @@ export default function FormPage() {
         const e = error as Error;
         console.error("[FormPage] JSONパースエラー:", e.message);
         console.error("[FormPage] パース対象先頭:", accumulated.substring(0, 500));
-        throw error;
+
+        // 不完全なJSONを修復して再パースを試みる
+        let repaired = jsonStr;
+        for (let i = 0; i < 10; i++) {
+          repaired += "}";
+          try { data = JSON.parse(repaired); break; } catch { /* continue */ }
+          repaired = repaired.slice(0, -1) + "]";
+          try { data = JSON.parse(repaired); break; } catch { /* continue */ }
+          repaired = repaired.slice(0, -1);
+        }
+        if (!data) throw error;
+        console.log("[FormPage] JSON修復成功");
       }
 
       sessionStorage.setItem("mealPlan", JSON.stringify(data));

@@ -154,8 +154,8 @@ function buildPrompt(answers: UserAnswers): string {
           "protein": 数値,
           "fat": 数値,
           "carbs": 数値,
-          "recipe": "自炊レシピの手順（2〜3文）",
-          "convenienceAlt": "コンビニで買える代替品名"
+          "recipe": "レシピ（50文字以内）",
+          "convenienceAlt": "コンビニ代替品（30文字以内）"
         },
         { "time": "昼", ... },
         { "time": "夕", ... }
@@ -163,7 +163,9 @@ function buildPrompt(answers: UserAnswers): string {
     }
   ],
   "advice": ["アドバイス1", "アドバイス2", "アドバイス3"]
-}`;
+}
+
+【出力制約】recipe は50文字以内、convenienceAlt は30文字以内、advice は3つまで。余分な説明は不要。`;
 }
 
 // ── 簡易レート制限（IPごとに1時間あたり5回まで） ──────────────────────────
@@ -245,7 +247,7 @@ export async function POST(req: NextRequest) {
     console.log("[generate] stream started");
     const stream = anthropic.messages.stream({
       model: "claude-sonnet-4-6",
-      max_tokens: 4000,
+      max_tokens: 8000,
       system:
         "あなたは管理栄養士です。指定された JSON 形式のみで回答してください。マークダウンやコードブロックは使用しないでください。",
       messages: [{ role: "user", content: prompt }],
