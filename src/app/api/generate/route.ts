@@ -244,7 +244,6 @@ export async function POST(req: NextRequest) {
     const prompt = buildPrompt(answers);
 
     // Anthropic ストリーミングリクエスト
-    console.log("[generate] stream started");
     const stream = anthropic.messages.stream({
       model: "claude-sonnet-4-6",
       max_tokens: 8000,
@@ -267,7 +266,6 @@ export async function POST(req: NextRequest) {
               controller.enqueue(encoder.encode(chunk.delta.text));
             }
           }
-          console.log("[generate] stream completed");
           controller.close();
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err);

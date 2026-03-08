@@ -40,9 +40,6 @@ export default function FormPage() {
       accumulated += decoder.decode();
 
       // ストリーム完了後に一括パース
-      console.log("[FormPage] 受信テキスト先頭:", accumulated.substring(0, 200));
-      console.log("[FormPage] テキスト長:", accumulated.length);
-
       // JSON以外のテキストが混ざっている場合に備えて { } の範囲を抽出
       const jsonStart = accumulated.indexOf('{');
       const jsonEnd = accumulated.lastIndexOf('}');
@@ -52,10 +49,6 @@ export default function FormPage() {
       try {
         data = JSON.parse(jsonStr);
       } catch (error) {
-        const e = error as Error;
-        console.error("[FormPage] JSONパースエラー:", e.message);
-        console.error("[FormPage] パース対象先頭:", accumulated.substring(0, 500));
-
         // 不完全なJSONを修復して再パースを試みる
         let repaired = jsonStr;
         for (let i = 0; i < 10; i++) {
@@ -66,7 +59,6 @@ export default function FormPage() {
           repaired = repaired.slice(0, -1);
         }
         if (!data) throw error;
-        console.log("[FormPage] JSON修復成功");
       }
 
       sessionStorage.setItem("mealPlan", JSON.stringify(data));
