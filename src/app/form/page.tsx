@@ -40,7 +40,24 @@ export default function FormPage() {
       accumulated += decoder.decode();
 
       // ストリーム完了後に一括パース
-      const data = JSON.parse(accumulated);
+      console.log("[FormPage] 受信テキスト先頭:", accumulated.substring(0, 200));
+      console.log("[FormPage] テキスト長:", accumulated.length);
+
+      // JSON以外のテキストが混ざっている場合に備えて { } の範囲を抽出
+      const jsonStart = accumulated.indexOf('{');
+      const jsonEnd = accumulated.lastIndexOf('}');
+      const jsonStr = accumulated.substring(jsonStart, jsonEnd + 1);
+
+      let data;
+      try {
+        data = JSON.parse(jsonStr);
+      } catch (error) {
+        const e = error as Error;
+        console.error("[FormPage] JSONパースエラー:", e.message);
+        console.error("[FormPage] パース対象先頭:", accumulated.substring(0, 500));
+        throw error;
+      }
+
       sessionStorage.setItem("mealPlan", JSON.stringify(data));
       router.push("/result");
     } catch (err) {
