@@ -7,6 +7,27 @@ import { DietPlan } from "@/lib/types";
 import DonutChart from "@/components/DonutChart";
 import ResultTabs from "@/components/ResultTabs";
 
+const SNACK_SUGGESTIONS = {
+  lose: [
+    { emoji: "🥚", name: "ゆで卵", detail: "1個 約80kcal / P:6g" },
+    { emoji: "🥛", name: "ギリシャヨーグルト", detail: "100g 約60kcal / P:10g" },
+    { emoji: "🍗", name: "サラダチキンバー", detail: "1本 約60kcal / P:13g" },
+    { emoji: "🌰", name: "素焼きアーモンド10粒", detail: "約60kcal / 良質な脂質" },
+  ],
+  maintain: [
+    { emoji: "🍫", name: "プロテインバー", detail: "約180kcal / P:15g" },
+    { emoji: "🍌", name: "バナナ1本", detail: "約90kcal / 手軽なエネルギー補給" },
+    { emoji: "🧀", name: "チーズ2個", detail: "約100kcal / P:6g" },
+    { emoji: "🍠", name: "干し芋", detail: "50g 約150kcal / 腹持ち◎" },
+  ],
+  gain: [
+    { emoji: "🍙", name: "おにぎり＋サラダチキン", detail: "約350kcal / P:20g" },
+    { emoji: "🥤", name: "プロテイン＋バナナ", detail: "約250kcal / P:25g" },
+    { emoji: "🍞", name: "あんぱん", detail: "約280kcal / トレ後の糖質補給に" },
+    { emoji: "🥜", name: "ミックスナッツ＋ドライフルーツ", detail: "約200kcal / 手軽にカロリーアップ" },
+  ],
+} as const;
+
 export default function ResultPage() {
   const router = useRouter();
   const [result, setResult] = useState<DietPlan | null>(null);
@@ -27,6 +48,9 @@ export default function ResultPage() {
       </div>
     );
   }
+
+  const goal = result.weeklyChange < 0 ? "lose" : result.weeklyChange > 0 ? "gain" : "maintain";
+  const snacks = SNACK_SUGGESTIONS[goal];
 
   // DonutChart 用に PFCBalance 形式に変換
   const pfc = {
@@ -93,6 +117,25 @@ export default function ResultPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      {/* おすすめ間食 */}
+      <section className="bg-white rounded-2xl shadow-md p-6">
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">🥗 おすすめ間食</h3>
+        <div className="grid grid-cols-2 gap-3">
+          {snacks.map((snack) => (
+            <div
+              key={snack.name}
+              className="flex items-start gap-3 bg-green-50 rounded-xl p-3 border border-green-100"
+            >
+              <span className="text-2xl leading-none mt-0.5">{snack.emoji}</span>
+              <div>
+                <p className="text-sm font-semibold text-green-800">{snack.name}</p>
+                <p className="text-xs text-green-600 mt-0.5">{snack.detail}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* 7日間の食事メニュー */}
