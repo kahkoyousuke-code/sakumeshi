@@ -82,6 +82,7 @@ export interface MealItem {
   protein: number;
   fat: number;
   carbs: number;
+  fiber: number;
   recipe: string;
   convenienceAlt: string;
 }
@@ -96,6 +97,7 @@ export interface DietPlan {
   protein: number;
   fat: number;
   carbs: number;
+  totalFiber: number;
   bmr: number;
   tdee: number;
   weeklyChange: number;

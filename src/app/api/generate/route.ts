@@ -129,9 +129,10 @@ function buildPrompt(answers: UserAnswers): string {
 【要件】
 - 日本の一般的な食材を使用すること
 - 朝・昼・夕の3食を7日分（月〜日）提案すること
-- 各食事にカロリー・PFC・自炊レシピ・コンビニ代替を含めること
+- 各食事にカロリー・PFC・食物繊維・自炊レシピ・コンビニ代替を含めること
 - 極端なカロリー制限や偏った食事は避けること
 - 実際に作りやすい現実的なメニューにすること
+- 食物繊維は1日合計20g以上を目標とすること（野菜・豆類・海藻・きのこを積極的に使用）
 
 以下の JSON 形式のみで回答してください（マークダウン・コードブロック厳禁）：
 
@@ -140,6 +141,7 @@ function buildPrompt(answers: UserAnswers): string {
   "protein": ${protein},
   "fat": ${fat},
   "carbs": ${carbs},
+  "totalFiber": 数値（1日の目標食物繊維量g、目安20以上）,
   "bmr": ${bmr},
   "tdee": ${tdee},
   "weeklyChange": ${weeklyChange},
@@ -154,6 +156,7 @@ function buildPrompt(answers: UserAnswers): string {
           "protein": 数値,
           "fat": 数値,
           "carbs": 数値,
+          "fiber": 数値（食物繊維g）,
           "recipe": "レシピ（50文字以内）",
           "convenienceAlt": "コンビニ代替品（30文字以内）"
         },

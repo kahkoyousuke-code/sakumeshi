@@ -9,22 +9,22 @@ import ResultTabs from "@/components/ResultTabs";
 
 const SNACK_SUGGESTIONS = {
   lose: [
-    { emoji: "🥚", name: "ゆで卵", detail: "1個 約80kcal / P:6g" },
-    { emoji: "🥛", name: "ギリシャヨーグルト", detail: "100g 約60kcal / P:10g" },
-    { emoji: "🍗", name: "サラダチキンバー", detail: "1本 約60kcal / P:13g" },
-    { emoji: "🌰", name: "素焼きアーモンド10粒", detail: "約60kcal / 良質な脂質" },
+    { emoji: "🥚", name: "ゆで卵", detail: "1個 約80kcal / P:6g", fiber: 0 },
+    { emoji: "🥛", name: "ギリシャヨーグルト", detail: "100g 約60kcal / P:10g", fiber: 0 },
+    { emoji: "🍗", name: "サラダチキンバー", detail: "1本 約60kcal / P:13g", fiber: 0 },
+    { emoji: "🌰", name: "素焼きアーモンド10粒", detail: "約60kcal / 良質な脂質", fiber: 1.5 },
   ],
   maintain: [
-    { emoji: "🍫", name: "プロテインバー", detail: "約180kcal / P:15g" },
-    { emoji: "🍌", name: "バナナ1本", detail: "約90kcal / 手軽なエネルギー補給" },
-    { emoji: "🧀", name: "チーズ2個", detail: "約100kcal / P:6g" },
-    { emoji: "🍠", name: "干し芋", detail: "50g 約150kcal / 腹持ち◎" },
+    { emoji: "🍫", name: "プロテインバー", detail: "約180kcal / P:15g", fiber: 3 },
+    { emoji: "🍌", name: "バナナ1本", detail: "約90kcal / 手軽なエネルギー補給", fiber: 1.1 },
+    { emoji: "🧀", name: "チーズ2個", detail: "約100kcal / P:6g", fiber: 0 },
+    { emoji: "🍠", name: "干し芋", detail: "50g 約150kcal / 腹持ち◎", fiber: 2.3 },
   ],
   gain: [
-    { emoji: "🍙", name: "おにぎり＋サラダチキン", detail: "約350kcal / P:20g" },
-    { emoji: "🥤", name: "プロテイン＋バナナ", detail: "約250kcal / P:25g" },
-    { emoji: "🍞", name: "あんぱん", detail: "約280kcal / トレ後の糖質補給に" },
-    { emoji: "🥜", name: "ミックスナッツ＋ドライフルーツ", detail: "約200kcal / 手軽にカロリーアップ" },
+    { emoji: "🍙", name: "おにぎり＋サラダチキン", detail: "約350kcal / P:20g", fiber: 0.5 },
+    { emoji: "🥤", name: "プロテイン＋バナナ", detail: "約250kcal / P:25g", fiber: 1.1 },
+    { emoji: "🍞", name: "あんぱん", detail: "約280kcal / トレ後の糖質補給に", fiber: 1.5 },
+    { emoji: "🥜", name: "ミックスナッツ＋ドライフルーツ", detail: "約200kcal / 手軽にカロリーアップ", fiber: 2 },
   ],
 } as const;
 
@@ -72,11 +72,35 @@ export default function ResultPage() {
       </h2>
 
       {/* 目標カロリーと PFC チャート */}
-      <section className="bg-white rounded-2xl shadow-md p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+      <section className="bg-white rounded-2xl shadow-md p-6 space-y-5">
+        <h3 className="text-lg font-semibold text-gray-700">
           目標栄養バランス（{result.targetCalories}kcal/日）
         </h3>
         <DonutChart pfc={pfc} />
+
+        {/* 食物繊維プログレスバー */}
+        {result.totalFiber != null && (
+          <div className="pt-2 border-t border-gray-100">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-sm font-semibold text-emerald-700">食物繊維</span>
+              <span className="text-sm text-gray-600">
+                <span className="font-bold text-emerald-700">{result.totalFiber}g</span>
+                <span className="text-xs text-gray-400">/日（目標 20g 以上）</span>
+              </span>
+            </div>
+            <div className="w-full bg-emerald-100 rounded-full h-3 overflow-hidden">
+              <div
+                className="h-3 rounded-full bg-emerald-500 transition-all duration-700"
+                style={{ width: `${Math.min((result.totalFiber / 30) * 100, 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">
+              {result.totalFiber >= 20
+                ? "✓ 目標達成！腸活にも効果的です"
+                : `あと ${20 - result.totalFiber}g で目標達成`}
+            </p>
+          </div>
+        )}
       </section>
 
       {/* BMR / TDEE / 週間変化 */}
@@ -140,6 +164,9 @@ export default function ResultPage() {
               <div>
                 <p className="text-sm font-semibold text-green-800">{snack.name}</p>
                 <p className="text-xs text-green-600 mt-0.5">{snack.detail}</p>
+                {snack.fiber > 0 && (
+                  <p className="text-xs text-emerald-600 mt-0.5 font-medium">食物繊維 {snack.fiber}g</p>
+                )}
               </div>
             </div>
           ))}

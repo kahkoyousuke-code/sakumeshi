@@ -25,10 +25,13 @@ export default function MealCard({ meal }: MealCardProps) {
       <h4 className="text-lg font-bold text-gray-800">{meal.name}</h4>
 
       {/* PFC */}
-      <div className="flex gap-4 text-xs">
+      <div className="flex flex-wrap gap-3 text-xs">
         <span className="text-[var(--primary)] font-semibold">P {meal.protein}g</span>
         <span className="text-[var(--accent)] font-semibold">F {meal.fat}g</span>
         <span className="text-[var(--secondary)] font-semibold">C {meal.carbs}g</span>
+        {meal.fiber != null && (
+          <span className="text-emerald-600 font-semibold">食物繊維 {meal.fiber}g</span>
+        )}
       </div>
 
       {/* 自炊レシピ */}
