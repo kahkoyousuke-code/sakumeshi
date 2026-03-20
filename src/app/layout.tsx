@@ -40,6 +40,9 @@ export const metadata: Metadata = {
       "6つの質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
     images: ["/og_sakumeshi.png"],
   },
+  verification: {
+    google: "ZjWPPXKFHLaA28ucYVXLYd-MO0aZCkUEjSQ96J8qPJE",
+  },
 };
 
 export default function RootLayout({
