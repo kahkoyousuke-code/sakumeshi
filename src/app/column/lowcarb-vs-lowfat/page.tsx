@@ -349,7 +349,7 @@ export default function LowcarbVsLowfat() {
           <p className="text-sm text-gray-500">
             もっと詳しく知りたい方は →{" "}
             <a
-              href="https://note.com"
+              href="https://note.com/kahko/n/n011ab3e59a76"
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-600 font-medium hover:underline"
