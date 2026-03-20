@@ -14,4 +14,11 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-03-20",
     emoji: "🥗",
   },
+  {
+    slug: "pfc-calculation",
+    title: "PFCバランスの計算方法を分かりやすく解説！",
+    description: "ダイエット初心者でも5分で分かるPFC計算の4ステップ",
+    date: "2026-03-20",
+    emoji: "📊",
+  },
 ];
