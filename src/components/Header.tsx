@@ -26,6 +26,13 @@ export default function Header() {
         </Link>
         <nav className="flex gap-4 text-sm">
           <Link
+            href="/column"
+            className="hover:opacity-80 transition-opacity font-medium"
+            style={{ color: "#4CAF50" }}
+          >
+            コラム
+          </Link>
+          <Link
             href="/form"
             className="hover:opacity-80 transition-opacity font-medium"
             style={{ color: "#4CAF50" }}
