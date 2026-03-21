@@ -21,4 +21,11 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-03-20",
     emoji: "📊",
   },
+  {
+    slug: "diet-snacks",
+    title: "ダイエット中の間食、何食べていい？太らないおやつの選び方",
+    description: "目的別のおすすめ間食とコンビニで買えるダイエットおやつを紹介",
+    date: "2026-03-21",
+    emoji: "🥜",
+  },
 ];
