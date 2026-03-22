@@ -104,3 +104,21 @@ export interface DietPlan {
   menus: DayMenu[];
   advice: string[];
 }
+
+// ==================== 買い物リスト用型 ====================
+
+export interface ShoppingItem {
+  name: string;
+  amount: string;
+  checked?: boolean;
+}
+
+export interface ShoppingCategory {
+  name: string;
+  emoji: string;
+  items: ShoppingItem[];
+}
+
+export interface ShoppingList {
+  categories: ShoppingCategory[];
+}

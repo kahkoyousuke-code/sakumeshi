@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { DietPlan } from "@/lib/types";
+import { DietPlan, ShoppingList, ShoppingCategory } from "@/lib/types";
 import DonutChart from "@/components/DonutChart";
 import ResultTabs from "@/components/ResultTabs";
 
@@ -31,6 +31,10 @@ const SNACK_SUGGESTIONS = {
 export default function ResultPage() {
   const router = useRouter();
   const [result, setResult] = useState<DietPlan | null>(null);
+  const [shoppingList, setShoppingList] = useState<ShoppingList | null>(null);
+  const [shoppingLoading, setShoppingLoading] = useState(false);
+  const [shoppingError, setShoppingError] = useState<string | null>(null);
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const stored = sessionStorage.getItem("mealPlan");
@@ -40,6 +44,39 @@ export default function ResultPage() {
     }
     setResult(JSON.parse(stored));
   }, [router]);
+
+  async function handleGenerateShoppingList() {
+    if (!result) return;
+    setShoppingLoading(true);
+    setShoppingError(null);
+    setShoppingList(null);
+    setCheckedItems({});
+
+    try {
+      const res = await fetch("/api/shopping-list", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ menus: result.menus }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error ?? "生成に失敗しました");
+      }
+
+      const data: ShoppingList = await res.json();
+      setShoppingList(data);
+    } catch (err) {
+      setShoppingError(err instanceof Error ? err.message : "エラーが発生しました");
+    } finally {
+      setShoppingLoading(false);
+    }
+  }
+
+  function toggleItem(categoryName: string, itemName: string) {
+    const key = `${categoryName}__${itemName}`;
+    setCheckedItems((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
 
   if (!result) {
     return (
@@ -149,6 +186,92 @@ export default function ResultPage() {
           7日間の食事メニュー
         </h3>
         <ResultTabs menus={result.menus} />
+      </section>
+
+      {/* 買い物リスト */}
+      <section className="bg-white rounded-2xl shadow-md p-6">
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">🛒 買い物リスト</h3>
+
+        {!shoppingList && !shoppingLoading && (
+          <button
+            onClick={handleGenerateShoppingList}
+            className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-all duration-300 shadow-sm"
+          >
+            🛒 買い物リストを作る
+          </button>
+        )}
+
+        {shoppingLoading && (
+          <div className="flex flex-col items-center gap-3 py-8 text-green-600">
+            <div className="w-8 h-8 border-4 border-green-300 border-t-green-600 rounded-full animate-spin" />
+            <p className="text-sm">食材を抽出中...</p>
+          </div>
+        )}
+
+        {shoppingError && (
+          <div className="text-center space-y-3">
+            <p className="text-sm text-red-500">{shoppingError}</p>
+            <button
+              onClick={handleGenerateShoppingList}
+              className="px-5 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-all duration-300"
+            >
+              再試行
+            </button>
+          </div>
+        )}
+
+        {shoppingList && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {shoppingList.categories
+                .filter((cat: ShoppingCategory) => cat.items.length > 0)
+                .map((cat: ShoppingCategory) => (
+                  <div
+                    key={cat.name}
+                    className="bg-green-50 rounded-xl border border-green-100 p-4"
+                  >
+                    <p className="text-sm font-bold text-green-800 mb-2">
+                      {cat.emoji} {cat.name}
+                    </p>
+                    <ul className="space-y-1.5">
+                      {cat.items.map((item) => {
+                        const key = `${cat.name}__${item.name}`;
+                        const checked = !!checkedItems[key];
+                        return (
+                          <li key={item.name} className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              id={key}
+                              checked={checked}
+                              onChange={() => toggleItem(cat.name, item.name)}
+                              className="w-4 h-4 accent-green-500 shrink-0 cursor-pointer"
+                            />
+                            <label
+                              htmlFor={key}
+                              className={`text-sm cursor-pointer flex-1 ${
+                                checked ? "line-through text-gray-400" : "text-gray-700"
+                              }`}
+                            >
+                              {item.name}
+                              <span className="text-xs text-gray-400 ml-1">
+                                {item.amount}
+                              </span>
+                            </label>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+            </div>
+            <button
+              onClick={handleGenerateShoppingList}
+              className="text-sm text-green-600 underline underline-offset-2 hover:text-green-800 transition-colors"
+            >
+              再生成する
+            </button>
+          </div>
+        )}
       </section>
 
       {/* おすすめ間食 */}
