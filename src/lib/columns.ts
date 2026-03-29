@@ -28,4 +28,11 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-03-21",
     emoji: "🥜",
   },
+  {
+    slug: "boost-metabolism",
+    title: "基礎代謝を上げる食事とは？痩せやすい体を作る食べ方",
+    description: "食事で基礎代謝を上げる5つのポイントとやってはいけない食事法",
+    date: "2026-03-29",
+    emoji: "🔥",
+  },
 ];
