@@ -448,6 +448,15 @@ export default function PfcCalculation() {
               <span className="text-2xl">🏆</span>
               <span className="text-sm text-green-700 font-medium">92kgから大会入賞までのリアル食事記録</span>
             </a>
+            <a
+              href="https://note.com/kahko/n/n33722e8526e5"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 bg-white rounded-lg p-3 border border-gray-200 hover:border-green-300 transition-colors"
+            >
+              <span className="text-2xl">🍺</span>
+              <span className="text-sm text-green-700 font-medium">お酒とダイエットを両立する飲み方ルール</span>
+            </a>
           </div>
         </div>
       </article>
