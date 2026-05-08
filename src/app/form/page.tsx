@@ -62,6 +62,7 @@ export default function FormPage() {
       }
 
       sessionStorage.setItem("mealPlan", JSON.stringify(data));
+      localStorage.setItem("mealPlan", JSON.stringify(data));
       router.push("/result");
     } catch (err) {
       setHasError(true);

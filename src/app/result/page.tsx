@@ -37,7 +37,7 @@ export default function ResultPage() {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("mealPlan");
+    const stored = sessionStorage.getItem("mealPlan") ?? localStorage.getItem("mealPlan");
     if (!stored) {
       router.push("/form");
       return;
