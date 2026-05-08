@@ -48,17 +48,21 @@ export default function FormPage() {
       let data;
       try {
         data = JSON.parse(jsonStr);
-      } catch (error) {
-        // 不完全なJSONを修復して再パースを試みる
-        let repaired = jsonStr;
-        for (let i = 0; i < 10; i++) {
-          repaired += "}";
-          try { data = JSON.parse(repaired); break; } catch { /* continue */ }
-          repaired = repaired.slice(0, -1) + "]";
-          try { data = JSON.parse(repaired); break; } catch { /* continue */ }
-          repaired = repaired.slice(0, -1);
+      } catch {
+        // スタックで未閉じの括弧を追跡して補完する
+        const stack: string[] = [];
+        let inString = false;
+        let escape = false;
+        for (const ch of jsonStr) {
+          if (escape) { escape = false; continue; }
+          if (ch === "\\" && inString) { escape = true; continue; }
+          if (ch === '"') { inString = !inString; continue; }
+          if (inString) continue;
+          if (ch === "{" || ch === "[") stack.push(ch === "{" ? "}" : "]");
+          else if (ch === "}" || ch === "]") stack.pop();
         }
-        if (!data) throw error;
+        const repaired = jsonStr.trimEnd().replace(/,\s*$/, "") + stack.reverse().join("");
+        data = JSON.parse(repaired);
       }
 
       sessionStorage.setItem("mealPlan", JSON.stringify(data));

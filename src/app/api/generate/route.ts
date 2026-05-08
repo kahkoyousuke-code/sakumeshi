@@ -249,7 +249,7 @@ export async function POST(req: NextRequest) {
     // Anthropic ストリーミングリクエスト
     const stream = anthropic.messages.stream({
       model: "claude-sonnet-4-6",
-      max_tokens: 8000,
+      max_tokens: 16000,
       system:
         "あなたは管理栄養士です。指定された JSON 形式のみで回答してください。マークダウンやコードブロックは使用しないでください。",
       messages: [{ role: "user", content: prompt }],
