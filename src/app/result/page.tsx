@@ -345,12 +345,30 @@ export default function ResultPage() {
               className="flex items-start gap-3 bg-green-50 rounded-xl p-3 border border-green-100"
             >
               <span className="text-2xl leading-none mt-0.5">{snack.emoji}</span>
-              <div>
+              <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-green-800">{snack.name}</p>
                 <p className="text-xs text-green-600 mt-0.5">{snack.detail}</p>
                 {snack.fiber > 0 && (
                   <p className="text-xs text-emerald-600 mt-0.5 font-medium">食物繊維 {snack.fiber}g</p>
                 )}
+                <div className="flex gap-1.5 mt-2">
+                  <a
+                    href={rakutenSearchUrl(snack.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] font-bold px-1.5 py-0.5 rounded text-white bg-red-500 hover:bg-red-600 transition-colors"
+                  >
+                    楽天
+                  </a>
+                  <a
+                    href={amazonSearchUrl(snack.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] font-bold px-1.5 py-0.5 rounded text-white bg-orange-400 hover:bg-orange-500 transition-colors"
+                  >
+                    Amazon
+                  </a>
+                </div>
               </div>
             </div>
           ))}
