@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { DietPlan, ShoppingList, ShoppingCategory } from "@/lib/types";
+import { DietPlan, MealItem, ShoppingList, ShoppingCategory, UserAnswers } from "@/lib/types";
 import DonutChart from "@/components/DonutChart";
 import ResultTabs from "@/components/ResultTabs";
 
@@ -44,6 +44,50 @@ export default function ResultPage() {
     }
     setResult(JSON.parse(stored));
   }, [router]);
+
+  async function handleRegenerateMeal(dayIndex: number, mealTime: MealItem["time"]) {
+    if (!result) return;
+    const rawAnswers = localStorage.getItem("userAnswers");
+    if (!rawAnswers) return;
+    const answers: UserAnswers = JSON.parse(rawAnswers);
+
+    const res = await fetch("/api/regenerate-meal", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        answers: {
+          goal: answers.goal,
+          exercise: answers.exercise,
+          preference: answers.preference,
+        },
+        day: result.menus[dayIndex].day,
+        time: mealTime,
+        targetCalories: result.targetCalories,
+        protein: result.protein,
+        fat: result.fat,
+        carbs: result.carbs,
+      }),
+    });
+
+    if (!res.ok) throw new Error("再生成に失敗しました");
+
+    const newMeal: MealItem = await res.json();
+
+    const newResult: DietPlan = {
+      ...result,
+      menus: result.menus.map((dayMenu, i) => {
+        if (i !== dayIndex) return dayMenu;
+        return {
+          ...dayMenu,
+          meals: dayMenu.meals.map((m) => (m.time === mealTime ? newMeal : m)),
+        };
+      }),
+    };
+
+    setResult(newResult);
+    sessionStorage.setItem("mealPlan", JSON.stringify(newResult));
+    localStorage.setItem("mealPlan", JSON.stringify(newResult));
+  }
 
   async function handleGenerateShoppingList() {
     if (!result) return;
@@ -185,7 +229,7 @@ export default function ResultPage() {
         <h3 className="text-lg font-semibold mb-4 text-gray-700">
           7日間の食事メニュー
         </h3>
-        <ResultTabs menus={result.menus} />
+        <ResultTabs menus={result.menus} onRegenerate={handleRegenerateMeal} />
       </section>
 
       {/* 買い物リスト */}

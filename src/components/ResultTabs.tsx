@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { DayMenu } from "@/lib/types";
+import { DayMenu, MealItem } from "@/lib/types";
 import MealCard from "@/components/MealCard";
 
 interface ResultTabsProps {
   menus: DayMenu[];
+  onRegenerate?: (dayIndex: number, time: MealItem["time"]) => Promise<void>;
 }
 
-export default function ResultTabs({ menus }: ResultTabsProps) {
+export default function ResultTabs({ menus, onRegenerate }: ResultTabsProps) {
   const [activeDay, setActiveDay] = useState(0);
 
   const currentDay = menus[activeDay];
@@ -36,7 +37,15 @@ export default function ResultTabs({ menus }: ResultTabsProps) {
       {currentDay && (
         <div className="space-y-3">
           {currentDay.meals.map((meal) => (
-            <MealCard key={meal.time} meal={meal} />
+            <MealCard
+              key={meal.time}
+              meal={meal}
+              onRegenerate={
+                onRegenerate
+                  ? () => onRegenerate(activeDay, meal.time)
+                  : undefined
+              }
+            />
           ))}
         </div>
       )}
