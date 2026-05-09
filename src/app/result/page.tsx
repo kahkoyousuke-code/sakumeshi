@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { DietPlan, MealItem, ShoppingList, ShoppingCategory, UserAnswers } from "@/lib/types";
+import { rakutenSearchUrl, amazonSearchUrl } from "@/lib/affiliate";
 import DonutChart from "@/components/DonutChart";
 import ResultTabs from "@/components/ResultTabs";
 
@@ -301,6 +302,22 @@ export default function ResultPage() {
                                 {item.amount}
                               </span>
                             </label>
+                            <a
+                              href={rakutenSearchUrl(item.name)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded text-white bg-red-500 hover:bg-red-600 transition-colors"
+                            >
+                              楽天
+                            </a>
+                            <a
+                              href={amazonSearchUrl(item.name)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded text-white bg-orange-400 hover:bg-orange-500 transition-colors"
+                            >
+                              Amazon
+                            </a>
                           </li>
                         );
                       })}
