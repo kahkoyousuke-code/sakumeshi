@@ -142,6 +142,37 @@ export default function ResultPage() {
     calories: result.targetCalories,
   };
 
+  const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+    `AIに1週間分のダイエット食事プランを作ってもらった🍽️\n\n📊 目標カロリー：${result.targetCalories}kcal/日\n💪 タンパク質：${result.protein}g\n🔥 脂質：${result.fat}g\n🍚 炭水化物：${result.carbs}g\n\n#サクメシ #ダイエット #食事管理\nhttps://sakumeshi.vercel.app`
+  )}`;
+
+  const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+    "https://sakumeshi.vercel.app"
+  )}&text=${encodeURIComponent(
+    `AIが作ってくれたダイエット食事プラン👇\n目標カロリー${result.targetCalories}kcal、1週間分のメニューが自動生成されるよ！\n無料で使えるのでぜひ↓\nhttps://sakumeshi.vercel.app`
+  )}`;
+
+  const shareButtons = (
+    <div className="flex justify-center gap-3">
+      <a
+        href={xShareUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-5 py-2.5 bg-black text-white font-semibold rounded-xl hover:opacity-75 transition-opacity text-sm"
+      >
+        𝕏 Xでシェア
+      </a>
+      <a
+        href={lineShareUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-5 py-2.5 bg-[#06C755] text-white font-semibold rounded-xl hover:opacity-75 transition-opacity text-sm"
+      >
+        LINE
+      </a>
+    </div>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -152,6 +183,8 @@ export default function ResultPage() {
       <h2 className="text-3xl font-bold text-center text-[var(--primary)]">
         あなたの食事プラン 🍽️
       </h2>
+
+      {shareButtons}
 
       {/* 目標カロリーと PFC チャート */}
       <section className="bg-white rounded-2xl shadow-md p-6 space-y-5">
@@ -217,7 +250,7 @@ export default function ResultPage() {
       <section className="bg-[var(--primary-light)] rounded-2xl p-5 space-y-2">
         <p className="font-bold text-[var(--primary)] text-sm">AIアドバイス</p>
         <ul className="list-disc list-inside space-y-1">
-          {result.advice.map((item, i) => (
+          {result.advice?.map((item, i) => (
             <li key={i} className="text-sm text-gray-700 leading-relaxed">
               {item}
             </li>
@@ -230,7 +263,7 @@ export default function ResultPage() {
         <h3 className="text-lg font-semibold mb-4 text-gray-700">
           7日間の食事メニュー
         </h3>
-        <ResultTabs menus={result.menus} onRegenerate={handleRegenerateMeal} />
+        <ResultTabs menus={result.menus ?? []} onRegenerate={handleRegenerateMeal} />
       </section>
 
       {/* 買い物リスト */}
@@ -375,7 +408,8 @@ export default function ResultPage() {
         </div>
       </section>
 
-      <div className="text-center">
+      <div className="flex flex-col items-center gap-4">
+        {shareButtons}
         <button
           onClick={() => router.push("/form")}
           className="px-6 py-3 border-2 border-[var(--primary)] text-[var(--primary)] font-semibold rounded-full hover:bg-[var(--primary)] hover:text-white transition-all duration-300"
