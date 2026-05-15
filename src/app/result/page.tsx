@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { DietPlan, MealItem, ShoppingList, ShoppingCategory, UserAnswers } from "@/lib/types";
@@ -36,6 +36,8 @@ export default function ResultPage() {
   const [shoppingLoading, setShoppingLoading] = useState(false);
   const [shoppingError, setShoppingError] = useState<string | null>(null);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("mealPlan") ?? localStorage.getItem("mealPlan");
@@ -118,6 +120,45 @@ export default function ResultPage() {
     }
   }
 
+  async function handleDownloadPdf() {
+    if (!result || !pdfRef.current) return;
+    setPdfLoading(true);
+    try {
+      const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
+        import("jspdf"),
+        import("html2canvas"),
+      ]);
+
+      const canvas = await html2canvas(pdfRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff",
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const scaledHeight = (canvas.height / canvas.width) * pdfWidth * 2;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, scaledHeight);
+      let heightLeft = scaledHeight - pdfHeight;
+      let page = 1;
+      while (heightLeft > 0) {
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, -(page * pdfHeight), pdfWidth, scaledHeight);
+        heightLeft -= pdfHeight;
+        page++;
+      }
+
+      const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+      pdf.save(`sakumeshi_plan_${dateStr}.pdf`);
+    } finally {
+      setPdfLoading(false);
+    }
+  }
+
   function toggleItem(categoryName: string, itemName: string) {
     const key = `${categoryName}__${itemName}`;
     setCheckedItems((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -153,7 +194,7 @@ export default function ResultPage() {
   )}`;
 
   const shareButtons = (
-    <div className="flex justify-center gap-3">
+    <div className="flex flex-wrap justify-center gap-3">
       <a
         href={xShareUrl}
         target="_blank"
@@ -170,10 +211,18 @@ export default function ResultPage() {
       >
         LINE
       </a>
+      <button
+        onClick={handleDownloadPdf}
+        disabled={pdfLoading}
+        className="flex items-center gap-2 px-5 py-2.5 border-2 border-[var(--primary)] text-[var(--primary)] font-semibold rounded-xl hover:bg-[var(--primary)] hover:text-white transition-all duration-200 text-sm disabled:opacity-50"
+      >
+        {pdfLoading ? "生成中..." : "📄 PDFで保存"}
+      </button>
     </div>
   );
 
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -418,5 +467,109 @@ export default function ResultPage() {
         </button>
       </div>
     </motion.div>
+
+    {/* PDF生成用の隠しコンテンツ（html2canvasでキャプチャ） */}
+    <div
+      ref={pdfRef}
+      style={{
+        position: "fixed",
+        left: "-9999px",
+        top: 0,
+        width: "794px",
+        backgroundColor: "#ffffff",
+        padding: "48px",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+        color: "#111111",
+        lineHeight: "1.6",
+      }}
+    >
+      {/* ヘッダー */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "28px", paddingBottom: "16px", borderBottom: "3px solid #22c55e" }}>
+        <div>
+          <div style={{ fontSize: "22px", fontWeight: "bold", color: "#22c55e" }}>🥗 サクメシ</div>
+          <div style={{ fontSize: "17px", fontWeight: "bold", marginTop: "4px", color: "#111" }}>あなたの食事プラン</div>
+        </div>
+        <div style={{ fontSize: "12px", color: "#888" }}>生成日：{new Date().toLocaleDateString("ja-JP")}</div>
+      </div>
+
+      {/* カロリー・PFC */}
+      <div style={{ marginBottom: "28px" }}>
+        <div style={{ fontSize: "14px", fontWeight: "bold", marginBottom: "10px", color: "#333" }}>📊 カロリー・栄養素</div>
+        <div style={{ display: "flex", gap: "10px" }}>
+          {[
+            { label: "目標カロリー", value: `${result.targetCalories}kcal`, color: "#f59e0b" },
+            { label: "タンパク質", value: `${result.protein}g`, color: "#3b82f6" },
+            { label: "脂質", value: `${result.fat}g`, color: "#ef4444" },
+            { label: "炭水化物", value: `${result.carbs}g`, color: "#f97316" },
+            { label: "食物繊維", value: `${result.totalFiber}g`, color: "#22c55e" },
+          ].map((item) => (
+            <div key={item.label} style={{ flex: 1, textAlign: "center", padding: "10px 8px", backgroundColor: "#f9fafb", borderRadius: "8px", border: "1px solid #e5e7eb" }}>
+              <div style={{ fontSize: "16px", fontWeight: "bold", color: item.color }}>{item.value}</div>
+              <div style={{ fontSize: "10px", color: "#666", marginTop: "4px" }}>{item.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 7日間メニュー */}
+      <div style={{ marginBottom: "28px" }}>
+        <div style={{ fontSize: "14px", fontWeight: "bold", marginBottom: "10px", color: "#333" }}>🍽️ 7日間の食事メニュー</div>
+        {result.menus?.map((dayMenu, i) => (
+          <div key={i} style={{ marginBottom: "10px", border: "1px solid #e5e7eb", borderRadius: "8px", overflow: "hidden" }}>
+            <div style={{ backgroundColor: "#22c55e", color: "#fff", padding: "5px 12px", fontWeight: "bold", fontSize: "12px" }}>
+              {dayMenu.day}
+            </div>
+            <div style={{ padding: "6px 12px" }}>
+              {dayMenu.meals.map((meal, j) => (
+                <div key={j} style={{ display: "flex", alignItems: "flex-start", padding: "5px 0", borderBottom: j < dayMenu.meals.length - 1 ? "1px solid #f3f4f6" : "none" }}>
+                  <div style={{ width: "28px", fontSize: "10px", color: "#999", flexShrink: 0, paddingTop: "2px" }}>{meal.time}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: "12px", fontWeight: "bold", color: "#222" }}>{meal.name}</div>
+                    <div style={{ fontSize: "10px", color: "#888", marginTop: "2px" }}>
+                      {meal.calories}kcal　P:{meal.protein}g　F:{meal.fat}g　C:{meal.carbs}g
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* おすすめ間食 */}
+      <div style={{ marginBottom: "28px" }}>
+        <div style={{ fontSize: "14px", fontWeight: "bold", marginBottom: "10px", color: "#333" }}>🥗 おすすめ間食</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+          {snacks.map((snack) => (
+            <div key={snack.name} style={{ display: "flex", gap: "8px", padding: "8px 10px", backgroundColor: "#f0fdf4", borderRadius: "8px", border: "1px solid #d1fae5" }}>
+              <span style={{ fontSize: "18px", flexShrink: 0 }}>{snack.emoji}</span>
+              <div>
+                <div style={{ fontSize: "11px", fontWeight: "bold", color: "#166534" }}>{snack.name}</div>
+                <div style={{ fontSize: "10px", color: "#16a34a", marginTop: "2px" }}>{snack.detail}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* アドバイス */}
+      <div style={{ marginBottom: "28px" }}>
+        <div style={{ fontSize: "14px", fontWeight: "bold", marginBottom: "10px", color: "#333" }}>💡 AIアドバイス</div>
+        <div style={{ backgroundColor: "#f0fdf4", borderRadius: "8px", padding: "14px 16px" }}>
+          {result.advice?.map((item, i) => (
+            <div key={i} style={{ fontSize: "11px", color: "#374151", padding: "3px 0", display: "flex", gap: "8px" }}>
+              <span style={{ color: "#22c55e", flexShrink: 0 }}>✓</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* フッター */}
+      <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: "14px", textAlign: "center", fontSize: "11px", color: "#9ca3af" }}>
+        サクメシ　https://sakumeshi.vercel.app
+      </div>
+    </div>
+    </>
   );
 }
