@@ -59,6 +59,9 @@ export default function ResultPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         answers: {
+          gender: answers.gender,
+          age: answers.age,
+          height: answers.height,
           goal: answers.goal,
           exercise: answers.exercise,
           preference: answers.preference,

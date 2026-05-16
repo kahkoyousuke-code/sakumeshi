@@ -257,12 +257,12 @@ export async function POST(req: NextRequest) {
 
     if (!validateAnswers(body)) {
       console.error("[generate] validation failed. received:", JSON.stringify(body));
-      console.error("[generate] expected fields: goal, currentWeight, targetWeight, period, exercise, preference");
+      console.error("[generate] expected fields: gender, age, height, goal, currentWeight, targetWeight, period, exercise, preference");
       return new Response(
         JSON.stringify({
           error: "入力データが不正です",
           received: body,
-          expected: "goal, currentWeight, targetWeight, period, exercise, preference",
+          expected: "gender, age, height, goal, currentWeight, targetWeight, period, exercise, preference",
         }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );

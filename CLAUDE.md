@@ -34,7 +34,7 @@ npm run lint     # ESLint 実行
 ### ユーザーフロー
 
 ```
-/ (LP) → /form (6ステップ) → API /generate (ストリーミング) → /result (食事プラン表示)
+/ (LP) → /form (9ステップ) → API /generate (ストリーミング) → /result (食事プラン表示)
 ```
 
 フォーム回答と生成結果は `sessionStorage` と `localStorage` の両方に保存する（`mealPlan`、`userAnswers` キー）。`/result` は sessionStorage/localStorage から読み込み、なければ `/form` にリダイレクト。
@@ -49,9 +49,9 @@ npm run lint     # ESLint 実行
 
 ### データフロー の重要な設計
 
-- **栄養計算はサーバーサイドで行う**：`/api/generate` 内の `calcNutrition()` でハリス・ベネディクト方程式（男性・35歳・170cm 固定）を使い BMR→TDEE→目標カロリー→PFC を計算。この値をプロンプトに埋め込み、Claude には JSON 出力のみ求める。
+- **栄養計算はサーバーサイドで行う**：`/api/generate` 内の `calcNutrition()` でハリス・ベネディクト方程式（男女別）を使い BMR→TDEE→目標カロリー→PFC を計算。この値をプロンプトに埋め込み、Claude には JSON 出力のみ求める。
 - **ストリーミング JSON パース**：`/form/page.tsx` では Claude のストリームを蓄積してから `{` ～ `}` で切り出してパース。パース失敗時はスタックトレースでブラケットを補完する修復ロジックがある。
-- **`UserAnswers` 型の数値フィールド注意**：`StepForm` では `currentWeight`/`targetWeight` を文字列として扱うため、送信直前に `Number()` 変換している（`/form/page.tsx` の `handleNext`）。API 側でも `validateAnswers` で型チェックする。
+- **`UserAnswers` 型の数値フィールド注意**：`StepForm` では `age`/`height`/`currentWeight`/`targetWeight` を文字列として扱うため、送信直前に `Number()` 変換している（`/form/page.tsx` の `handleNext`）。API 側でも `validateAnswers` で型チェックする。
 
 ### コンポーネント構成
 

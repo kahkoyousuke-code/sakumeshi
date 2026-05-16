@@ -7,9 +7,13 @@ export const maxDuration = 30;
 type Goal = "lose" | "maintain" | "gain";
 type Exercise = "none" | "light" | "active";
 type Preference = "none" | "lowcarb" | "lowfat";
+type Gender = "male" | "female" | "other";
 
 interface RegenerateRequest {
   answers: {
+    gender: Gender;
+    age: number;
+    height: number;
     goal: Goal;
     exercise: Exercise;
     preference: Preference;
@@ -32,6 +36,7 @@ const MEAL_RATIO: Record<MealItem["time"], number> = {
 };
 
 function buildRegeneratePrompt(req: RegenerateRequest): string {
+  const genderLabel = { male: "男性", female: "女性", other: "その他" }[req.answers.gender];
   const goalLabel = { lose: "減量", maintain: "現状維持", gain: "増量" }[req.answers.goal];
   const exerciseLabel = { none: "ほぼなし", light: "週1〜2回", active: "週3回以上" }[req.answers.exercise];
   const preferenceLabel = { none: "制限なし", lowcarb: "低糖質", lowfat: "低脂質" }[req.answers.preference];
@@ -41,6 +46,9 @@ function buildRegeneratePrompt(req: RegenerateRequest): string {
   return `あなたは管理栄養士です。以下の条件で${req.day}曜日の${req.time}食を1食だけ提案してください。前回とは違う料理にしてください。
 
 【ユーザー情報】
+- 性別：${genderLabel}
+- 年齢：${req.answers.age}歳
+- 身長：${req.answers.height}cm
 - 目標：${goalLabel}
 - 運動頻度：${exerciseLabel}
 - 食事の好み：${preferenceLabel}
