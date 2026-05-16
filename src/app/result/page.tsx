@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { DietPlan, MealItem, ShoppingList, ShoppingCategory, UserAnswers } from "@/lib/types";
 import { rakutenSearchUrl, amazonSearchUrl } from "@/lib/affiliate";
+import { SAKU_SUPPU_URL } from "@/lib/constants";
 import DonutChart from "@/components/DonutChart";
 import ResultTabs from "@/components/ResultTabs";
 
@@ -308,6 +309,20 @@ export default function ResultPage() {
             </li>
           ))}
         </ul>
+        <a
+          href={SAKU_SUPPU_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-between mt-3 px-4 py-3 rounded-xl text-sm font-medium transition-opacity duration-200 hover:opacity-75"
+          style={{
+            background: "rgba(59, 130, 246, 0.07)",
+            border: "1px solid rgba(59, 130, 246, 0.25)",
+            color: "#3B82F6",
+          }}
+        >
+          <span>💊 食事と一緒にサプリも最適化しよう</span>
+          <span className="font-semibold">→ サクサプへ</span>
+        </a>
       </section>
 
       {/* 7日間の食事メニュー */}

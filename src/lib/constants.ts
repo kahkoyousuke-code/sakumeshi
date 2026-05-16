@@ -6,6 +6,9 @@ export const APP_DESCRIPTION = "あなたにぴったりの食事メニューを
 export const SAKU_TRAINING_URL =
   process.env.NEXT_PUBLIC_SAKUTORE_URL ?? "https://sakutore.vercel.app/";
 
+export const SAKU_SUPPU_URL =
+  process.env.NEXT_PUBLIC_SAKUSUPPU_URL ?? "https://sakusuppu.vercel.app/";
+
 // 活動レベルの係数（ハリス・ベネディクト方程式）
 export const ACTIVITY_MULTIPLIERS = {
   sedentary: 1.2,

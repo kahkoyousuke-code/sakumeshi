@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { SAKU_TRAINING_URL } from "@/lib/constants";
+import { SAKU_TRAINING_URL, SAKU_SUPPU_URL } from "@/lib/constants";
 
 const FEATURES = [
   { icon: "📊", label: "カロリー・PFC計算" },
@@ -88,7 +88,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* サクトレ バナー */}
+        {/* 姉妹サービス バナー */}
         <Link
           href={SAKU_TRAINING_URL}
           target="_blank"
@@ -101,6 +101,19 @@ export default function HomePage() {
           }}
         >
           💪 サクトレ姉妹サービス → 運動メニューはこちら
+        </Link>
+        <Link
+          href={SAKU_SUPPU_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full rounded-2xl px-5 py-3 text-sm font-medium transition-opacity duration-200 hover:opacity-75"
+          style={{
+            background: "rgba(59, 130, 246, 0.07)",
+            border: "1px solid rgba(59, 130, 246, 0.25)",
+            color: "#3B82F6",
+          }}
+        >
+          💊 サプリも選ぼう → サクサプ
         </Link>
       </motion.div>
     </div>
