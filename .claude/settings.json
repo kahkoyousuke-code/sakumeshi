@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "A file was just edited. Hook input: $ARGUMENTS\n\nInstructions:\n1. Extract the edited file path from tool_input.file_path in the JSON above.\n2. STOP immediately (do nothing) if any of these are true:\n   - The file IS CLAUDE.md\n   - The path contains node_modules, .next, or .git\n3. Read the edited file and read CLAUDE.md.\n4. Decide if the change affects anything currently documented in CLAUDE.md: architecture, API routes, data flow, environment variables, npm dependencies, TypeScript types used across files, or key design patterns.\n5. If yes: update ONLY the affected sections of CLAUDE.md — surgical edits, not a full rewrite.\n6. If the change is a trivial UI/style tweak, copy fix, or unrelated to the documented architecture: do nothing.",
+            "timeout": 60,
+            "statusMessage": "CLAUDE.mdを確認中..."
+          }
+        ]
+      }
+    ]
+  }
+}
