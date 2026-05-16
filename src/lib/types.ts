@@ -67,6 +67,9 @@ export type Exercise = "none" | "light" | "active";
 export type Preference = "none" | "lowcarb" | "lowfat";
 
 export interface UserAnswers {
+  gender: "male" | "female" | "other";
+  age: number;
+  height: number;
   goal: Goal;
   currentWeight: number;
   targetWeight: number;

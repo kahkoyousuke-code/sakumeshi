@@ -44,6 +44,8 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
       // （文字列が混入しても "53" + "53" = "5353" にならないようにする）
       const sanitized = {
         ...answers,
+        age: Number(answers.age),
+        height: Number(answers.height),
         currentWeight: Number(answers.currentWeight),
         targetWeight: Number(answers.targetWeight),
       };

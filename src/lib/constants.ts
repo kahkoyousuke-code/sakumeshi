@@ -44,8 +44,32 @@ export const ALLERGENS = [
   { value: "none", label: "なし" },
 ];
 
-// フォームのステップ定義（UserAnswers の6フィールドに対応）
+// フォームのステップ定義（UserAnswers の9フィールドに対応）
 export const FORM_STEPS: FormStep[] = [
+  {
+    id: "gender",
+    question: "性別を教えてください",
+    type: "radio",
+    options: [
+      { value: "male", label: "男性" },
+      { value: "female", label: "女性" },
+      { value: "other", label: "その他" },
+    ],
+  },
+  {
+    id: "age",
+    question: "年齢を教えてください",
+    type: "number",
+    placeholder: "例：30",
+    unit: "歳",
+  },
+  {
+    id: "height",
+    question: "身長を教えてください",
+    type: "number",
+    placeholder: "例：165",
+    unit: "cm",
+  },
   {
     id: "goal",
     question: "目標を教えてください",

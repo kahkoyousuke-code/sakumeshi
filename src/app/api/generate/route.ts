@@ -7,8 +7,12 @@ export const maxDuration = 60;
 type Goal = "lose" | "maintain" | "gain";
 type Exercise = "none" | "light" | "active";
 type Preference = "none" | "lowcarb" | "lowfat";
+type Gender = "male" | "female" | "other";
 
 interface UserAnswers {
+  gender: Gender;
+  age: number;
+  height: number;
   goal: Goal;
   currentWeight: number;
   targetWeight: number;
@@ -36,27 +40,40 @@ const PFC_RATIO: Record<Preference, [number, number, number]> = {
   lowfat: [0.35, 0.15, 0.5],
 };
 
-// ハリス・ベネディクト式でカロリー・PFC を計算（男性・35歳・170cm 仮定）
+// ハリス・ベネディクト式でカロリー・PFC を計算
 function calcNutrition(answers: UserAnswers) {
-  const AGE = 35;
-  const HEIGHT = 170;
-
-  // 入力値を必ず数値に変換（文字列が混入しても安全に計算できるようにする）
   const weight = Number(answers.currentWeight);
+  const height = Number(answers.height);
+  const age = Number(answers.age);
 
   if (isNaN(weight) || weight <= 0) {
     throw new Error(`体重の値が不正です: ${answers.currentWeight}`);
   }
+  if (isNaN(height) || height <= 0) {
+    throw new Error(`身長の値が不正です: ${answers.height}`);
+  }
+  if (isNaN(age) || age <= 0) {
+    throw new Error(`年齢の値が不正です: ${answers.age}`);
+  }
 
-  // BMR（改訂ハリス・ベネディクト / 男性）
-  // 88.362 + (13.397 × 体重kg) + (4.799 × 身長cm) - (5.677 × 年齢)
-  const bmr = Math.round(
-    88.362 + 13.397 * weight + 4.799 * HEIGHT - 5.677 * AGE
-  );
+  // BMR（改訂ハリス・ベネディクト）
+  // 男性: 88.362 + (13.397 × 体重kg) + (4.799 × 身長cm) - (5.677 × 年齢)
+  // 女性: 447.593 + (9.247 × 体重kg) + (3.098 × 身長cm) - (4.330 × 年齢)
+  let bmr: number;
+  if (answers.gender === "female") {
+    bmr = Math.round(447.593 + 9.247 * weight + 3.098 * height - 4.330 * age);
+  } else if (answers.gender === "male") {
+    bmr = Math.round(88.362 + 13.397 * weight + 4.799 * height - 5.677 * age);
+  } else {
+    // other: 男女の平均
+    const male = 88.362 + 13.397 * weight + 4.799 * height - 5.677 * age;
+    const female = 447.593 + 9.247 * weight + 3.098 * height - 4.330 * age;
+    bmr = Math.round((male + female) / 2);
+  }
 
-  // BMR 異常値チェック（成人の現実的な範囲: 1000〜3000kcal）
-  if (bmr < 1000 || bmr > 3000) {
-    throw new Error(`BMR値が異常です（${bmr}kcal）。体重の入力値を確認してください: ${weight}kg`);
+  // BMR 異常値チェック（成人の現実的な範囲: 800〜4000kcal）
+  if (bmr < 800 || bmr > 4000) {
+    throw new Error(`BMR値が異常です（${bmr}kcal）。入力値を確認してください`);
   }
 
   // TDEE
@@ -109,9 +126,14 @@ function buildPrompt(answers: UserAnswers): string {
     "6months": "6ヶ月",
   }[answers.period];
 
+  const genderLabel = { male: "男性", female: "女性", other: "その他" }[answers.gender];
+
   return `あなたは管理栄養士です。以下のユーザー情報をもとに、実用的な7日間の食事プランを提案してください。
 
 【ユーザー情報】
+- 性別：${genderLabel}
+- 年齢：${answers.age}歳
+- 身長：${answers.height}cm
 - 現在の体重：${answers.currentWeight}kg
 - 目標体重：${answers.targetWeight}kg
 - 目標期間：${periodLabel}
@@ -119,7 +141,7 @@ function buildPrompt(answers: UserAnswers): string {
 - 運動頻度：${exerciseLabel}
 - 食事の好み：${preferenceLabel}
 
-【計算値（ハリス・ベネディクト式・男性・35歳・170cm 想定）】
+【計算値（ハリス・ベネディクト式）】
 - 基礎代謝（BMR）：${bmr}kcal
 - 総エネルギー消費量（TDEE）：${tdee}kcal
 - 1日目標カロリー：${targetCalories}kcal
@@ -200,6 +222,9 @@ function validateAnswers(body: unknown): body is UserAnswers {
   if (!body || typeof body !== "object") return false;
   const a = body as Record<string, unknown>;
   return (
+    ["male", "female", "other"].includes(a.gender as string) &&
+    typeof a.age === "number" && a.age > 0 &&
+    typeof a.height === "number" && a.height > 0 &&
     ["lose", "maintain", "gain"].includes(a.goal as string) &&
     typeof a.currentWeight === "number" &&
     typeof a.targetWeight === "number" &&
