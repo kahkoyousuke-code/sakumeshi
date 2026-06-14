@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { SAKU_TRAINING_URL, SAKU_SUPPU_URL } from "@/lib/constants";
+import { SAKU_TRAINING_URL, SAKU_SUPPU_URL, TOTAL_STEPS } from "@/lib/constants";
 
 const FEATURES = [
   { icon: "📊", label: "カロリー・PFC計算" },
@@ -51,7 +51,7 @@ export default function HomePage() {
 
         {/* 説明文 */}
         <p className="text-sm text-gray-500 leading-relaxed">
-          6つの質問に答えるだけで、あなたにぴったりの食事メニューをサクッと作成します！
+          {TOTAL_STEPS}つの質問に答えるだけで、あなたにぴったりの食事メニューをサクッと作成します！
         </p>
 
         {/* CTAボタン */}

@@ -9,9 +9,10 @@ npm run dev      # 開発サーバー起動 (http://localhost:3000)
 npm run build    # プロダクションビルド
 npm run start    # プロダクションサーバー起動
 npm run lint     # ESLint 実行
+npm test         # Vitest 実行（栄養計算ロジックのユニットテスト）
 ```
 
-テストは存在しない。
+テストは Vitest で `src/lib/nutrition.test.ts`（`calcNutrition` / `assessPace`）のみ。UI・API のテストは無い。
 
 ## 環境変数
 
@@ -20,6 +21,8 @@ npm run lint     # ESLint 実行
 | `ANTHROPIC_API_KEY` | Claude API（必須・サーバーサイドのみ） |
 | `NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID` | 楽天アフィリエイトID（任意） |
 | `NEXT_PUBLIC_AMAZON_AFFILIATE_TAG` | Amazon アソシエイトタグ（任意） |
+| `UPSTASH_REDIS_REST_URL` | レート制限用 Upstash Redis の REST URL（任意・未設定ならメモリ方式） |
+| `UPSTASH_REDIS_REST_TOKEN` | 同上のトークン（任意） |
 
 ## アーキテクチャ
 
@@ -34,7 +37,7 @@ npm run lint     # ESLint 実行
 ### ユーザーフロー
 
 ```
-/ (LP) → /form (9ステップ) → API /generate (ストリーミング) → /result (食事プラン表示)
+/ (LP) → /form (10ステップ) → API /generate (ストリーミング) → /result (食事プラン表示)
 ```
 
 フォーム回答と生成結果は `sessionStorage` と `localStorage` の両方に保存する（`mealPlan`、`userAnswers` キー）。`/result` は sessionStorage/localStorage から読み込み、なければ `/form` にリダイレクト。
@@ -43,15 +46,16 @@ npm run lint     # ESLint 実行
 
 | Route | モデル | 処理 |
 |---|---|---|
-| `POST /api/generate` | `claude-sonnet-4-6` | ストリーミングで7日間食事プランを生成。サーバー側でカロリー・PFC を計算してプロンプトに埋め込む。IP別1時間5回のレート制限あり |
-| `POST /api/regenerate-meal` | `claude-haiku-4-5-20251001` | 1食だけ差し替え生成（低コスト） |
+| `POST /api/generate` | `claude-sonnet-4-6` | ストリーミングで7日間食事プランを生成。`src/lib/nutrition.ts` の `calcNutrition()` でカロリー・PFC を計算してプロンプトに埋め込む。避ける食材（アレルギー・苦手）もプロンプトに反映。`src/lib/rate-limit.ts` でIP別1時間5回のレート制限 |
+| `POST /api/regenerate-meal` | `claude-haiku-4-5-20251001` | 1食だけ差し替え生成（低コスト）。避ける食材を反映。結果ページの「この日をまるごと変える」はこのAPIを3食分並列に呼ぶ |
 | `POST /api/shopping-list` | `claude-sonnet-4-6` | 7日分メニューから買い物リストを生成 |
 
 ### データフロー の重要な設計
 
-- **栄養計算はサーバーサイドで行う**：`/api/generate` 内の `calcNutrition()` でハリス・ベネディクト方程式（男女別）を使い BMR→TDEE→目標カロリー→PFC を計算。この値をプロンプトに埋め込み、Claude には JSON 出力のみ求める。
+- **栄養計算はサーバーサイドで行う**：`src/lib/nutrition.ts` の `calcNutrition()` でハリス・ベネディクト方程式（男女別）を使い BMR→TDEE→目標カロリー→PFC を計算（`/api/generate` から呼び出す）。この値をプロンプトに埋め込み、Claude には JSON 出力のみ求める。同モジュールの `assessPace()` は目標体重・期間が現実的かを判定し、フォーム（期間ステップ）で無理なペースを警告する。これらは `nutrition.test.ts` でテスト済み。
 - **ストリーミング JSON パース**：`/form/page.tsx` では Claude のストリームを蓄積してから `{` ～ `}` で切り出してパース。パース失敗時はスタックトレースでブラケットを補完する修復ロジックがある。
-- **`UserAnswers` 型の数値フィールド注意**：`StepForm` では `age`/`height`/`currentWeight`/`targetWeight` を文字列として扱うため、送信直前に `Number()` 変換している（`/form/page.tsx` の `handleNext`）。API 側でも `validateAnswers` で型チェックする。
+- **`UserAnswers` 型の数値フィールド注意**：`StepForm` では `age`/`height`/`currentWeight`/`targetWeight` を文字列として扱うため、送信直前に `Number()` 変換している（`/form/page.tsx` の `handleNext`）。API 側でも `validateAnswers` で型チェックする。型定義は `src/lib/types.ts` の `UserAnswers` に一本化（各 API・コンポーネントはここを import）。
+- **アレルギー・苦手食材**：`UserAnswers.dislikes`（string 配列、`"none"` のみで「特になし」）。`FORM_STEPS` の `dislikes` ステップ（multiselect）で入力し、`/api/generate`・`/api/regenerate-meal` のプロンプトで除外指示に変換する。
 
 ### コンポーネント構成
 

@@ -17,13 +17,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "サクメシ - AIでサクッとダイエット計画を作成",
   description:
-    "6つの質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
+    "かんたんな質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
   keywords: ["食事管理", "ダイエット", "栄養", "AI", "メニュー提案"],
   metadataBase: new URL("https://sakumeshi.vercel.app"),
   openGraph: {
     title: "サクメシ - AIでサクッとダイエット計画を作成",
     description:
-      "6つの質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
+      "かんたんな質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
     url: "https://sakumeshi.vercel.app",
     images: [
       {
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "サクメシ - AIでサクッとダイエット計画を作成",
     description:
-      "6つの質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
+      "かんたんな質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
     images: ["/og_sakumeshi.png"],
   },
   verification: {

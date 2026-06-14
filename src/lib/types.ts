@@ -9,55 +9,21 @@ export interface FormOption {
 export interface FormStep {
   id: string;
   question: string;
+  description?: string;
   type: "radio" | "select" | "number" | "multiselect";
   options?: FormOption[];
   placeholder?: string;
   unit?: string;
 }
 
-export interface UserInput {
-  gender: "male" | "female" | "other";
-  age: number;
-  height: number;
-  weight: number;
-  activityLevel: "sedentary" | "light" | "moderate" | "active" | "very_active";
-  goal: "lose" | "maintain" | "gain";
-  dietaryRestrictions: string[];
-  allergies: string[];
-}
-
 // ==================== 結果表示用型 ====================
 
+// DonutChart で使用する PFC バランス
 export interface PFCBalance {
   protein: number;
   fat: number;
   carbs: number;
   calories: number;
-}
-
-export interface Meal {
-  name: string;
-  description: string;
-  calories: number;
-  pfc: PFCBalance;
-  ingredients: string[];
-  recipe?: string;
-}
-
-export interface DayPlan {
-  breakfast: Meal;
-  lunch: Meal;
-  dinner: Meal;
-  snack?: Meal;
-  totalCalories: number;
-  totalPFC: PFCBalance;
-}
-
-export interface MealPlanResult {
-  dayPlan: DayPlan;
-  advice: string;
-  targetCalories: number;
-  targetPFC: PFCBalance;
 }
 
 // ==================== API用型（UserAnswers → DietPlan） ====================
@@ -76,6 +42,7 @@ export interface UserAnswers {
   period: "1month" | "3months" | "6months";
   exercise: Exercise;
   preference: Preference;
+  dislikes: string[]; // アレルギー・苦手な食材（"none" のみで「特になし」）
 }
 
 export interface MealItem {

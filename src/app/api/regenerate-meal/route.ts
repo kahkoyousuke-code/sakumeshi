@@ -17,6 +17,7 @@ interface RegenerateRequest {
     goal: Goal;
     exercise: Exercise;
     preference: Preference;
+    dislikes?: string[];
   };
   day: string;
   time: MealItem["time"];
@@ -43,6 +44,9 @@ function buildRegeneratePrompt(req: RegenerateRequest): string {
 
   const mealCalories = Math.round(req.targetCalories * MEAL_RATIO[req.time]);
 
+  const dislikes = (req.answers.dislikes ?? []).filter((d) => d && d !== "none");
+  const dislikesLabel = dislikes.length > 0 ? dislikes.join("、") : "なし";
+
   return `あなたは管理栄養士です。以下の条件で${req.day}曜日の${req.time}食を1食だけ提案してください。前回とは違う料理にしてください。
 
 【ユーザー情報】
@@ -52,6 +56,7 @@ function buildRegeneratePrompt(req: RegenerateRequest): string {
 - 目標：${goalLabel}
 - 運動頻度：${exerciseLabel}
 - 食事の好み：${preferenceLabel}
+- 避ける食材（アレルギー・苦手）：${dislikesLabel}
 
 【この食事のカロリー目安】
 - ${req.time}食：約${mealCalories}kcal（1日${req.targetCalories}kcalの${Math.round(MEAL_RATIO[req.time] * 100)}%）
@@ -61,6 +66,7 @@ function buildRegeneratePrompt(req: RegenerateRequest): string {
 - 日本の一般的な食材を使うこと
 - 実際に作りやすい現実的なメニューにすること
 - 食物繊維を意識した食材選びをすること
+${dislikesLabel !== "なし" ? `- 「${dislikesLabel}」は使用しないこと（アレルギー・苦手食材のため）` : ""}
 
 以下のJSON形式のみで回答してください（マークダウン・コードブロック厳禁）：
 

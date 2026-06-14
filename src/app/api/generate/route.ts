@@ -1,106 +1,20 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { UserAnswers } from "@/lib/types";
+import { calcNutrition } from "@/lib/nutrition";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
-
-// UserAnswers 型定義（types.ts と同期）
-type Goal = "lose" | "maintain" | "gain";
-type Exercise = "none" | "light" | "active";
-type Preference = "none" | "lowcarb" | "lowfat";
-type Gender = "male" | "female" | "other";
-
-interface UserAnswers {
-  gender: Gender;
-  age: number;
-  height: number;
-  goal: Goal;
-  currentWeight: number;
-  targetWeight: number;
-  period: "1month" | "3months" | "6months";
-  exercise: Exercise;
-  preference: Preference;
-}
 
 // Anthropic クライアント（Vercel 環境変数から API キーを取得）
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-// 活動係数（ほぼなし / 週1〜2回 / 週3回以上）
-const ACTIVITY_MULTIPLIER: Record<Exercise, number> = {
-  none: 1.2,
-  light: 1.375,
-  active: 1.55,
-};
-
-// PFC 比率 [タンパク質, 脂質, 炭水化物]
-const PFC_RATIO: Record<Preference, [number, number, number]> = {
-  none: [0.3, 0.25, 0.45],
-  lowcarb: [0.35, 0.35, 0.3],
-  lowfat: [0.35, 0.15, 0.5],
-};
-
-// ハリス・ベネディクト式でカロリー・PFC を計算
-function calcNutrition(answers: UserAnswers) {
-  const weight = Number(answers.currentWeight);
-  const height = Number(answers.height);
-  const age = Number(answers.age);
-
-  if (isNaN(weight) || weight <= 0) {
-    throw new Error(`体重の値が不正です: ${answers.currentWeight}`);
-  }
-  if (isNaN(height) || height <= 0) {
-    throw new Error(`身長の値が不正です: ${answers.height}`);
-  }
-  if (isNaN(age) || age <= 0) {
-    throw new Error(`年齢の値が不正です: ${answers.age}`);
-  }
-
-  // BMR（改訂ハリス・ベネディクト）
-  // 男性: 88.362 + (13.397 × 体重kg) + (4.799 × 身長cm) - (5.677 × 年齢)
-  // 女性: 447.593 + (9.247 × 体重kg) + (3.098 × 身長cm) - (4.330 × 年齢)
-  let bmr: number;
-  if (answers.gender === "female") {
-    bmr = Math.round(447.593 + 9.247 * weight + 3.098 * height - 4.330 * age);
-  } else if (answers.gender === "male") {
-    bmr = Math.round(88.362 + 13.397 * weight + 4.799 * height - 5.677 * age);
-  } else {
-    // other: 男女の平均
-    const male = 88.362 + 13.397 * weight + 4.799 * height - 5.677 * age;
-    const female = 447.593 + 9.247 * weight + 3.098 * height - 4.330 * age;
-    bmr = Math.round((male + female) / 2);
-  }
-
-  // BMR 異常値チェック（成人の現実的な範囲: 800〜4000kcal）
-  if (bmr < 800 || bmr > 4000) {
-    throw new Error(`BMR値が異常です（${bmr}kcal）。入力値を確認してください`);
-  }
-
-  // TDEE
-  const tdee = Math.round(bmr * ACTIVITY_MULTIPLIER[answers.exercise]);
-
-  // 目標カロリー
-  let targetCalories: number;
-  if (answers.goal === "lose") {
-    targetCalories = Math.max(tdee - 500, 1200); // 最低 1200kcal
-  } else if (answers.goal === "gain") {
-    targetCalories = tdee + 300;
-  } else {
-    targetCalories = tdee;
-  }
-
-  // PFC グラム計算（P: 4kcal/g, F: 9kcal/g, C: 4kcal/g）
-  const [pr, fr, cr] = PFC_RATIO[answers.preference];
-  const protein = Math.round((targetCalories * pr) / 4);
-  const fat = Math.round((targetCalories * fr) / 9);
-  const carbs = Math.round((targetCalories * cr) / 4);
-
-  // 週あたりの体重変化（1kg ≈ 7700kcal）
-  const dailyDiff =
-    answers.goal === "lose" ? -500 : answers.goal === "gain" ? 300 : 0;
-  const weeklyChange = parseFloat(((dailyDiff * 7) / 7700).toFixed(2));
-
-  return { bmr, tdee, targetCalories, protein, fat, carbs, weeklyChange };
+// 苦手・アレルギー食材を読みやすい文言に変換（"none" は除外）
+function formatDislikes(dislikes: string[] | undefined): string {
+  const list = (dislikes ?? []).filter((d) => d && d !== "none");
+  return list.length > 0 ? list.join("、") : "なし";
 }
 
 function buildPrompt(answers: UserAnswers): string {
@@ -127,6 +41,7 @@ function buildPrompt(answers: UserAnswers): string {
   }[answers.period];
 
   const genderLabel = { male: "男性", female: "女性", other: "その他" }[answers.gender];
+  const dislikesLabel = formatDislikes(answers.dislikes);
 
   return `あなたは管理栄養士です。以下のユーザー情報をもとに、実用的な7日間の食事プランを提案してください。
 
@@ -140,6 +55,7 @@ function buildPrompt(answers: UserAnswers): string {
 - 目標：${goalLabel}
 - 運動頻度：${exerciseLabel}
 - 食事の好み：${preferenceLabel}
+- 避ける食材（アレルギー・苦手）：${dislikesLabel}
 
 【計算値（ハリス・ベネディクト式）】
 - 基礎代謝（BMR）：${bmr}kcal
@@ -155,6 +71,7 @@ function buildPrompt(answers: UserAnswers): string {
 - 極端なカロリー制限や偏った食事は避けること
 - 実際に作りやすい現実的なメニューにすること
 - 食物繊維は1日合計20g以上を目標とすること（野菜・豆類・海藻・きのこを積極的に使用）
+${dislikesLabel !== "なし" ? `- 「${dislikesLabel}」は使用しないこと（アレルギー・苦手食材のため、加工品の原材料にも含めないこと）` : ""}
 
 以下の JSON 形式のみで回答してください（マークダウン・コードブロック厳禁）：
 
@@ -193,30 +110,6 @@ function buildPrompt(answers: UserAnswers): string {
 【出力制約】recipe は50文字以内、convenienceAlt は30文字以内、advice は3つまで。余分な説明は不要。`;
 }
 
-// ── 簡易レート制限（IPごとに1時間あたり5回まで） ──────────────────────────
-// Vercel サーバーレスのためデプロイごとにリセットされるが、最低限の防御として機能する
-const RATE_LIMIT_MAX = 5;
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1時間
-
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return true; // OK
-  }
-
-  if (entry.count >= RATE_LIMIT_MAX) {
-    return false; // 制限超過
-  }
-
-  entry.count += 1;
-  return true; // OK
-}
-
 // 入力バリデーション（フォームと API の型ズレを早期検出）
 function validateAnswers(body: unknown): body is UserAnswers {
   if (!body || typeof body !== "object") return false;
@@ -230,7 +123,8 @@ function validateAnswers(body: unknown): body is UserAnswers {
     typeof a.targetWeight === "number" &&
     ["1month", "3months", "6months"].includes(a.period as string) &&
     ["none", "light", "active"].includes(a.exercise as string) &&
-    ["none", "lowcarb", "lowfat"].includes(a.preference as string)
+    ["none", "lowcarb", "lowfat"].includes(a.preference as string) &&
+    (a.dislikes === undefined || Array.isArray(a.dislikes))
   );
 }
 
@@ -242,7 +136,7 @@ export async function POST(req: NextRequest) {
       req.headers.get("x-real-ip") ??
       "unknown";
 
-    if (!checkRateLimit(ip)) {
+    if (!(await checkRateLimit(ip))) {
       console.warn("[generate] rate limit exceeded:", ip);
       return new Response(
         JSON.stringify({ error: "しばらく時間をおいてお試しください" }),

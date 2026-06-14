@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FORM_STEPS, TOTAL_STEPS } from "@/lib/constants";
-import { UserAnswers } from "@/lib/types";
+import { UserAnswers, Goal } from "@/lib/types";
+import { assessPace } from "@/lib/nutrition";
 
 interface StepFormProps {
   onSubmit: (input: UserAnswers) => void;
@@ -22,12 +23,25 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
 
   const handleMultiSelect = (value: string) => {
     const current = (answers[currentStep.id] as string[]) || [];
+    // 「特になし」(none) は他の選択肢と排他にする
+    if (value === "none") {
+      handleAnswer(current.includes("none") ? [] : ["none"]);
+      return;
+    }
     if (current.includes(value)) {
       handleAnswer(current.filter((v) => v !== value));
     } else {
-      handleAnswer([...current, value]);
+      handleAnswer([...current.filter((v) => v !== "none"), value]);
     }
   };
+
+  // 目標体重・期間の妥当性（減量/増量が無理なペースでないか）
+  const pace = assessPace(
+    Number(answers.currentWeight),
+    Number(answers.targetWeight),
+    answers.period as UserAnswers["period"],
+    answers.goal as Goal
+  );
 
   const canProceed = () => {
     const val = answers[currentStep.id];
@@ -86,6 +100,9 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
           className="bg-white rounded-2xl shadow-md p-6 space-y-5"
         >
           <h2 className="text-xl font-bold text-gray-800">{currentStep.question}</h2>
+          {currentStep.description && (
+            <p className="-mt-3 text-sm text-gray-400">{currentStep.description}</p>
+          )}
 
           {/* radio */}
           {currentStep.type === "radio" && (
@@ -145,6 +162,15 @@ export default function StepForm({ onSubmit, isLoading }: StepFormProps) {
               {currentStep.unit && (
                 <span className="text-gray-500 font-medium">{currentStep.unit}</span>
               )}
+            </div>
+          )}
+
+          {/* 目標ペースの注意喚起（期間ステップで表示） */}
+          {currentStep.id === "period" && pace?.isAggressive && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+              ⚠️ この期間で {Math.abs(Number(answers.currentWeight) - Number(answers.targetWeight))}kg は
+              <span className="font-semibold">週{pace.needWeekly}kg</span>ペースになり、体への負担が大きい可能性があります。
+              無理のないペースは<span className="font-semibold">週{pace.safeWeekly}kgまで</span>です。期間を延ばすのもおすすめです。
             </div>
           )}
 

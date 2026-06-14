@@ -49,12 +49,13 @@ export default function ResultPage() {
     setResult(JSON.parse(stored));
   }, [router]);
 
-  async function handleRegenerateMeal(dayIndex: number, mealTime: MealItem["time"]) {
-    if (!result) return;
-    const rawAnswers = localStorage.getItem("userAnswers");
-    if (!rawAnswers) return;
-    const answers: UserAnswers = JSON.parse(rawAnswers);
-
+  // 1食分を再生成して新しい MealItem を返す（state は更新しない）
+  async function fetchRegeneratedMeal(
+    answers: UserAnswers,
+    dayIndex: number,
+    mealTime: MealItem["time"]
+  ): Promise<MealItem> {
+    if (!result) throw new Error("プランが読み込まれていません");
     const res = await fetch("/api/regenerate-meal", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -66,6 +67,7 @@ export default function ResultPage() {
           goal: answers.goal,
           exercise: answers.exercise,
           preference: answers.preference,
+          dislikes: answers.dislikes,
         },
         day: result.menus[dayIndex].day,
         time: mealTime,
@@ -75,25 +77,55 @@ export default function ResultPage() {
         carbs: result.carbs,
       }),
     });
-
     if (!res.ok) throw new Error("再生成に失敗しました");
+    return res.json();
+  }
 
-    const newMeal: MealItem = await res.json();
-
-    const newResult: DietPlan = {
-      ...result,
-      menus: result.menus.map((dayMenu, i) => {
-        if (i !== dayIndex) return dayMenu;
-        return {
-          ...dayMenu,
-          meals: dayMenu.meals.map((m) => (m.time === mealTime ? newMeal : m)),
-        };
-      }),
-    };
-
+  function persistResult(newResult: DietPlan) {
     setResult(newResult);
     sessionStorage.setItem("mealPlan", JSON.stringify(newResult));
     localStorage.setItem("mealPlan", JSON.stringify(newResult));
+  }
+
+  async function handleRegenerateMeal(dayIndex: number, mealTime: MealItem["time"]) {
+    if (!result) return;
+    const rawAnswers = localStorage.getItem("userAnswers");
+    if (!rawAnswers) return;
+    const answers: UserAnswers = JSON.parse(rawAnswers);
+
+    const newMeal = await fetchRegeneratedMeal(answers, dayIndex, mealTime);
+
+    persistResult({
+      ...result,
+      menus: result.menus.map((dayMenu, i) =>
+        i !== dayIndex
+          ? dayMenu
+          : {
+              ...dayMenu,
+              meals: dayMenu.meals.map((m) => (m.time === mealTime ? newMeal : m)),
+            }
+      ),
+    });
+  }
+
+  // 1日分（朝・昼・夕）をまとめて再生成する
+  async function handleRegenerateDay(dayIndex: number) {
+    if (!result) return;
+    const rawAnswers = localStorage.getItem("userAnswers");
+    if (!rawAnswers) return;
+    const answers: UserAnswers = JSON.parse(rawAnswers);
+
+    const times = result.menus[dayIndex].meals.map((m) => m.time);
+    const newMeals = await Promise.all(
+      times.map((time) => fetchRegeneratedMeal(answers, dayIndex, time))
+    );
+
+    persistResult({
+      ...result,
+      menus: result.menus.map((dayMenu, i) =>
+        i !== dayIndex ? dayMenu : { ...dayMenu, meals: newMeals }
+      ),
+    });
   }
 
   async function handleGenerateShoppingList() {
@@ -330,7 +362,11 @@ export default function ResultPage() {
         <h3 className="text-lg font-semibold mb-4 text-gray-700">
           7日間の食事メニュー
         </h3>
-        <ResultTabs menus={result.menus ?? []} onRegenerate={handleRegenerateMeal} />
+        <ResultTabs
+          menus={result.menus ?? []}
+          onRegenerate={handleRegenerateMeal}
+          onRegenerateDay={handleRegenerateDay}
+        />
       </section>
 
       {/* 買い物リスト */}

@@ -9,45 +9,7 @@ export const SAKU_TRAINING_URL =
 export const SAKU_SUPPU_URL =
   process.env.NEXT_PUBLIC_SAKUSUPPU_URL ?? "https://sakusuppu.vercel.app/";
 
-// 活動レベルの係数（ハリス・ベネディクト方程式）
-export const ACTIVITY_MULTIPLIERS = {
-  sedentary: 1.2,
-  light: 1.375,
-  moderate: 1.55,
-  active: 1.725,
-  very_active: 1.9,
-} as const;
-
-// 目標別カロリー調整
-export const GOAL_ADJUSTMENTS = {
-  lose: -500,
-  maintain: 0,
-  gain: 300,
-} as const;
-
-// 食事制限の選択肢
-export const DIETARY_RESTRICTIONS = [
-  { value: "vegetarian", label: "ベジタリアン" },
-  { value: "vegan", label: "ヴィーガン" },
-  { value: "gluten_free", label: "グルテンフリー" },
-  { value: "low_carb", label: "低糖質" },
-  { value: "low_fat", label: "低脂質" },
-  { value: "none", label: "制限なし" },
-];
-
-// アレルギーの選択肢
-export const ALLERGENS = [
-  { value: "egg", label: "卵" },
-  { value: "milk", label: "乳製品" },
-  { value: "wheat", label: "小麦" },
-  { value: "shrimp", label: "えび" },
-  { value: "crab", label: "かに" },
-  { value: "peanut", label: "ピーナッツ" },
-  { value: "soba", label: "そば" },
-  { value: "none", label: "なし" },
-];
-
-// フォームのステップ定義（UserAnswers の9フィールドに対応）
+// フォームのステップ定義（UserAnswers の各フィールドに対応）
 export const FORM_STEPS: FormStep[] = [
   {
     id: "gender",
@@ -125,6 +87,23 @@ export const FORM_STEPS: FormStep[] = [
       { value: "none", label: "制限なし", description: "バランスよく食べたい人向け・迷ったらコレ！" },
       { value: "lowcarb", label: "低糖質", description: "ごはん・パン・麺を控えめに。お肉好きな人向け" },
       { value: "lowfat", label: "低脂質", description: "揚げ物・油を控えめに。ごはんはしっかり食べたい人向け" },
+    ],
+  },
+  {
+    id: "dislikes",
+    question: "アレルギー・苦手な食材はありますか？",
+    type: "multiselect",
+    description: "選んだ食材はメニューから除外します（複数選択可）",
+    options: [
+      { value: "卵", label: "卵" },
+      { value: "乳製品", label: "乳製品" },
+      { value: "小麦", label: "小麦" },
+      { value: "そば", label: "そば" },
+      { value: "えび・かに", label: "えび・かに" },
+      { value: "ピーナッツ・ナッツ類", label: "ナッツ類" },
+      { value: "魚介類", label: "魚介類" },
+      { value: "大豆", label: "大豆" },
+      { value: "none", label: "特になし" },
     ],
   },
 ];
