@@ -30,6 +30,23 @@ export default function Footer() {
           </Link>
         </span>
       </p>
+      <p className="mt-3 flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-xs">
+        <Link href="/about" className="hover:underline">
+          運営者情報
+        </Link>
+        <span className="text-gray-200">|</span>
+        <Link href="/privacy" className="hover:underline">
+          プライバシーポリシー
+        </Link>
+        <span className="text-gray-200">|</span>
+        <Link href="/disclaimer" className="hover:underline">
+          免責事項
+        </Link>
+        <span className="text-gray-200">|</span>
+        <Link href="/contact" className="hover:underline">
+          お問い合わせ
+        </Link>
+      </p>
       <p className="mt-2 text-xs text-gray-300">
         © {new Date().getFullYear()} sakumeshi. All rights reserved.
       </p>

@@ -23,6 +23,7 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 | `NEXT_PUBLIC_AMAZON_AFFILIATE_TAG` | Amazon アソシエイトタグ（任意） |
 | `UPSTASH_REDIS_REST_URL` | レート制限用 Upstash Redis の REST URL（任意・未設定ならメモリ方式） |
 | `UPSTASH_REDIS_REST_TOKEN` | 同上のトークン（任意） |
+| `NEXT_PUBLIC_CONTACT_FORM_URL` | お問い合わせページの Google フォーム URL（任意・未設定なら準備中表示） |
 
 ## アーキテクチャ
 

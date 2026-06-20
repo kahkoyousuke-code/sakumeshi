@@ -9,6 +9,9 @@ export const SAKU_TRAINING_URL =
 export const SAKU_SUPPU_URL =
   process.env.NEXT_PUBLIC_SAKUSUPPU_URL ?? "https://sakusuppu.vercel.app/";
 
+// お問い合わせ用 Google フォームの URL（未設定なら準備中表示）
+export const CONTACT_FORM_URL = process.env.NEXT_PUBLIC_CONTACT_FORM_URL ?? "";
+
 // フォームのステップ定義（UserAnswers の各フィールドに対応）
 export const FORM_STEPS: FormStep[] = [
   {

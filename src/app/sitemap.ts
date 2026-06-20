@@ -23,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    ...["about", "privacy", "disclaimer", "contact"].map((path) => ({
+      url: `${BASE_URL}/${path}`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    })),
   ];
 
   const columnRoutes: MetadataRoute.Sitemap = COLUMNS.map((column) => ({
