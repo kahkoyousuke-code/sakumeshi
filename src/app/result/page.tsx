@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { DietPlan, MealItem, ShoppingList, ShoppingCategory, UserAnswers } from "@/lib/types";
 import { rakutenSearchUrl, amazonSearchUrl } from "@/lib/affiliate";
+import { RECOMMENDED_ITEMS } from "@/lib/recommendedItems";
 import { SAKU_SUPPU_URL } from "@/lib/constants";
 import DonutChart from "@/components/DonutChart";
 import ResultTabs from "@/components/ResultTabs";
@@ -503,6 +504,46 @@ export default function ResultPage() {
                     className="text-[10px] font-bold px-1.5 py-0.5 rounded text-white bg-orange-400 hover:bg-orange-500 transition-colors"
                   >
                     Amazon
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ダイエット応援アイテム（アフィリエイト） */}
+      <section className="bg-white rounded-2xl shadow-md p-6">
+        <h3 className="text-lg font-semibold mb-1 text-gray-700">🛒 ダイエット応援アイテム</h3>
+        <p className="text-xs text-gray-400 mb-4">
+          続けやすくなる定番アイテム。<span className="whitespace-nowrap">※リンクにはアフィリエイトを含みます</span>
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {RECOMMENDED_ITEMS.map((item) => (
+            <div
+              key={item.name}
+              className="flex items-start gap-3 bg-amber-50 rounded-xl p-3 border border-amber-100"
+            >
+              <span className="text-2xl leading-none mt-0.5">{item.emoji}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-amber-900">{item.name}</p>
+                <p className="text-xs text-amber-700 mt-0.5">{item.detail}</p>
+                <div className="flex gap-1.5 mt-2">
+                  <a
+                    href={rakutenSearchUrl(item.keyword)}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="text-xs font-bold px-2 py-1 rounded text-white bg-red-500 hover:bg-red-600 transition-colors"
+                  >
+                    楽天で見る
+                  </a>
+                  <a
+                    href={amazonSearchUrl(item.keyword)}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="text-xs font-bold px-2 py-1 rounded text-white bg-orange-400 hover:bg-orange-500 transition-colors"
+                  >
+                    Amazonで見る
                   </a>
                 </div>
               </div>
