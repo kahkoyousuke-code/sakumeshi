@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { UserAnswers } from "@/lib/types";
 import { calcNutrition } from "@/lib/nutrition";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
 
@@ -130,13 +130,10 @@ function validateAnswers(body: unknown): body is UserAnswers {
 
 export async function POST(req: NextRequest) {
   try {
-    // レート制限チェック
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
-      req.headers.get("x-real-ip") ??
-      "unknown";
+    // レート制限チェック（最も高コストな sonnet 生成。1時間5回）
+    const ip = getClientIp(req);
 
-    if (!(await checkRateLimit(ip))) {
+    if (!(await checkRateLimit(ip, { max: 5, prefix: "gen" }))) {
       console.warn("[generate] rate limit exceeded:", ip);
       return new Response(
         JSON.stringify({ error: "しばらく時間をおいてお試しください" }),

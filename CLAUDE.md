@@ -47,9 +47,11 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 
 | Route | モデル | 処理 |
 |---|---|---|
-| `POST /api/generate` | `claude-sonnet-4-6` | ストリーミングで7日間食事プランを生成。`src/lib/nutrition.ts` の `calcNutrition()` でカロリー・PFC を計算してプロンプトに埋め込む。避ける食材（アレルギー・苦手）もプロンプトに反映。`src/lib/rate-limit.ts` でIP別1時間5回のレート制限 |
-| `POST /api/regenerate-meal` | `claude-haiku-4-5-20251001` | 1食だけ差し替え生成（低コスト）。避ける食材を反映。結果ページの「この日をまるごと変える」はこのAPIを3食分並列に呼ぶ |
-| `POST /api/shopping-list` | `claude-sonnet-4-6` | 7日分メニューから買い物リストを生成 |
+| `POST /api/generate` | `claude-sonnet-4-6` | ストリーミングで7日間食事プランを生成。`src/lib/nutrition.ts` の `calcNutrition()` でカロリー・PFC を計算してプロンプトに埋め込む。避ける食材（アレルギー・苦手）もプロンプトに反映。`src/lib/rate-limit.ts` でIP別1時間5回のレート制限（`prefix: "gen"`） |
+| `POST /api/regenerate-meal` | `claude-haiku-4-5-20251001` | 1食だけ差し替え生成（低コスト）。避ける食材を反映。結果ページの「この日をまるごと変える」はこのAPIを3食分並列に呼ぶ。レート制限はIP別1時間30回（`prefix: "regen"`、3並列のため約10日分） |
+| `POST /api/shopping-list` | `claude-sonnet-4-6` | 7日分メニューから買い物リストを生成。レート制限はIP別1時間10回（`prefix: "shop"`） |
+
+レート制限（`src/lib/rate-limit.ts`）は `checkRateLimit(ip, { max, windowSec, prefix })` でエンドポイント別バケットを分ける（`prefix` が違えばカウント独立）。IP 取得は同モジュールの `getClientIp(req)` を使う。Upstash 未設定時はメモリ方式にフォールバックするため、本番で確実に効かせるには `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` の設定が必要。
 
 ### データフロー の重要な設計
 

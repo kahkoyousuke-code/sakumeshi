@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { DayMenu } from "@/lib/types";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
 
@@ -10,6 +11,15 @@ const anthropic = new Anthropic({
 
 export async function POST(req: NextRequest) {
   try {
+    // レート制限チェック（sonnet 生成。1時間10回）
+    if (!(await checkRateLimit(getClientIp(req), { max: 10, prefix: "shop" }))) {
+      console.warn("[shopping-list] rate limit exceeded:", getClientIp(req));
+      return new Response(
+        JSON.stringify({ error: "しばらく時間をおいてお試しください" }),
+        { status: 429, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const body: unknown = await req.json();
 
     if (

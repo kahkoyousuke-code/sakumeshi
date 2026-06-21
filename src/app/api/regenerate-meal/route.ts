@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { MealItem } from "@/lib/types";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const maxDuration = 30;
 
@@ -75,6 +76,16 @@ ${dislikesLabel !== "なし" ? `- 「${dislikesLabel}」は使用しないこと
 
 export async function POST(req: NextRequest) {
   try {
+    // レート制限チェック（「この日をまるごと変える」は3食=3並列で叩くため
+    // 1時間30回＝約10日分の差し替えまで許可）
+    if (!(await checkRateLimit(getClientIp(req), { max: 30, prefix: "regen" }))) {
+      console.warn("[regenerate-meal] rate limit exceeded:", getClientIp(req));
+      return new Response(
+        JSON.stringify({ error: "しばらく時間をおいてお試しください" }),
+        { status: 429, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const body: RegenerateRequest = await req.json();
 
     if (!body.answers || !body.day || !body.time || !body.targetCalories) {
