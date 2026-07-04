@@ -78,7 +78,12 @@ export default function ResultPage() {
         carbs: result.carbs,
       }),
     });
-    if (!res.ok) throw new Error("再生成に失敗しました");
+    if (!res.ok) {
+      if (res.status === 429) {
+        throw new Error("再生成の回数上限に達しました。1時間ほどおいてお試しください");
+      }
+      throw new Error("再生成に失敗しました");
+    }
     return res.json();
   }
 
@@ -177,7 +182,8 @@ export default function ResultPage() {
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      const scaledHeight = (canvas.height / canvas.width) * pdfWidth * 2;
+      // canvas の縦横比を維持して A4 幅いっぱいに配置する
+      const scaledHeight = (canvas.height / canvas.width) * pdfWidth;
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, scaledHeight);
       let heightLeft = scaledHeight - pdfHeight;

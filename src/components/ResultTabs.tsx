@@ -17,14 +17,18 @@ export default function ResultTabs({
 }: ResultTabsProps) {
   const [activeDay, setActiveDay] = useState(0);
   const [dayLoading, setDayLoading] = useState(false);
+  const [dayError, setDayError] = useState<string | null>(null);
 
   const currentDay = menus[activeDay];
 
   async function handleDayRegenerate() {
     if (!onRegenerateDay) return;
     setDayLoading(true);
+    setDayError(null);
     try {
       await onRegenerateDay(activeDay);
+    } catch (err) {
+      setDayError(err instanceof Error ? err.message : "再生成に失敗しました");
     } finally {
       setDayLoading(false);
     }
@@ -37,7 +41,10 @@ export default function ResultTabs({
         {menus.map((menu, i) => (
           <button
             key={menu.day}
-            onClick={() => setActiveDay(i)}
+            onClick={() => {
+              setActiveDay(i);
+              setDayError(null);
+            }}
             className={`flex-shrink-0 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
               activeDay === i
                 ? "bg-[var(--primary)] text-white shadow-sm"
@@ -62,6 +69,9 @@ export default function ResultTabs({
                 {dayLoading ? "生成中..." : "🔄 この日をまるごと変える"}
               </button>
             </div>
+          )}
+          {dayError && (
+            <p className="text-xs text-red-500 text-right">{dayError}</p>
           )}
           {currentDay.meals.map((meal) => (
             <MealCard

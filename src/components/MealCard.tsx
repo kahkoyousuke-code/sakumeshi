@@ -24,8 +24,8 @@ export default function MealCard({ meal, onRegenerate }: MealCardProps) {
     setError(null);
     try {
       await onRegenerate();
-    } catch {
-      setError("再生成に失敗しました");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "再生成に失敗しました");
     } finally {
       setIsLoading(false);
     }
@@ -45,6 +45,7 @@ export default function MealCard({ meal, onRegenerate }: MealCardProps) {
               onClick={handleRegenerate}
               disabled={isLoading}
               title="この食事を差し替える"
+              aria-label="この食事を差し替える"
               className="w-7 h-7 flex items-center justify-center rounded-full text-gray-400 hover:text-[var(--primary)] hover:bg-green-50 transition-colors disabled:cursor-not-allowed"
             >
               <svg

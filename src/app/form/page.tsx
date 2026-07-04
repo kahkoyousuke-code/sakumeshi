@@ -1,19 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import StepForm from "@/components/StepForm";
 import { UserAnswers } from "@/lib/types";
 
+// 生成待ち中に順番に表示するメッセージ（体感待ち時間を短くする）
+const LOADING_MESSAGES = [
+  "あなたの目標カロリーを計算中...",
+  "PFCバランスを調整中...",
+  "7日分の献立を考え中...",
+  "食材の使い回しを最適化中...",
+  "コンビニ代替メニューを選定中...",
+  "仕上げをしています...",
+];
+
+function LoadingScreen() {
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setMessageIndex((i) => Math.min(i + 1, LOADING_MESSAGES.length - 1));
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4 text-center">
+      <div className="h-12 w-12 rounded-full border-4 border-[var(--primary)] border-t-transparent animate-spin" />
+      <p className="text-gray-600 animate-pulse text-lg font-medium">
+        {LOADING_MESSAGES[messageIndex]}
+      </p>
+      <p className="text-gray-400 text-sm">
+        AIが7日分の献立を作成しています（30秒〜1分ほどかかります）
+      </p>
+    </div>
+  );
+}
+
 export default function FormPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [lastInput, setLastInput] = useState<UserAnswers | null>(null);
 
   const handleSubmit = async (input: UserAnswers) => {
     setIsLoading(true);
-    setHasError(false);
+    setErrorMessage(null);
     setLastInput(input);
 
     try {
@@ -23,7 +56,14 @@ export default function FormPage() {
         body: JSON.stringify(input),
       });
 
-      if (!res.ok) throw new Error("APIエラーが発生しました");
+      if (!res.ok) {
+        if (res.status === 429) {
+          throw new Error(
+            "アクセスが集中しています。1時間ほど時間をおいてからもう一度お試しください"
+          );
+        }
+        throw new Error("APIエラーが発生しました");
+      }
       if (!res.body) throw new Error("レスポンスボディが空です");
 
       // ストリーミング受信：チャンクを順次蓄積
@@ -70,28 +110,26 @@ export default function FormPage() {
       localStorage.setItem("userAnswers", JSON.stringify(input));
       router.push("/result");
     } catch (err) {
-      setHasError(true);
+      setErrorMessage(
+        err instanceof Error && err.message.includes("アクセスが集中")
+          ? err.message
+          : "しばらくしてからもう一度お試しください"
+      );
       setIsLoading(false);
     }
   };
 
   // ローディング画面
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
-        <div className="h-12 w-12 rounded-full border-4 border-[var(--primary)] border-t-transparent animate-spin" />
-        <p className="text-gray-500 animate-pulse text-lg">食事プランを生成中...</p>
-        <p className="text-gray-400 text-sm">AIが7日分の献立を作成しています</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
-  // パースエラー時のリトライ画面
-  if (hasError) {
+  // エラー時のリトライ画面
+  if (errorMessage) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4 text-center">
         <p className="text-gray-600 text-lg font-medium">食事プランの生成に失敗しました</p>
-        <p className="text-gray-400 text-sm">しばらくしてからもう一度お試しください</p>
+        <p className="text-gray-400 text-sm">{errorMessage}</p>
         <div className="flex flex-wrap justify-center gap-4">
           {lastInput && (
             <button
@@ -102,7 +140,7 @@ export default function FormPage() {
             </button>
           )}
           <button
-            onClick={() => setHasError(false)}
+            onClick={() => setErrorMessage(null)}
             className="px-6 py-3 border-2 border-[var(--primary)] text-[var(--primary)] font-semibold rounded-full hover:bg-[var(--primary)] hover:text-white transition-all duration-300"
           >
             最初からやり直す

@@ -20,22 +20,20 @@ export default function Header() {
             height={32}
             className="rounded-full"
           />
-          <span className="text-xl font-bold tracking-tight" style={{ color: "#4CAF50" }}>
+          <span className="text-xl font-bold tracking-tight text-[var(--primary)]">
             {APP_NAME}
           </span>
         </Link>
         <nav className="flex gap-4 text-sm">
           <Link
             href="/column"
-            className="hover:opacity-80 transition-opacity font-medium"
-            style={{ color: "#4CAF50" }}
+            className="hover:opacity-80 transition-opacity font-medium text-[var(--primary)]"
           >
             コラム
           </Link>
           <Link
             href="/form"
-            className="hover:opacity-80 transition-opacity font-medium"
-            style={{ color: "#4CAF50" }}
+            className="hover:opacity-80 transition-opacity font-medium text-[var(--primary)]"
           >
             診断する
           </Link>
