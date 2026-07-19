@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { COLUMNS } from "@/lib/columns";
 
-const BASE_URL = "https://sakumeshi.vercel.app";
+const BASE_URL = "https://sakumeshi.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [

@@ -227,13 +227,13 @@ export default function ResultPage() {
   };
 
   const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-    `AIに1週間分のダイエット食事プランを作ってもらった🍽️\n\n📊 目標カロリー：${result.targetCalories}kcal/日\n💪 タンパク質：${result.protein}g\n🔥 脂質：${result.fat}g\n🍚 炭水化物：${result.carbs}g\n\n#サクメシ #ダイエット #食事管理\nhttps://sakumeshi.vercel.app`
+    `AIに1週間分のダイエット食事プランを作ってもらった🍽️\n\n📊 目標カロリー：${result.targetCalories}kcal/日\n💪 タンパク質：${result.protein}g\n🔥 脂質：${result.fat}g\n🍚 炭水化物：${result.carbs}g\n\n#サクメシ #ダイエット #食事管理\nhttps://sakumeshi.app`
   )}`;
 
   const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-    "https://sakumeshi.vercel.app"
+    "https://sakumeshi.app"
   )}&text=${encodeURIComponent(
-    `AIが作ってくれたダイエット食事プラン👇\n目標カロリー${result.targetCalories}kcal、1週間分のメニューが自動生成されるよ！\n無料で使えるのでぜひ↓\nhttps://sakumeshi.vercel.app`
+    `AIが作ってくれたダイエット食事プラン👇\n目標カロリー${result.targetCalories}kcal、1週間分のメニューが自動生成されるよ！\n無料で使えるのでぜひ↓\nhttps://sakumeshi.app`
   )}`;
 
   const shareButtons = (
@@ -668,7 +668,7 @@ export default function ResultPage() {
 
       {/* フッター */}
       <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: "14px", textAlign: "center", fontSize: "11px", color: "#9ca3af" }}>
-        サクメシ　https://sakumeshi.vercel.app
+        サクメシ　https://sakumeshi.app
       </div>
     </div>
     </>
