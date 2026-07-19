@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
   title: "コンビニで買えるダイエット飯の選び方｜セブン・ファミマ・ローソン別おすすめ | サクメシ",
@@ -192,36 +193,7 @@ export default function ConvenienceDiet() {
 
         </div>
 
-        <div className="mt-12 text-center">
-          <Link
-            href="/form"
-            className="inline-block px-8 py-4 bg-[var(--primary)] text-white font-bold rounded-full text-base hover:opacity-90 transition-opacity shadow-md"
-          >
-            サクメシで自分に合った食事プランを作る →
-          </Link>
-        </div>
-
-        <div className="mt-8 bg-gray-50 rounded-xl p-5 border border-gray-100">
-          <p className="text-sm font-bold text-gray-600 mb-3">もっと詳しく知りたい方はこちら（note）</p>
-          <div className="space-y-3">
-            <a href="https://note.com/kahko/n/n011ab3e59a76" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-white rounded-lg p-3 border border-gray-200 hover:border-green-300 transition-colors">
-              <span className="text-2xl">📖</span>
-              <span className="text-sm text-green-700 font-medium">PFCの基本と食材選びガイド</span>
-            </a>
-            <a href="https://note.com/kahko/n/n8a6fc450e6e2" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-white rounded-lg p-3 border border-gray-200 hover:border-green-300 transition-colors">
-              <span className="text-2xl">🏆</span>
-              <span className="text-sm text-green-700 font-medium">92kgから大会入賞までのリアル食事記録</span>
-            </a>
-            <a href="https://note.com/kahko/n/n33722e8526e5" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-white rounded-lg p-3 border border-gray-200 hover:border-green-300 transition-colors">
-              <span className="text-2xl">🍺</span>
-              <span className="text-sm text-green-700 font-medium">お酒とダイエットを両立する飲み方ルール</span>
-            </a>
-            <a href="https://note.com/kahko/n/nc1b31d5e0f60" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-white rounded-lg p-3 border border-gray-200 hover:border-green-300 transition-colors">
-              <span className="text-2xl">📊</span>
-              <span className="text-sm text-green-700 font-medium">糖質ジグザグダイエット（カーボサイクリング）の教科書</span>
-            </a>
-          </div>
-        </div>
+        <ColumnFooter slug="convenience-diet" />
       </article>
     </div>
   );

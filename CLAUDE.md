@@ -71,6 +71,9 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 
 `src/app/column/` 配下に静的ページとして実装。`src/lib/columns.ts` の `COLUMNS` 配列がコラム一覧のシングルソース。新しいコラムを追加するには `COLUMNS` にエントリを追加してから `src/app/column/<slug>/page.tsx` を作成する。
 
+- 各エントリは `related`（記事末尾に表示する関連コラムの slug 配列）が必須。`getRelatedColumns(slug)` が解決し、未解決時は最新3件にフォールバックする。一覧の日付降順ソートは `columnsByDateDesc()`。
+- 記事の共通レイアウト（戻るリンク・ヘッダー・目次・CTA・関連コラム・note誘導・JSON-LD）は `src/components/column/ColumnShell.tsx` と `ColumnFooter.tsx`。新規記事は `ColumnShell` で本文だけ書く。
+
 ### スタイリング
 
 Tailwind CSS v4。カラーは CSS 変数で管理：
