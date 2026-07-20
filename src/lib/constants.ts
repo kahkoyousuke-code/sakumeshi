@@ -4,10 +4,10 @@ export const APP_NAME = "サクメシ";
 export const APP_DESCRIPTION = "あなたにぴったりの食事メニューをAIが提案します";
 
 export const SAKU_TRAINING_URL =
-  process.env.NEXT_PUBLIC_SAKUTORE_URL ?? "https://sakutore.vercel.app/";
+  process.env.NEXT_PUBLIC_SAKUTORE_URL ?? "https://sakutore.jp/";
 
 export const SAKU_SUPPU_URL =
-  process.env.NEXT_PUBLIC_SAKUSUPPU_URL ?? "https://sakusuppu.vercel.app/";
+  process.env.NEXT_PUBLIC_SAKUSUPPU_URL ?? "https://sakusapu.com/";
 
 // お問い合わせ用 Google フォームの URL（未設定なら準備中表示）
 export const CONTACT_FORM_URL = process.env.NEXT_PUBLIC_CONTACT_FORM_URL ?? "";
