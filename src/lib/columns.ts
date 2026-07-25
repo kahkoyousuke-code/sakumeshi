@@ -31,7 +31,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "目的別のおすすめ間食とコンビニで買えるダイエットおやつを紹介",
     date: "2026-03-21",
     emoji: "🥜",
-    related: ["convenience-diet", "alcohol-diet", "water-intake"],
+    related: ["appetite-control", "convenience-diet", "alcohol-diet"],
   },
   {
     slug: "boost-metabolism",
@@ -39,7 +39,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "食事で基礎代謝を上げる5つのポイントとやってはいけない食事法",
     date: "2026-03-29",
     emoji: "🔥",
-    related: ["gut-health-diet", "sleep-diet", "protein-intake"],
+    related: ["no-exercise-diet", "gut-health-diet", "protein-intake"],
   },
   {
     slug: "convenience-diet",
@@ -111,7 +111,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "停滞期が起きる理由と対処法、チートデイの正しいやり方を解説",
     date: "2026-07-19",
     emoji: "⛰️",
-    related: ["no-rebound", "boost-metabolism", "sleep-diet"],
+    related: ["salt-swelling", "no-rebound", "boost-metabolism"],
   },
   {
     slug: "sleep-diet",
@@ -119,7 +119,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "睡眠不足が食欲ホルモンに与える影響と、痩せるための睡眠習慣を解説",
     date: "2026-07-19",
     emoji: "😴",
-    related: ["boost-metabolism", "diet-plateau", "alcohol-diet"],
+    related: ["appetite-control", "boost-metabolism", "diet-plateau"],
   },
   {
     slug: "water-intake",
@@ -127,7 +127,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "水分摂取が代謝・食欲に与える影響と、無理なく飲む量を増やすコツ",
     date: "2026-07-19",
     emoji: "💧",
-    related: ["boost-metabolism", "gut-health-diet", "diet-snacks"],
+    related: ["salt-swelling", "boost-metabolism", "gut-health-diet"],
   },
   {
     slug: "meal-prep",
@@ -135,7 +135,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "挫折しない作り置きの始め方・おすすめおかず・保存のコツを解説",
     date: "2026-07-19",
     emoji: "🍱",
-    related: ["convenience-diet", "protein-intake", "pfc-calculation"],
+    related: ["no-exercise-diet", "convenience-diet", "protein-intake"],
   },
   {
     slug: "diet-over-40",
@@ -168,6 +168,30 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     emoji: "⏰",
     related: ["eating-order", "diet-plateau", "lowcarb-vs-lowfat"],
+  },
+  {
+    slug: "appetite-control",
+    title: "食欲を抑える方法｜我慢に頼らず食べすぎを止める7つのコツ",
+    description: "食欲が止まらない原因を血糖値・タンパク質・睡眠から解き明かし、具体策を解説",
+    date: "2026-07-25",
+    emoji: "🧠",
+    related: ["diet-snacks", "gi-index", "sleep-diet"],
+  },
+  {
+    slug: "no-exercise-diet",
+    title: "運動なしで痩せる？食事だけダイエットの現実的なやり方",
+    description: "運動する時間がない人向けに、食事だけで痩せる進め方とデメリット対策を解説",
+    date: "2026-07-25",
+    emoji: "🚶",
+    related: ["pfc-calculation", "boost-metabolism", "meal-prep"],
+  },
+  {
+    slug: "salt-swelling",
+    title: "体重が一晩で2kg増えた｜むくみと塩分の関係を正しく理解する",
+    description: "急な体重増の正体は水分。塩分とむくみの仕組みと翌日のリセット方法を解説",
+    date: "2026-07-25",
+    emoji: "🧂",
+    related: ["water-intake", "diet-plateau", "convenience-diet"],
   },
 ];
 
