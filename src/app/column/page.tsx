@@ -3,6 +3,7 @@ import Link from "next/link";
 import { columnsByDateDesc } from "@/lib/columns";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column" },
   title: "コラム | サクメシ",
   description:
     "ダイエットの食事に関するコラム一覧。PFCバランス・コンビニ飯・外食・停滞期・睡眠など、無理なく続けるための知識を紹介します。",

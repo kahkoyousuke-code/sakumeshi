@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/salt-swelling" },
   title: "体重が一晩で2kg増えた｜むくみと塩分の関係を正しく理解する | サクメシ",
   description:
     "一晩で体重が増えるのは脂肪ではなく水分です。塩分とむくみの仕組み、翌日のリセット方法、カリウムを含む食材と外食での対策を解説します。",

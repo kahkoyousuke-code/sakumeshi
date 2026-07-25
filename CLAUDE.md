@@ -74,6 +74,12 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 - 各エントリは `related`（記事末尾に表示する関連コラムの slug 配列）が必須。`getRelatedColumns(slug)` が解決し、未解決時は最新3件にフォールバックする。一覧の日付降順ソートは `columnsByDateDesc()`。
 - 記事の共通レイアウト（戻るリンク・ヘッダー・目次・CTA・関連コラム・note誘導・JSON-LD）は `src/components/column/ColumnShell.tsx` と `ColumnFooter.tsx`。新規記事は `ColumnShell` で本文だけ書く。
 
+### SEO（canonical）
+
+全ページの `metadata` に `alternates: { canonical: "<ルートパス>" }` を明示している（`metadataBase` からの相対パス）。**新しいページを追加したら必ず入れる**。`layout.tsx` のルート metadata が `canonical: "/"` を持つため、書き忘れるとトップページの重複扱いになる。
+
+`/form`・`/result` はページ本体が client component で `metadata` を export できないため、`src/app/form/layout.tsx` / `src/app/result/layout.tsx` で宣言している。`/result` はユーザー個別の生成結果なので `robots: { index: false }` も付与（sitemap にも未掲載）。
+
 ### スタイリング
 
 Tailwind CSS v4。カラーは CSS 変数で管理：

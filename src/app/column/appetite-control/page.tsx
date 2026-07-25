@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/appetite-control" },
   title: "食欲を抑える方法｜我慢に頼らず食べすぎを止める7つのコツ | サクメシ",
   description:
     "食欲が止まらないのは意志の弱さではありません。血糖値・タンパク質・睡眠など原因別に、我慢に頼らず食欲をコントロールする具体的な方法を解説します。",

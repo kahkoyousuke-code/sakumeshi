@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/alcohol-diet" },
   title: "お酒とダイエットの両立｜太りにくいお酒の選び方と飲み方ルール | サクメシ",
   description:
     "ダイエット中でもお酒を楽しむための選び方と飲み方を解説。太りにくいお酒の種類、避けるべき飲み物、おつまみの選び方まで紹介します。",

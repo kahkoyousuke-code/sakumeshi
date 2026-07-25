@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/sleep-diet" },
   title: "睡眠とダイエットの関係｜寝不足だと太るって本当？ | サクメシ",
   description:
     "睡眠不足が食欲ホルモンと代謝に与える影響を解説。痩せやすい体を作る睡眠習慣と、夜食を防ぐ食事のコツを紹介します。",

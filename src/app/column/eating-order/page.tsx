@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/eating-order" },
   title: "食べる順番ダイエット｜血糖値を抑えて太りにくい食べ方 | サクメシ",
   description:
     "食べる順番を変えるだけで血糖値の上昇を抑えてダイエットに効果的。野菜→タンパク質→炭水化物の順番と実践のコツを解説します。",

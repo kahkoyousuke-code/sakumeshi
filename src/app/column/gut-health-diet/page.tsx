@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/gut-health-diet" },
   title: "腸活×ダイエット｜食物繊維・発酵食品で痩せやすい体を作る | サクメシ",
   description:
     "腸活がダイエットに効く理由と実践方法を解説。食物繊維・発酵食品の摂り方、腸内環境を整える食事習慣を紹介します。",

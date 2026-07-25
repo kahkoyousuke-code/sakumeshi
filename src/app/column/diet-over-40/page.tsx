@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/diet-over-40" },
   title: "40代からのダイエット｜若い頃と同じやり方が通用しない理由 | サクメシ",
   description:
     "40代になると痩せにくくなる理由と、代謝が落ちた体で無理なく痩せる食事戦略を解説。極端な食事制限がNGな理由も実体験ベースで紹介します。",

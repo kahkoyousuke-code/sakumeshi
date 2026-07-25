@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/no-rebound" },
   title: "リバウンドしない食習慣｜落とした体重を維持する食事の考え方 | サクメシ",
   description:
     "ダイエット後にリバウンドしないための食習慣を解説。なぜリバウンドが起きるのか、維持期の食事の考え方と習慣化のポイントを紹介します。",

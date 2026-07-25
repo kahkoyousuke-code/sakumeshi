@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "プライバシーポリシー | サクメシ",
   description:
     "サクメシのプライバシーポリシー。広告配信（Google AdSense）・アクセス解析・Cookie の利用、個人情報の取り扱いについて説明します。",

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/diet-plateau" },
   title: "停滞期の乗り越え方｜体重が落ちなくなったらやるべきこと | サクメシ",
   description:
     "ダイエットの停滞期はなぜ起きるのか、いつまで続くのかを解説。やってはいけないNG行動と、チートデイの正しいやり方も紹介します。",

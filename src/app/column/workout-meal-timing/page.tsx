@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/workout-meal-timing" },
   title: "筋トレ前後の食事タイミング｜何をいつ食べるか完全解説 | サクメシ",
   description:
     "筋トレ前後の食事タイミングを徹底解説。トレーニング前・後に何をいつ食べればいいか、プロテインのタイミングも含めて紹介します。",

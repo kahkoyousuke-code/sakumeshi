@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/convenience-diet" },
   title: "コンビニで買えるダイエット飯の選び方｜セブン・ファミマ・ローソン別おすすめ | サクメシ",
   description:
     "コンビニでダイエット中に食べられる商品を徹底解説。セブン・ファミマ・ローソン別のおすすめ商品と避けるべき商品を紹介します。",

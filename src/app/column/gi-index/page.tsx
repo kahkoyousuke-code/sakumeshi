@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/gi-index" },
   title: "GI値って何？血糖値を意識した食材選びで太りにくく | サクメシ",
   description:
     "GI値の基本と低GI食品の選び方を解説。白米→玄米などの置き換え例、GI値だけに頼ってはいけない注意点も分かりやすく紹介します。",

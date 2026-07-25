@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/female-cycle-diet" },
   title: "生理周期とダイエット｜痩せやすい時期・停滞する時期を知る | サクメシ",
   description:
     "生理周期によって体重や食欲が変動する仕組みを解説。時期ごとの食事のコツと、生理前の食欲・むくみとの付き合い方を紹介します。",

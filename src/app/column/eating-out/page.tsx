@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/eating-out" },
   title: "外食でも太らない食べ方｜定食・ラーメン・居酒屋シーン別ガイド | サクメシ",
   description:
     "外食中でもダイエットを続けるための選び方を解説。定食・ラーメン・居酒屋・ファストフードなどシーン別に太りにくいメニューの選び方を紹介します。",

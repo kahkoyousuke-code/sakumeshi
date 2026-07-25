@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/diet-snacks" },
   title: "ダイエット中の間食おすすめ｜太らないおやつの選び方と目的別リスト | サクメシ",
   description:
     "ダイエット中でも間食はOK！減量・維持・増量の目的別におすすめの間食を紹介。コンビニで買えるダイエットおやつランキングも。",

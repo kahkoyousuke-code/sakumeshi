@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/no-exercise-diet" },
   title: "運動なしで痩せる？食事だけダイエットの現実的なやり方 | サクメシ",
   description:
     "運動なしでも体重は落とせます。食事だけで痩せる仕組みと具体的な進め方、運動なしゆえのデメリットと対策を、実体験ベースで分かりやすく解説します。",

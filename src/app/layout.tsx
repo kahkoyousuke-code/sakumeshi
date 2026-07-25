@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     "かんたんな質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
   keywords: ["食事管理", "ダイエット", "栄養", "AI", "メニュー提案"],
   metadataBase: new URL("https://sakumeshi.app"),
+  alternates: { canonical: "/" },
   openGraph: {
     title: "サクメシ - AIでサクッとダイエット計画を作成",
     description:

@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/boost-metabolism" },
   title: "基礎代謝を上げる食事｜痩せやすい体を作る5つの食べ方 | サクメシ",
   description:
     "基礎代謝を上げる食事のポイントを解説。タンパク質の摂り方、食事回数、体を温める食材など、痩せやすい体を作る具体的な方法を紹介します。",

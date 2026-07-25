@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/meal-prep" },
   title: "作り置きダイエット｜週末2時間で平日5日を乗り切る方法 | サクメシ",
   description:
     "ダイエットが続かない最大の原因は「毎日の調理が面倒」。週末2時間の作り置きで平日をラクに乗り切る方法、おすすめおかず、保存のコツを解説します。",

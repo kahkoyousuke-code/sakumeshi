@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/protein-intake" },
   title: "タンパク質は1日どれくらい必要？体重別の目安とプロテインの活用法 | サクメシ",
   description:
     "ダイエット中に必要なタンパク質量を体重別に解説。タンパク質が摂れる食品ランキング、プロテインが必要な人・不要な人の判断基準も紹介します。",

@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/pfc-calculation" },
   title: "PFCバランスの計算方法｜初心者でも5分で分かるダイエットの基本 | サクメシ",
   description:
     "PFCバランスの計算方法を4ステップで解説。基礎代謝・TDEE・目標カロリー・PFC内訳の出し方を、ダイエット初心者にも分かりやすく説明します。",

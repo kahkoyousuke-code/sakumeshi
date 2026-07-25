@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "運営者情報 | サクメシ",
   description:
     "サクメシの運営者情報。サイトの目的・運営者・お問い合わせ方法について説明します。",

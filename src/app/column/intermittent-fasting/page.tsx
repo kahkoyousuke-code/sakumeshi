@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/intermittent-fasting" },
   title: "16時間断食は痩せる？メリット・デメリットと正しいやり方 | サクメシ",
   description:
     "流行りの16時間断食（リーンゲインズ・8時間ダイエット）は本当に痩せるのか。仕組み・メリット・デメリット・向いている人を冷静に解説します。",

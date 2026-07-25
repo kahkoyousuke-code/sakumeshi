@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/water-intake" },
   title: "ダイエット中の水分補給｜水は1日どれくらい飲めばいい？ | サクメシ",
   description:
     "水を飲むと痩せるは本当か？水分摂取が代謝・食欲・むくみに与える影響と、1日に必要な量、無理なく飲む量を増やすコツを解説します。",

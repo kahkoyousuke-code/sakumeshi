@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CONTACT_FORM_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "お問い合わせ | サクメシ",
   description:
     "サクメシへのお問い合わせはこちら。ご意見・ご要望・不具合のご連絡をお待ちしています。",

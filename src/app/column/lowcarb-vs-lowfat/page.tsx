@@ -3,6 +3,7 @@ import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/column/lowcarb-vs-lowfat" },
   title: "低糖質と低脂質どっちがいい？違いとおすすめの選び方 | サクメシ",
   description:
     "低糖質ダイエットと低脂質ダイエット、どちらが自分に合うか分からない方へ。10年以上のダイエット経験をもとに、それぞれのメリット・デメリットと選び方を解説します。",
