@@ -23,7 +23,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "ダイエット初心者でも5分で分かるPFC計算の4ステップ",
     date: "2026-03-20",
     emoji: "📊",
-    related: ["lowcarb-vs-lowfat", "protein-intake", "boost-metabolism"],
+    related: ["daily-calories", "lowcarb-vs-lowfat", "protein-intake"],
   },
   {
     slug: "diet-snacks",
@@ -47,7 +47,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "セブン・ファミマ・ローソン別おすすめ商品と避けるべき商品を徹底解説",
     date: "2026-05-09",
     emoji: "🏪",
-    related: ["diet-snacks", "eating-out", "meal-prep"],
+    related: ["diet-foods", "diet-snacks", "meal-prep"],
   },
   {
     slug: "workout-meal-timing",
@@ -71,7 +71,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "外食中でもダイエットを続けるためのシーン別メニュー選びガイド",
     date: "2026-05-09",
     emoji: "🍽️",
-    related: ["alcohol-diet", "convenience-diet", "eating-order"],
+    related: ["late-night-meal", "alcohol-diet", "convenience-diet"],
   },
   {
     slug: "no-rebound",
@@ -79,7 +79,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "なぜリバウンドが起きるのか、維持期の食事の考え方と習慣化のポイント",
     date: "2026-05-09",
     emoji: "⚖️",
-    related: ["diet-plateau", "boost-metabolism", "sleep-diet"],
+    related: ["lose-3kg-month", "diet-plateau", "sleep-diet"],
   },
   {
     slug: "alcohol-diet",
@@ -111,7 +111,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "停滞期が起きる理由と対処法、チートデイの正しいやり方を解説",
     date: "2026-07-19",
     emoji: "⛰️",
-    related: ["salt-swelling", "no-rebound", "boost-metabolism"],
+    related: ["lose-3kg-month", "salt-swelling", "no-rebound"],
   },
   {
     slug: "sleep-diet",
@@ -119,7 +119,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "睡眠不足が食欲ホルモンに与える影響と、痩せるための睡眠習慣を解説",
     date: "2026-07-19",
     emoji: "😴",
-    related: ["appetite-control", "boost-metabolism", "diet-plateau"],
+    related: ["late-night-meal", "appetite-control", "boost-metabolism"],
   },
   {
     slug: "water-intake",
@@ -135,7 +135,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "挫折しない作り置きの始め方・おすすめおかず・保存のコツを解説",
     date: "2026-07-19",
     emoji: "🍱",
-    related: ["no-exercise-diet", "convenience-diet", "protein-intake"],
+    related: ["diet-foods", "no-exercise-diet", "convenience-diet"],
   },
   {
     slug: "diet-over-40",
@@ -183,7 +183,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "運動する時間がない人向けに、食事だけで痩せる進め方とデメリット対策を解説",
     date: "2026-07-25",
     emoji: "🚶",
-    related: ["pfc-calculation", "boost-metabolism", "meal-prep"],
+    related: ["daily-calories", "pfc-calculation", "meal-prep"],
   },
   {
     slug: "salt-swelling",
@@ -192,6 +192,38 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-25",
     emoji: "🧂",
     related: ["water-intake", "diet-plateau", "convenience-diet"],
+  },
+  {
+    slug: "daily-calories",
+    title: "1日の摂取カロリーの目安｜自分に必要な数字の出し方",
+    description: "年齢・身長・体重・活動量から必要カロリーを計算する手順と、減らしすぎの危険ラインを解説",
+    date: "2026-07-26",
+    emoji: "🔢",
+    related: ["pfc-calculation", "lose-3kg-month", "no-exercise-diet"],
+  },
+  {
+    slug: "lose-3kg-month",
+    title: "1ヶ月で3kg痩せるには？必要な数字と現実的なペース",
+    description: "3kg減に必要な赤字カロリーを計算し、体重別に無理のないペースかどうかを判定する",
+    date: "2026-07-26",
+    emoji: "📅",
+    related: ["daily-calories", "diet-plateau", "no-rebound"],
+  },
+  {
+    slug: "diet-foods",
+    title: "痩せる食材リスト｜スーパーで買える定番をカテゴリ別に",
+    description: "低カロリー高タンパクの主菜食材から主食・間食まで、迷ったら選べる定番をまとめて紹介",
+    date: "2026-07-26",
+    emoji: "🛒",
+    related: ["convenience-diet", "protein-intake", "meal-prep"],
+  },
+  {
+    slug: "late-night-meal",
+    title: "夜遅い食事で太らない方法｜帰宅が22時以降の人へ",
+    description: "夜遅く食べると太る理由と、分食・メニュー選び・翌朝の調整で現実的に対処する方法",
+    date: "2026-07-26",
+    emoji: "🌙",
+    related: ["sleep-diet", "convenience-diet", "appetite-control"],
   },
 ];
 
