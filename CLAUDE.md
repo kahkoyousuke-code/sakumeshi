@@ -74,7 +74,13 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 - 各エントリは `related`（記事末尾に表示する関連コラムの slug 配列）が必須。`getRelatedColumns(slug)` が解決し、未解決時は最新3件にフォールバックする。一覧の日付降順ソートは `columnsByDateDesc()`。
 - 記事の共通レイアウト（戻るリンク・ヘッダー・目次・CTA・関連コラム・note誘導・JSON-LD）は `src/components/column/ColumnShell.tsx` と `ColumnFooter.tsx`。新規記事は `ColumnShell` で本文だけ書く。
 
-### SEO（canonical）
+### SEO（robots / sitemap / canonical）
+
+`src/app/robots.ts` が `/robots.txt` を生成する。sitemap の場所と `Host` を宣言し、`/api/` と `/result` を Disallow している。
+
+`src/app/sitemap.ts` の `lastModified` は**ビルド時刻ではなく実際の更新日**を入れる。`new Date()` を直接使うとデプロイのたび全ページが更新扱いになり Google が日付を信用しなくなるため、静的ページは同ファイル冒頭の `LAST_MODIFIED` 定数を手で更新する。コラム個別ページは `COLUMNS` の `date`、`/column` 一覧は最新コラムの `date` を自動で使う。
+
+#### canonical
 
 全ページの `metadata` に `alternates: { canonical: "<ルートパス>" }` を明示している（`metadataBase` からの相対パス）。**新しいページを追加したら必ず入れる**。`layout.tsx` のルート metadata が `canonical: "/"` を持つため、書き忘れるとトップページの重複扱いになる。
 
