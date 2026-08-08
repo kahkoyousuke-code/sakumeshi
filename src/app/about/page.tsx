@@ -1,16 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AUTHOR, MEDICAL_DISCLAIMER_SITE } from "@/lib/author";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/about" },
   title: "運営者情報 | サクメシ",
   description:
-    "サクメシの運営者情報。サイトの目的・運営者・お問い合わせ方法について説明します。",
+    "サクメシの運営者情報。運営者のプロフィール・執筆方針・お問い合わせ方法について説明します。",
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: AUTHOR.name,
+  description: AUTHOR.shortBio,
+  jobTitle: AUTHOR.title,
+  url: AUTHOR.url,
+  sameAs: AUTHOR.sameAs,
+  worksFor: {
+    "@type": "Organization",
+    name: "サクメシ",
+    url: "https://sakumeshi.app",
+  },
 };
 
 export default function AboutPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
+
       <h1 className="text-3xl font-bold text-center text-[var(--primary)] mb-8">
         運営者情報
       </h1>
@@ -30,6 +51,52 @@ export default function AboutPage() {
           </p>
         </section>
 
+        <section id="author" className="space-y-3 scroll-mt-20">
+          <h2 className="text-lg font-bold text-gray-800">運営者・執筆者プロフィール</h2>
+          <div className="rounded-xl bg-green-50 border border-green-100 p-5">
+            <p className="font-bold text-green-700">{AUTHOR.name}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{AUTHOR.title}</p>
+          </div>
+          {AUTHOR.bio.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+          <p className="text-sm">
+            発信の詳しい内容は
+            <a
+              href="https://note.com/kahko"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:underline"
+            >
+              note（note.com/kahko）
+            </a>
+            にまとめています。
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-lg font-bold text-gray-800">記事の書き方（編集方針）</h2>
+          <ul className="space-y-2 list-disc list-inside">
+            <li>
+              カロリー・PFC・栄養素の数値は「日本人の食事摂取基準」や厚生労働省
+              e-ヘルスネットなどの公的資料を確認したうえで書き、各記事の末尾に
+              参考・出典として掲載しています。
+            </li>
+            <li>
+              体感や実践のコツについては、運営者自身が試したことをもとに書いています。
+              うまくいかなかったことも省かずに書くようにしています。
+            </li>
+            <li>
+              運営者は医師・管理栄養士ではありません。診断・治療にあたる内容や、
+              特定の商品で痩せると断定するような表現は扱いません。
+            </li>
+            <li>
+              内容に誤りを見つけた場合は、お問い合わせよりご指摘ください。確認のうえ
+              修正し、記事に更新日を表示します。
+            </li>
+          </ul>
+        </section>
+
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-gray-800">運営情報</h2>
           <dl className="space-y-2">
@@ -39,7 +106,7 @@ export default function AboutPage() {
             </div>
             <div className="flex gap-3">
               <dt className="w-28 shrink-0 text-gray-500">運営者</dt>
-              <dd>サクメシ運営</dd>
+              <dd>{AUTHOR.name}</dd>
             </div>
             <div className="flex gap-3">
               <dt className="w-28 shrink-0 text-gray-500">お問い合わせ</dt>
@@ -51,6 +118,13 @@ export default function AboutPage() {
               </dd>
             </div>
           </dl>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-lg font-bold text-gray-800">健康情報についての注意</h2>
+          <p className="rounded-xl bg-gray-50 border border-gray-200 p-4 text-sm text-gray-600">
+            {MEDICAL_DISCLAIMER_SITE}
+          </p>
         </section>
 
         <section className="space-y-3">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
+import ColumnHeader from "@/components/column/ColumnHeader";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/column/boost-metabolism" },
@@ -29,12 +30,7 @@ export default function BoostMetabolism() {
 
       <article>
         {/* ヘッダー */}
-        <header className="mb-8">
-          <p className="text-xs text-gray-400 mb-2">2026-03-29</p>
-          <h1 className="text-2xl font-bold text-gray-800 leading-relaxed">
-            基礎代謝を上げる食事とは？痩せやすい体を作る食べ方を10年筋トレ民が解説
-          </h1>
-        </header>
+        <ColumnHeader slug="boost-metabolism" h1="基礎代謝を上げる食事とは？痩せやすい体を作る食べ方を10年筋トレ民が解説" />
 
         {/* 目次 */}
         <nav className="bg-green-50 rounded-xl p-5 border border-green-100 mb-10">

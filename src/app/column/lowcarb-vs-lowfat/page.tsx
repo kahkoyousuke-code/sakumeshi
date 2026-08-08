@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
+import ColumnHeader from "@/components/column/ColumnHeader";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/column/lowcarb-vs-lowfat" },
@@ -30,12 +31,7 @@ export default function LowcarbVsLowfat() {
 
       <article>
         {/* ヘッダー */}
-        <header className="mb-8">
-          <p className="text-xs text-gray-400 mb-2">2026-03-20</p>
-          <h1 className="text-2xl font-bold text-gray-800 leading-relaxed">
-            低糖質と低脂質、結局どっちがいいの？10年ダイエットしてきた40代サラリーマンが本音で解説
-          </h1>
-        </header>
+        <ColumnHeader slug="lowcarb-vs-lowfat" h1="低糖質と低脂質、結局どっちがいいの？10年ダイエットしてきた40代サラリーマンが本音で解説" />
 
         {/* 目次 */}
         <nav className="bg-green-50 rounded-xl p-5 border border-green-100 mb-10">

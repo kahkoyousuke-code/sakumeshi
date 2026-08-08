@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
+import ColumnHeader from "@/components/column/ColumnHeader";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/column/no-rebound" },
@@ -25,12 +26,7 @@ export default function NoRebound() {
       </Link>
 
       <article>
-        <header className="mb-8">
-          <p className="text-xs text-gray-400 mb-2">2026-05-09</p>
-          <h1 className="text-2xl font-bold text-gray-800 leading-relaxed">
-            リバウンドしない食習慣｜落とした体重を維持する食事の考え方
-          </h1>
-        </header>
+        <ColumnHeader slug="no-rebound" h1="リバウンドしない食習慣｜落とした体重を維持する食事の考え方" />
 
         <nav className="bg-green-50 rounded-xl p-5 border border-green-100 mb-10">
           <p className="text-sm font-bold text-green-700 mb-3">目次</p>

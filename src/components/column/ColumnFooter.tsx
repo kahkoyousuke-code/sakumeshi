@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { AUTHOR, MEDICAL_DISCLAIMER } from "@/lib/author";
 import { getColumn, getRelatedColumns } from "@/lib/columns";
+import { getSources } from "@/lib/sources";
 
 const BASE_URL = "https://sakumeshi.app";
 
@@ -34,6 +36,7 @@ interface ColumnFooterProps {
 export default function ColumnFooter({ slug, ctaLabel }: ColumnFooterProps) {
   const column = getColumn(slug);
   const related = getRelatedColumns(slug);
+  const sources = getSources(slug);
 
   const jsonLd = column
     ? {
@@ -42,9 +45,22 @@ export default function ColumnFooter({ slug, ctaLabel }: ColumnFooterProps) {
         headline: column.title,
         description: column.description,
         datePublished: column.date,
+        dateModified: column.updated ?? column.date,
         mainEntityOfPage: `${BASE_URL}/column/${column.slug}`,
-        author: { "@type": "Organization", name: "サクメシ" },
+        author: {
+          "@type": "Person",
+          name: AUTHOR.name,
+          description: AUTHOR.title,
+          url: AUTHOR.url,
+          sameAs: AUTHOR.sameAs,
+        },
         publisher: { "@type": "Organization", name: "サクメシ", url: BASE_URL },
+        citation: sources.map((source) => ({
+          "@type": "CreativeWork",
+          name: source.label,
+          publisher: { "@type": "Organization", name: source.publisher },
+          url: source.url,
+        })),
       }
     : null;
 
@@ -56,6 +72,52 @@ export default function ColumnFooter({ slug, ctaLabel }: ColumnFooterProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}
+
+      {/* 出典 */}
+      <div className="mt-12 border-t border-gray-200 pt-6">
+        <p className="text-sm font-bold text-gray-600 mb-3">参考・出典</p>
+        <ul className="space-y-2">
+          {sources.map((source) => (
+            <li key={source.url} className="text-xs text-gray-500 leading-relaxed">
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-700 hover:underline"
+              >
+                {source.label}
+              </a>
+              <span className="ml-1">（{source.publisher}）</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 著者 */}
+      <div className="mt-6 rounded-xl bg-green-50 border border-green-100 p-5">
+        <p className="text-xs text-gray-500 mb-2">この記事を書いた人</p>
+        <Link
+          href="/about#author"
+          className="text-sm font-bold text-green-700 hover:underline"
+        >
+          {AUTHOR.name}
+        </Link>
+        <span className="ml-2 text-xs text-gray-500">{AUTHOR.title}</span>
+        <p className="mt-2 text-xs text-gray-600 leading-relaxed">
+          {AUTHOR.shortBio}
+        </p>
+        <Link
+          href="/about#author"
+          className="mt-3 inline-block text-xs text-green-700 hover:underline"
+        >
+          プロフィールを見る →
+        </Link>
+      </div>
+
+      {/* 医療免責 */}
+      <p className="mt-4 rounded-xl bg-gray-50 border border-gray-200 p-4 text-xs text-gray-500 leading-relaxed">
+        {MEDICAL_DISCLAIMER}
+      </p>
 
       {/* CTA */}
       <div className="mt-12 text-center">

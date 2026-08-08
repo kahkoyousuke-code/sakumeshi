@@ -17,10 +17,10 @@ const LAST_MODIFIED = {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // The column index changes whenever a new column ships.
-  const latestColumnDate = COLUMNS.reduce<string>(
-    (latest, column) => (column.date > latest ? column.date : latest),
-    LAST_MODIFIED.home,
-  );
+  const latestColumnDate = COLUMNS.reduce<string>((latest, column) => {
+    const modified = column.updated ?? column.date;
+    return modified > latest ? modified : latest;
+  }, LAST_MODIFIED.home);
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -51,7 +51,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const columnRoutes: MetadataRoute.Sitemap = COLUMNS.map((column) => ({
     url: `${BASE_URL}/column/${column.slug}`,
-    lastModified: new Date(column.date),
+    lastModified: new Date(column.updated ?? column.date),
     changeFrequency: "monthly",
     priority: 0.6,
   }));

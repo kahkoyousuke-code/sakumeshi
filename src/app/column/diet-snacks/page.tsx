@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
+import ColumnHeader from "@/components/column/ColumnHeader";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/column/diet-snacks" },
@@ -30,12 +31,7 @@ export default function DietSnacks() {
 
       <article>
         {/* ヘッダー */}
-        <header className="mb-8">
-          <p className="text-xs text-gray-400 mb-2">2026-03-21</p>
-          <h1 className="text-2xl font-bold text-gray-800 leading-relaxed">
-            ダイエット中の間食、何食べていい？太らないおやつの選び方を10年トレーニーが教える
-          </h1>
-        </header>
+        <ColumnHeader slug="diet-snacks" h1="ダイエット中の間食、何食べていい？太らないおやつの選び方を10年トレーニーが教える" />
 
         {/* 目次 */}
         <nav className="bg-green-50 rounded-xl p-5 border border-green-100 mb-10">

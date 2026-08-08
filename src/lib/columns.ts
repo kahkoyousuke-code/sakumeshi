@@ -3,6 +3,8 @@ export interface ColumnMeta {
   title: string;
   description: string;
   date: string;
+  /** set when the article is substantially revised; drives the byline and sitemap */
+  updated?: string;
   emoji: string;
   /** slugs of related columns shown at the bottom of the article */
   related: string[];

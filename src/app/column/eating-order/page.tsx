@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
+import ColumnHeader from "@/components/column/ColumnHeader";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/column/eating-order" },
@@ -25,12 +26,7 @@ export default function EatingOrder() {
       </Link>
 
       <article>
-        <header className="mb-8">
-          <p className="text-xs text-gray-400 mb-2">2026-05-09</p>
-          <h1 className="text-2xl font-bold text-gray-800 leading-relaxed">
-            食べる順番ダイエット｜血糖値を抑えて太りにくい体を作る食べ方
-          </h1>
-        </header>
+        <ColumnHeader slug="eating-order" h1="食べる順番ダイエット｜血糖値を抑えて太りにくい体を作る食べ方" />
 
         <nav className="bg-green-50 rounded-xl p-5 border border-green-100 mb-10">
           <p className="text-sm font-bold text-green-700 mb-3">目次</p>

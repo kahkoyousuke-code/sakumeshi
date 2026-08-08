@@ -72,13 +72,23 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 `src/app/column/` 配下に静的ページとして実装。`src/lib/columns.ts` の `COLUMNS` 配列がコラム一覧のシングルソース。新しいコラムを追加するには `COLUMNS` にエントリを追加してから `src/app/column/<slug>/page.tsx` を作成する。
 
 - 各エントリは `related`（記事末尾に表示する関連コラムの slug 配列）が必須。`getRelatedColumns(slug)` が解決し、未解決時は最新3件にフォールバックする。一覧の日付降順ソートは `columnsByDateDesc()`。
+- `updated` は任意。記事を大幅に改稿したときだけ入れる。バイライン（`公開 … / 更新 …`）・JSON-LD の `dateModified`・sitemap の `lastModified` がこれを見る。
 - 記事の共通レイアウト（戻るリンク・ヘッダー・目次・CTA・関連コラム・note誘導・JSON-LD）は `src/components/column/ColumnShell.tsx` と `ColumnFooter.tsx`。新規記事は `ColumnShell` で本文だけ書く。
+- `ColumnHeader.tsx` が H1 と著者バイラインを描画する。`ColumnShell` は自動で使うが、`ColumnShell` を使わない旧記事は個別に `<ColumnHeader slug h1 />` を置いている（H1 が `COLUMNS.title` と異なるため `h1` を渡す）。
+
+#### E-E-A-T（健康＝YMYL 向け・AdSense 対策）
+
+匿名・無出典は AdSense の「有用性の低いコンテンツ」判定に直結するため、以下は全記事で必ず出す。`ColumnFooter` が自動でレンダリングするので、新規記事側の作業は不要。
+
+- **著者**：`src/lib/author.ts` の `AUTHOR` がシングルソース。バイライン・記事末尾の著者ボックス・`/about#author`・JSON-LD の `author`（`@type: Person`、`sameAs` に note）が全部ここを参照する。
+- **出典**：`src/lib/sources.ts` の `SOURCES`（厚労省 e-ヘルスネット・食事摂取基準などの公的資料のみ）と `COLUMN_SOURCE_KEYS`（slug → 出典キー）。`getSources(slug)` が解決し、未定義の slug は `DEFAULT_SOURCE_KEYS` にフォールバック。**新しいコラムを足したら `COLUMN_SOURCE_KEYS` にも追加する**。個人ブログ・アフィリエイトサイトは出典に入れない。
+- **医療免責**：`MEDICAL_DISCLAIMER`（記事用）/ `MEDICAL_DISCLAIMER_SITE`（`/about` 用）。
 
 ### SEO（robots / sitemap / canonical）
 
 `src/app/robots.ts` が `/robots.txt` を生成する。sitemap の場所と `Host` を宣言し、`/api/` と `/result` を Disallow している。
 
-`src/app/sitemap.ts` の `lastModified` は**ビルド時刻ではなく実際の更新日**を入れる。`new Date()` を直接使うとデプロイのたび全ページが更新扱いになり Google が日付を信用しなくなるため、静的ページは同ファイル冒頭の `LAST_MODIFIED` 定数を手で更新する。コラム個別ページは `COLUMNS` の `date`、`/column` 一覧は最新コラムの `date` を自動で使う。
+`src/app/sitemap.ts` の `lastModified` は**ビルド時刻ではなく実際の更新日**を入れる。`new Date()` を直接使うとデプロイのたび全ページが更新扱いになり Google が日付を信用しなくなるため、静的ページは同ファイル冒頭の `LAST_MODIFIED` 定数を手で更新する。コラム個別ページは `COLUMNS` の `updated ?? date`、`/column` 一覧はその最新値を自動で使う。
 
 #### canonical
 

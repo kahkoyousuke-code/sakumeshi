@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { getColumn } from "@/lib/columns";
 import ColumnFooter from "./ColumnFooter";
+import ColumnHeader from "./ColumnHeader";
 
 export interface TocItem {
   id: string;
@@ -24,8 +24,6 @@ export default function ColumnShell({
   ctaLabel,
   children,
 }: ColumnShellProps) {
-  const column = getColumn(slug);
-
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
       <Link
@@ -36,12 +34,7 @@ export default function ColumnShell({
       </Link>
 
       <article>
-        <header className="mb-8">
-          {column && <p className="text-xs text-gray-400 mb-2">{column.date}</p>}
-          <h1 className="text-2xl font-bold text-gray-800 leading-relaxed">
-            {h1 ?? column?.title}
-          </h1>
-        </header>
+        <ColumnHeader slug={slug} h1={h1} />
 
         <nav className="bg-green-50 rounded-xl p-5 border border-green-100 mb-10">
           <p className="text-sm font-bold text-green-700 mb-3">目次</p>

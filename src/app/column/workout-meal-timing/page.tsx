@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
+import ColumnHeader from "@/components/column/ColumnHeader";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/column/workout-meal-timing" },
@@ -26,12 +27,7 @@ export default function WorkoutMealTiming() {
       </Link>
 
       <article>
-        <header className="mb-8">
-          <p className="text-xs text-gray-400 mb-2">2026-05-09</p>
-          <h1 className="text-2xl font-bold text-gray-800 leading-relaxed">
-            筋トレ前後の食事タイミング｜何をいつ食べるか10年筋トレ民が完全解説
-          </h1>
-        </header>
+        <ColumnHeader slug="workout-meal-timing" h1="筋トレ前後の食事タイミング｜何をいつ食べるか10年筋トレ民が完全解説" />
 
         <nav className="bg-green-50 rounded-xl p-5 border border-green-100 mb-10">
           <p className="text-sm font-bold text-green-700 mb-3">目次</p>

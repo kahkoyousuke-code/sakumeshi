@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ColumnFooter from "@/components/column/ColumnFooter";
+import ColumnHeader from "@/components/column/ColumnHeader";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/column/pfc-calculation" },
@@ -30,12 +31,7 @@ export default function PfcCalculation() {
 
       <article>
         {/* ヘッダー */}
-        <header className="mb-8">
-          <p className="text-xs text-gray-400 mb-2">2026-03-20</p>
-          <h1 className="text-2xl font-bold text-gray-800 leading-relaxed">
-            PFCバランスの計算方法を分かりやすく解説！ダイエット初心者でも5分で分かる
-          </h1>
-        </header>
+        <ColumnHeader slug="pfc-calculation" h1="PFCバランスの計算方法を分かりやすく解説！ダイエット初心者でも5分で分かる" />
 
         {/* 目次 */}
         <nav className="bg-green-50 rounded-xl p-5 border border-green-100 mb-10">
