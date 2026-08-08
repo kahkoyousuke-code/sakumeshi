@@ -151,25 +151,28 @@ export default function GutHealthDiet() {
         </h2>
         <div className="space-y-4">
           <p>
-            日本人の食事摂取基準では、成人の食物繊維の目標量として
-            <strong>男性21g以上、女性18g以上</strong>
-            （18〜64歳）が示されています。一方、実際の平均摂取量は15g前後にとどまり、多くの人が数グラム足りていません。
+            成人の食物繊維の目標量は
+            <strong>男性1日20g以上、女性1日18g以上</strong>
+            とされています。一方、国民健康・栄養調査による日本人成人の平均摂取量は
+            <strong>1日18.1g</strong>。平均で見ると、女性はほぼ届いていて、男性が2gほど足りない、という位置関係です。
           </p>
           <div className="bg-green-50 rounded-xl p-5 border border-green-100">
             <div className="flex items-center justify-center gap-6">
               <div className="text-center">
-                <p className="text-3xl font-bold text-green-600">18〜21g</p>
+                <p className="text-3xl font-bold text-green-600">18〜20g</p>
                 <p className="text-xs text-gray-500 mt-1">目標量 / 日</p>
               </div>
               <div className="text-2xl text-gray-300">vs</div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-red-500">約15g</p>
-                <p className="text-xs text-gray-500 mt-1">日本人の平均</p>
+                <p className="text-3xl font-bold text-amber-500">18.1g</p>
+                <p className="text-xs text-gray-500 mt-1">日本人成人の平均</p>
               </div>
             </div>
           </div>
           <p className="text-sm text-gray-600">
-            差は3〜6g。これは<strong>納豆1パック＋わかめの味噌汁1杯</strong>で埋まる量です。数字にすると絶望的に見えますが、実際にやることは1〜2品足すだけです。
+            ここで注意したいのは、これが<strong>平均値だということ</strong>です。麺類や丼もので済ませる日が多い人、野菜をほとんど食べない人は、平均よりかなり下にいます。自分がどちら側かは、平均ではなく実際の食事で判断してください。足りない場合でも、埋めるのに必要なのは
+            <strong>納豆1パック＋わかめの味噌汁1杯</strong>
+            といった程度の量です。
           </p>
           <div className="space-y-2">
             <p className="text-sm font-bold text-gray-700">食物繊維が多い食品（1食分あたりの目安）</p>
@@ -389,7 +392,7 @@ export default function GutHealthDiet() {
         <div className="space-y-4">
           <ol className="space-y-2 bg-green-50 rounded-xl p-4 border border-green-100">
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">1.</span><span>腸活は<strong>直接痩せる方法ではなく、食事の質を底上げする作業</strong></span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">2.</span><span>食物繊維の目標は<strong>男性21g・女性18g以上</strong>。平均との差は3〜6g</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">2.</span><span>食物繊維の目標は<strong>男性20g・女性18g以上</strong>（成人平均は18.1g）</span></li>
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">3.</span><span><strong>水溶性と不溶性を両方</strong>。便秘気味なら水溶性と水分から</span></li>
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">4.</span><span>発酵食品は<strong>毎日少量</strong>。まとめて摂っても意味が薄い</span></li>
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">5.</span><span><strong>1週間に1つずつ</strong>足す。一気に増やすとお腹が張る</span></li>

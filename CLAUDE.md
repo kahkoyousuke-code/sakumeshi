@@ -81,7 +81,13 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 匿名・無出典は AdSense の「有用性の低いコンテンツ」判定に直結するため、以下は全記事で必ず出す。`ColumnFooter` が自動でレンダリングするので、新規記事側の作業は不要。
 
 - **著者**：`src/lib/author.ts` の `AUTHOR` がシングルソース。バイライン・記事末尾の著者ボックス・`/about#author`・JSON-LD の `author`（`@type: Person`、`sameAs` に note）が全部ここを参照する。
-- **出典**：`src/lib/sources.ts` の `SOURCES`（厚労省 e-ヘルスネット・食事摂取基準などの公的資料のみ）と `COLUMN_SOURCE_KEYS`（slug → 出典キー）。`getSources(slug)` が解決し、未定義の slug は `DEFAULT_SOURCE_KEYS` にフォールバック。**新しいコラムを足したら `COLUMN_SOURCE_KEYS` にも追加する**。個人ブログ・アフィリエイトサイトは出典に入れない。
+- **出典**：`src/lib/sources.ts` の `SOURCES`（厚労省の公的資料のみ）と `COLUMN_SOURCE_KEYS`（slug → 出典キー）。`getSources(slug)` が解決し、未定義の slug は `DEFAULT_SOURCE_KEYS` にフォールバック。**新しいコラムを足したら `COLUMN_SOURCE_KEYS` にも追加する**。個人ブログ・アフィリエイトサイトは出典に入れない。
+  - e-ヘルスネットは2025年4月に **`kennet.mhlw.go.jp`（健康づくりサポートネット）** へ統合され、旧 `www.e-healthnet.mhlw.go.jp` は**名前解決すらできない**。旧URLをそのまま貼らないこと。パスの対応は `/information/<cat>/<file>.html` → `/information/information/<cat>/<file>.html`。
+  - 出典を追加・変更したら、必ず全URLの死活を確認する：
+    ```bash
+    sed -n 's/.*url: "\(https[^"]*\)".*/\1/p' src/lib/sources.ts | sort -u | while read -r u; do echo "$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 20 "$u")  $u"; done
+    ```
+  - 記事中に出典由来の数値を書くときは、必ず出典ページの現物と突き合わせる（例：食物繊維の目標量は男性20g／女性18g、成人平均18.1g）。古い版の数字が流通しているので記憶で書かない。
 - **医療免責**：`MEDICAL_DISCLAIMER`（記事用）/ `MEDICAL_DISCLAIMER_SITE`（`/about` 用）。
 
 ### SEO（robots / sitemap / canonical）
