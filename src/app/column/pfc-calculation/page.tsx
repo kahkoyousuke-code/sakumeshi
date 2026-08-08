@@ -14,9 +14,46 @@ const TOC = [
   { id: "what-is-pfc", label: "PFCバランスって何？" },
   { id: "why-important", label: "なぜPFCバランスが大事なの？" },
   { id: "calculation", label: "PFCバランスの計算方法【4ステップ】" },
+  { id: "standard", label: "公的な基準の範囲とどう違う？" },
+  { id: "menu", label: "計算した数字を献立に落とす" },
+  { id: "mistake", label: "よくある計算ミス5つ" },
+  { id: "record", label: "記録はどこまでやればいい？" },
   { id: "sakumeshi", label: "正直、自分で計算するのは面倒" },
   { id: "tips", label: "PFC管理のコツ" },
+  { id: "experience", label: "計算してみて一番驚いたこと" },
+  { id: "faq", label: "よくある質問" },
   { id: "summary", label: "まとめ" },
+];
+
+const MISTAKES = [
+  { title: "食材の重さとタンパク質量を混同する", desc: "「タンパク質132g」は肉132gではありません。鶏むね肉100gに含まれるタンパク質は約23gなので、132gを肉だけで摂るなら約570g必要です。実際は複数の食材から分けて摂ります。" },
+  { title: "炭水化物と糖質を同じものとして扱う", desc: "炭水化物＝糖質＋食物繊維です。計算上は炭水化物で扱いますが、食物繊維の枠も意識しておかないと、糖質ばかりになります。" },
+  { title: "体重が減っても目標を更新しない", desc: "5kg落ちればBMRもTDEEも下がります。開始時の数字のまま続けると、いつか赤字が消えて止まります。1ヶ月に1回は計算し直してください。" },
+  { title: "活動係数を高く見積もる", desc: "「週3回ジムに行くから1.55」と考えがちですが、それ以外の時間がデスクワークなら1.375が実態に近いことも。迷ったら低いほうを選ぶと安全です。" },
+  { title: "調味料と飲み物を計算に入れない", desc: "ドレッシング・マヨネーズ・油・加糖飲料。ここだけで1日200〜400kcalになります。PFCで言えば、ほぼ全部が脂質か炭水化物です。" },
+];
+
+const FAQS = [
+  {
+    q: "PFCを毎日きっちり守らないとダメ？",
+    a: "必要ありません。1日単位で完璧に合わせるより、1週間の平均で近ければ十分です。とくにタンパク質だけ確保して、あとは大きく外れなければ結果は出ます。",
+  },
+  {
+    q: "低糖質と低脂質、どちらの比率を選ぶべき？",
+    a: "続けられるほうです。どちらが優れているという結論は出ていません。米が好きなら低脂質、揚げ物や肉が好きなら低糖質、という選び方で問題ありません。",
+  },
+  {
+    q: "脂質はどこまで減らしていい？",
+    a: "極端に減らすとホルモンや肌に影響が出ます。目安として、総カロリーの15%は下回らないようにしてください。1,800kcalなら約30gが下限です。",
+  },
+  {
+    q: "計算結果のカロリーだと明らかに足りない",
+    a: "赤字が大きすぎる可能性があります。TDEE−500kcalがきついなら、−300kcalに緩めてください。ペースは落ちますが、続く設定のほうが最終的に早く着きます。",
+  },
+  {
+    q: "身長・体重を入れるだけのアプリと数字が違う",
+    a: "使っている計算式が違うためです。ハリス・ベネディクト式、国立健康・栄養研究所の式など複数あり、数百kcal差が出ることもあります。どれが正解というより、1つ選んで固定し、体重の動きで補正するのが実用的です。",
+  },
 ];
 
 export default function PfcCalculation() {
@@ -331,6 +368,169 @@ export default function PfcCalculation() {
 
           <hr className="border-green-100" />
 
+          {/* 公的基準との関係 */}
+          <section>
+            <h2
+              id="standard"
+              className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100"
+            >
+              公的な基準の範囲とどう違う？
+            </h2>
+            <div className="space-y-4">
+              <p>
+                ここで正直に書いておきます。上で紹介した比率は、
+                <strong>公的な食事摂取基準に示されている範囲とは少しずれています</strong>
+                。
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border-collapse">
+                  <thead>
+                    <tr className="bg-green-50">
+                      <th className="text-left p-2 border border-green-100 font-semibold text-green-800">区分</th>
+                      <th className="text-center p-2 border border-green-100 font-semibold text-green-800">P</th>
+                      <th className="text-center p-2 border border-green-100 font-semibold text-green-800">F</th>
+                      <th className="text-center p-2 border border-green-100 font-semibold text-green-800">C</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-gray-600">
+                    <tr>
+                      <td className="p-2 border border-green-100 font-medium">食事摂取基準の目標範囲（成人）</td>
+                      <td className="p-2 border border-green-100 text-center">13〜20%</td>
+                      <td className="p-2 border border-green-100 text-center">20〜30%</td>
+                      <td className="p-2 border border-green-100 text-center">50〜65%</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="p-2 border border-green-100 font-medium">この記事のバランス型</td>
+                      <td className="p-2 border border-green-100 text-center font-bold text-green-700">30%</td>
+                      <td className="p-2 border border-green-100 text-center">25%</td>
+                      <td className="p-2 border border-green-100 text-center">45%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                ずれているのはタンパク質です。理由ははっきりしていて、
+                <strong>公的基準は「カロリーが足りている健康な状態」を前提にしている</strong>
+                から。減量中はカロリーが不足しているので、そのままだと筋肉が削られます。そのぶんを見込んで、タンパク質の比率を高く設定しています。
+              </p>
+              <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
+                <p className="font-bold text-amber-800 text-sm mb-1">⚠ そのため、次の方には当てはまりません</p>
+                <p className="text-sm text-gray-600">
+                  腎臓に持病がある方、たんぱく質・脂質・エネルギーの制限を受けている方、妊娠中・授乳中の方、成長期の方。該当する場合は、必ず主治医または管理栄養士の指示に従ってください。
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <hr className="border-green-100" />
+
+          {/* 献立に落とす */}
+          <section>
+            <h2
+              id="menu"
+              className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100"
+            >
+              計算した数字を献立に落とす
+            </h2>
+            <div className="space-y-4">
+              <p>
+                計算で挫折する人の多くは、
+                <strong>「で、何を食べればいいの？」で止まります</strong>
+                。先ほどの例（1,759kcal / P132g / F49g / C198g）を、実際の食事にするとこうなります。
+              </p>
+              <div className="space-y-3">
+                {[
+                  { meal: "朝食", menu: "卵2個＋納豆1パック＋ごはん150g＋味噌汁", pfc: "P24g / F14g / C60g", kcal: "約450kcal" },
+                  { meal: "昼食", menu: "鶏むね肉150g＋大麦ごはん150g＋サラダ＋味噌汁", pfc: "P38g / F6g / C60g", kcal: "約450kcal" },
+                  { meal: "間食", menu: "プロテイン1杯＋ギリシャヨーグルト", pfc: "P30g / F2g / C10g", kcal: "約200kcal" },
+                  { meal: "夕食", menu: "鮭1切れ＋木綿豆腐半丁＋野菜炒め＋ごはん120g", pfc: "P40g / F20g / C65g", kcal: "約650kcal" },
+                ].map((row) => (
+                  <div key={row.meal} className="bg-white rounded-xl p-4 border border-green-100">
+                    <div className="flex items-start justify-between gap-3 mb-1">
+                      <p className="font-bold text-green-700 text-sm">{row.meal}</p>
+                      <span className="text-xs bg-green-200 text-green-800 font-bold px-2 py-0.5 rounded-full whitespace-nowrap">{row.kcal}</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{row.menu}</p>
+                    <p className="text-xs text-gray-500 mt-1">{row.pfc}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-green-50 rounded-xl p-4 border border-green-100">
+                <p className="font-bold text-green-700 text-sm mb-1">合計 約1,750kcal / P132g・F42g・C195g</p>
+                <p className="text-sm text-gray-600">
+                  目標にほぼ一致しました。ポイントは
+                  <strong>タンパク質から先に埋めて、残りの枠に主食と脂質を入れる</strong>
+                  という順番です。逆にやると、必ずタンパク質が足りなくなります。
+                </p>
+              </div>
+              <p className="text-sm text-gray-500">
+                ※ 数値は食材や商品によって変動します。1食ごとにぴったり合わせる必要はなく、1日の合計で近ければ十分です。
+              </p>
+            </div>
+          </section>
+
+          <hr className="border-green-100" />
+
+          {/* よくある計算ミス */}
+          <section>
+            <h2
+              id="mistake"
+              className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100"
+            >
+              よくある計算ミス5つ
+            </h2>
+            <div className="space-y-3">
+              {MISTAKES.map((m) => (
+                <div key={m.title} className="bg-red-50 rounded-xl p-4 border border-red-100">
+                  <p className="font-bold text-red-700 text-sm mb-1">❌ {m.title}</p>
+                  <p className="text-sm text-gray-600">{m.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <hr className="border-green-100" />
+
+          {/* 記録 */}
+          <section>
+            <h2
+              id="record"
+              className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100"
+            >
+              記録はどこまでやればいい？
+            </h2>
+            <div className="space-y-4">
+              <p>
+                「毎食すべて記録し続けないといけないのか」と聞かれますが、
+                <strong>答えはノーです</strong>
+                。記録は目的ではなく、感覚を作るための道具です。
+              </p>
+              <div className="space-y-2">
+                {[
+                  { phase: "最初の2週間", task: "口に入れたものを全部記録する", why: "自分がふだん何をどれだけ食べているかを知るため。ここは省略できません" },
+                  { phase: "1〜2ヶ月目", task: "主食とタンパク源だけ記録する", why: "定番メニューの数字を覚える期間。細かい調味料まで追わなくてよくなります" },
+                  { phase: "3ヶ月目以降", task: "体重の推移だけ見る", why: "自分の定番の組み合わせが頭に入っていれば、計算しなくても大きく外れません" },
+                  { phase: "止まったとき", task: "3日だけ全部記録し直す", why: "隠れカロリーを見つけるための一時的な作業。ずっと続ける必要はありません" },
+                ].map((r) => (
+                  <div key={r.phase} className="bg-white rounded-xl p-4 border border-green-100">
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-xs bg-green-600 text-white font-bold px-2 py-1 rounded whitespace-nowrap">{r.phase}</span>
+                      <p className="text-sm font-bold text-gray-800">{r.task}</p>
+                    </div>
+                    <p className="text-xs text-gray-500">{r.why}</p>
+                  </div>
+                ))}
+              </div>
+              <p>
+                記録を一生続ける前提だと、始める前に嫌になります。
+                <strong>最初の2週間だけ本気でやる</strong>
+                と決めれば、そのあとはかなり楽になります。
+              </p>
+            </div>
+          </section>
+
+          <hr className="border-green-100" />
+
           {/* セクション4 */}
           <section>
             <h2
@@ -389,6 +589,59 @@ export default function PfcCalculation() {
 
           <hr className="border-green-100" />
 
+          {/* 実体験 */}
+          <section>
+            <h2
+              id="experience"
+              className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100"
+            >
+              計算してみて一番驚いたこと
+            </h2>
+            <div className="space-y-4">
+              <p>
+                92kgあった頃、初めてこの計算をやって驚いたのは
+                <strong>タンパク質の目標値でした</strong>
+                。出てきた数字は130g前後。当時の自分は、記録してみたら1日50gしか摂れていませんでした。<strong>目標の4割です</strong>。
+              </p>
+              <p>
+                もうひとつ驚いたのが、脂質です。目標は約50gだったのに、記録すると100gを軽く超えていました。揚げ物を毎日食べていたわけでもないのに、です。内訳を見ると、
+                <strong>ドレッシング・炒め油・マヨネーズ・菓子パン</strong>
+                で積み上がっていました。自覚のある脂質より、無自覚な脂質のほうがはるかに多かった。
+              </p>
+              <p>
+                この2つが分かった時点で、やることが決まりました。タンパク質を倍にして、見えない脂を削る。
+                <strong>「痩せるために何をすればいいか」が、精神論から具体的な作業に変わった瞬間</strong>
+                です。
+              </p>
+              <p>
+                逆に失敗したのは、最初の頃にPFCを1食ごとにぴったり合わせようとしたことです。3日で疲れてやめました。今は1日の合計で見て、タンパク質だけ死守、あとはだいたい。それでも結果は出ます。
+                <strong>厳密さより継続性のほうが効きます</strong>。
+              </p>
+            </div>
+          </section>
+
+          <hr className="border-green-100" />
+
+          {/* FAQ */}
+          <section>
+            <h2
+              id="faq"
+              className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100"
+            >
+              よくある質問
+            </h2>
+            <div className="space-y-3">
+              {FAQS.map((item) => (
+                <div key={item.q} className="bg-green-50 rounded-xl p-4 border border-green-100">
+                  <p className="font-bold text-green-700 text-sm mb-1">Q. {item.q}</p>
+                  <p className="text-sm text-gray-600">A. {item.a}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <hr className="border-green-100" />
+
           {/* セクション6 */}
           <section>
             <h2
@@ -402,8 +655,10 @@ export default function PfcCalculation() {
               <ol className="space-y-2 bg-green-50 rounded-xl p-4 border border-green-100">
                 <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">1.</span><span><strong>基礎代謝（BMR）を計算する</strong></span></li>
                 <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">2.</span><span><strong>消費カロリー（TDEE）を出す</strong></span></li>
-                <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">3.</span><span><strong>目標カロリーを決める</strong></span></li>
+                <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">3.</span><span><strong>目標カロリーを決める</strong>（減量ならTDEE−500kcal、下限1,200kcal）</span></li>
                 <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">4.</span><span><strong>PFC比率で内訳を計算する</strong></span></li>
+                <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">5.</span><span>献立は<strong>タンパク質から先に埋める</strong>。逆にやると必ず不足する</span></li>
+                <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">6.</span><span>体重が変わったら<strong>1ヶ月に1回は計算し直す</strong></span></li>
               </ol>
               <p>
                 理屈はシンプルですが、自分でやるのは面倒。だからこそサクメシのようなツールを活用して、<strong>考える時間を減らして行動する時間を増やす</strong>のがおすすめです。
