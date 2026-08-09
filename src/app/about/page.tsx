@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AUTHOR, MEDICAL_DISCLAIMER_SITE } from "@/lib/author";
+import { SAKU_SUPPU_URL, SAKU_TRAINING_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/about" },
@@ -60,18 +61,54 @@ export default function AboutPage() {
           {AUTHOR.bio.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
-          <p className="text-sm">
-            発信の詳しい内容は
-            <a
-              href="https://note.com/kahko"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-600 hover:underline"
-            >
-              note（note.com/kahko）
-            </a>
-            にまとめています。
-          </p>
+          <div className="space-y-1.5 pt-1">
+            <p className="text-sm font-bold text-gray-700">発信・関連サービス</p>
+            <ul className="space-y-1.5 list-disc list-inside text-sm">
+              <li>
+                <a
+                  href="https://note.com/kahko"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:underline"
+                >
+                  note（motsu）
+                </a>
+                — 食事記録やトレーニングの詳しい内容
+              </li>
+              <li>
+                <a
+                  href="https://x.com/MotMotsu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:underline"
+                >
+                  X（@MotMotsu）
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SAKU_TRAINING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:underline"
+                >
+                  サクトレ
+                </a>
+                — トレーニングメニューの提案
+              </li>
+              <li>
+                <a
+                  href={SAKU_SUPPU_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:underline"
+                >
+                  サクサプ
+                </a>
+                — サプリメントの提案
+              </li>
+            </ul>
+          </div>
         </section>
 
         <section className="space-y-3">
