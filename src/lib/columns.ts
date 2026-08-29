@@ -247,6 +247,15 @@ export const COLUMNS: ColumnMeta[] = [
     emoji: "🌙",
     related: ["sleep-diet", "convenience-diet", "appetite-control"],
   },
+  {
+    slug: "slow-weight-gain",
+    title: "太るのは、一晩ではない｜25kg増を1日あたりに割ってみた",
+    description:
+      "運営者が92kgになるまでの25kg増を1日あたりのカロリーに割り戻すと約53kcal。じわじわ太る仕組みと、同じ計算が減量にも効く話を実体験から解説します。",
+    date: "2026-08-29",
+    emoji: "📉",
+    related: ["daily-calories", "no-rebound", "lose-3kg-month"],
+  },
 ];
 
 export function getColumn(slug: string): ColumnMeta | undefined {
