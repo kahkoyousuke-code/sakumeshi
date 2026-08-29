@@ -6,7 +6,10 @@ import { motion } from "framer-motion";
 import { SAKU_TRAINING_URL, SAKU_SUPPU_URL, TOTAL_STEPS } from "@/lib/constants";
 import { columnsByDateDesc } from "@/lib/columns";
 
-const LATEST_COLUMNS = columnsByDateDesc().slice(0, 6);
+const COLUMNS_BY_DATE = columnsByDateDesc();
+const LATEST_COLUMNS = COLUMNS_BY_DATE.slice(0, 6);
+/** the rest, linked as a compact list so every article has a link from the top page */
+const OTHER_COLUMNS = COLUMNS_BY_DATE.slice(6);
 
 const FEATURES = [
   { icon: "📊", label: "カロリー・PFC計算" },
@@ -145,9 +148,29 @@ export default function HomePage() {
               </li>
             ))}
           </ul>
+
+          <p className="mt-5 mb-2 text-xs font-semibold text-gray-400">
+            そのほかのコラム
+          </p>
+          <ul className="space-y-1.5">
+            {OTHER_COLUMNS.map(({ slug, title, emoji }) => (
+              <li key={slug}>
+                <Link
+                  href={`/column/${slug}`}
+                  className="block text-xs leading-relaxed text-gray-600 transition-colors duration-200 hover:text-[var(--primary)] hover:underline"
+                >
+                  <span className="mr-1" aria-hidden="true">
+                    {emoji}
+                  </span>
+                  {title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
           <Link
             href="/column"
-            className="mt-3 block text-center text-sm font-medium text-[var(--primary)] hover:underline"
+            className="mt-4 block text-center text-sm font-medium text-[var(--primary)] hover:underline"
           >
             コラムをもっと見る →
           </Link>
