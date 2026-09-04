@@ -256,6 +256,15 @@ export const COLUMNS: ColumnMeta[] = [
     emoji: "📉",
     related: ["daily-calories", "no-rebound", "lose-3kg-month"],
   },
+  {
+    slug: "eating-out-92kg",
+    title: "92kgのとき、外食で何を食べていたか｜メニューより回数が変わった話",
+    description:
+      "運営者が92kgだった頃の外食メニューを書き出してカロリーを積み上げ、「選び方で削れる量」と「回数で削れる量」を比較します。昼を作り置き弁当に置き換えた実例つき。",
+    date: "2026-09-05",
+    emoji: "🍱",
+    related: ["eating-out", "slow-weight-gain", "convenience-diet"],
+  },
 ];
 
 export function getColumn(slug: string): ColumnMeta | undefined {
