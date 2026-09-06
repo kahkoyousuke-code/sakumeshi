@@ -93,6 +93,11 @@ export const SOURCES = {
     publisher: "厚生労働省 健康づくりサポートネット（e-ヘルスネット）",
     url: "https://kennet.mhlw.go.jp/information/information/food/e-03-004.html",
   },
+  foodPoisoning: {
+    label: "家庭でできる食中毒予防の６つのポイント",
+    publisher: "厚生労働省",
+    url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/shokuhin/syokuchu/01_00006.html",
+  },
 } as const satisfies Record<string, Source>;
 
 type SourceKey = keyof typeof SOURCES;
@@ -130,6 +135,7 @@ const COLUMN_SOURCE_KEYS: Partial<Record<string, SourceKey[]>> = {
   "late-night-meal": ["sleepLifestyle", "bloodSugar", "diabetes"],
   "slow-weight-gain": ["obesity", "energyMetabolism", "dietaryReference"],
   "eating-out-92kg": ["nutritionLabel", "obesity", "dietaryReference"],
+  "chicken-bento-1year": ["foodPoisoning", "protein", "dietaryReference"],
 };
 
 export function getSources(slug: string): Source[] {

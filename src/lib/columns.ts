@@ -265,6 +265,15 @@ export const COLUMNS: ColumnMeta[] = [
     emoji: "🍱",
     related: ["eating-out", "slow-weight-gain", "convenience-diet"],
   },
+  {
+    slug: "chicken-bento-1year",
+    title: "同じ鶏むね弁当を1年続けている。飽きなかった理由は味ではなかった",
+    description:
+      "低温調理の鶏むね弁当を1年続けた実数と、加熱で不安になった話",
+    date: "2026-09-06",
+    emoji: "🐔",
+    related: ["meal-prep", "eating-out-92kg", "protein-intake"],
+  },
 ];
 
 export function getColumn(slug: string): ColumnMeta | undefined {
