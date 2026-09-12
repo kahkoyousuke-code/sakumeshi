@@ -274,6 +274,15 @@ export const COLUMNS: ColumnMeta[] = [
     emoji: "🐔",
     related: ["meal-prep", "eating-out-92kg", "protein-intake"],
   },
+  {
+    slug: "scale-vs-mirror",
+    title: "運動なしで体重は落ちた。鏡が変わったのは半年以上あとだった",
+    description:
+      "最初の1〜3ヶ月は運動ゼロで3〜5kg。見た目が変わるまでの実際の時間",
+    date: "2026-09-13",
+    emoji: "🪞",
+    related: ["no-exercise-diet", "slow-weight-gain", "protein-intake"],
+  },
 ];
 
 export function getColumn(slug: string): ColumnMeta | undefined {
