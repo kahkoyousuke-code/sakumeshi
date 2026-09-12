@@ -601,7 +601,14 @@ export default function PfcCalculation() {
               <p>
                 92kgあった頃、初めてこの計算をやって驚いたのは
                 <strong>タンパク質の目標値でした</strong>
-                。出てきた数字は130g前後。当時の自分は、記録してみたら1日50gしか摂れていませんでした。<strong>目標の4割です</strong>。
+                。出てきた数字は130g前後で、実際に摂れていた量はその半分にも届いていませんでした。この落差をどう埋めたかは
+                <a
+                  href="/column/protein-intake"
+                  className="text-green-700 underline hover:no-underline"
+                >
+                  タンパク質の記事
+                </a>
+                に書いています。
               </p>
               <p>
                 もうひとつ驚いたのが、脂質です。目標は約50gだったのに、記録すると100gを軽く超えていました。揚げ物を毎日食べていたわけでもないのに、です。内訳を見ると、

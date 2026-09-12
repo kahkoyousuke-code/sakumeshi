@@ -17,7 +17,7 @@ const TOC = [
   { id: "swap", label: "今日からできる置き換え例" },
   { id: "order", label: "食べ方でも血糖の上がり方は変わる" },
   { id: "caution", label: "GI値だけに頼らない" },
-  { id: "experience", label: "実際に置き換えて変わったこと" },
+  { id: "experience", label: "細かい数値より、続けられる2つのルール" },
   { id: "faq", label: "よくある質問" },
   { id: "summary", label: "まとめ" },
 ];
@@ -375,26 +375,29 @@ export default function GiIndex() {
 
       <section>
         <h2 id="experience" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
-          実際に置き換えて変わったこと
+          細かい数値より、続けられる2つのルール
         </h2>
         <div className="space-y-4">
           <p>
-            自分がやったのは、白米に大麦を混ぜることと、昼のうどんをそばに変えることの2つだけです。
-            <strong>体重の落ち方が変わったという実感はありませんでした</strong>
-            。落ちるかどうかは、やはりカロリーで決まっていました。
+            GI値を意識し始めると、表を見ながら1品ずつ管理したくなります。ただ、GI値は同じ食品でも調理法や食べ合わせで変わるうえ、実際の食事は単品ではなく組み合わせで食べるものです。
+            <strong>表で細かく追おうとしても、計算としては成り立ちにくい</strong>
+            のが実際のところです。
           </p>
+          <p>実用になるのは、次の2つに絞ったルールです。</p>
+          <div className="bg-green-50 rounded-xl p-4 border border-green-100 space-y-2">
+            <p className="text-sm text-gray-700">
+              <strong className="text-green-700">主食を白から茶色に。</strong>
+              白米に大麦を混ぜる、うどんをそばにする、食パンを全粒粉にする
+            </p>
+            <p className="text-sm text-gray-700">
+              <strong className="text-green-700">単品で食べない。</strong>
+              丼もの・麺類だけで済ませず、たんぱく質か野菜のおかずを1品つける
+            </p>
+          </div>
           <p>
-            はっきり変わったのは<strong>午後の眠気</strong>です。昼にうどんや丼ものを食べていた頃は、14時台に必ず落ちていました。主食を変えてからはそれが減り、
-            <strong>夕方に何か食べたくなる回数も減りました</strong>
-            。結果として1日の合計カロリーが下がったので、間接的には効いていたことになります。
-          </p>
-          <p>
-            逆に失敗したのが、GI値の表を印刷して細かく管理しようとした時期です。数値がぶれるうえ、実際の食事は組み合わせなので、そもそも計算になりませんでした。3日でやめました。
-          </p>
-          <p>
-            結局、実用になったのは
-            <strong>「主食を白から茶色に」と「単品で食べない」の2つだけ</strong>
-            です。細かい数字を追うより、この2つを毎日続けるほうが体感の差は大きいと思っています。
+            そのうえで、体重を決めるのはあくまで1日の総カロリーです。
+            <strong>GI値はそれを置き換えるものではなく、食べすぎにくくするための補助</strong>
+            として使うのが現実的です。
           </p>
         </div>
       </section>
