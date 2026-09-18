@@ -3,6 +3,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { UserAnswers } from "@/lib/types";
 import { calcNutrition } from "@/lib/nutrition";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { validateAnswers } from "@/lib/validate";
 
 export const maxDuration = 60;
 
@@ -110,24 +111,6 @@ ${dislikesLabel !== "なし" ? `- 「${dislikesLabel}」は使用しないこと
 }
 
 【出力制約】recipe は50文字以内、convenienceAlt は30文字以内、advice は3つまで。余分な説明は不要。`;
-}
-
-// 入力バリデーション（フォームと API の型ズレを早期検出）
-function validateAnswers(body: unknown): body is UserAnswers {
-  if (!body || typeof body !== "object") return false;
-  const a = body as Record<string, unknown>;
-  return (
-    ["male", "female", "other"].includes(a.gender as string) &&
-    typeof a.age === "number" && a.age > 0 &&
-    typeof a.height === "number" && a.height > 0 &&
-    ["lose", "maintain", "gain"].includes(a.goal as string) &&
-    typeof a.currentWeight === "number" &&
-    typeof a.targetWeight === "number" &&
-    ["1month", "3months", "6months"].includes(a.period as string) &&
-    ["none", "light", "active"].includes(a.exercise as string) &&
-    ["none", "lowcarb", "lowfat"].includes(a.preference as string) &&
-    (a.dislikes === undefined || Array.isArray(a.dislikes))
-  );
 }
 
 export async function POST(req: NextRequest) {
