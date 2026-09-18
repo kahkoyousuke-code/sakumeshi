@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/diet-over-40" },
+export const metadata: Metadata = columnMetadata("diet-over-40", {
   title: "40代からのダイエット｜若い頃と同じやり方が通用しない理由 | サクメシ",
   description:
     "40代が痩せにくくなる理由を代謝の内訳から解説。20代との必要カロリーの差を実際に計算し、控えめな赤字で落とす手順、飲み会の設計、健診の数字の変化まで実体験ベースで紹介します。",
-};
+});
 
 const TOC = [
   { id: "why", label: "40代が痩せにくくなる3つの理由" },

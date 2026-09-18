@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/water-intake" },
+export const metadata: Metadata = columnMetadata("water-intake", {
   title: "ダイエット中の水分補給｜水は1日どれくらい飲めばいい？ | サクメシ",
   description:
     "水を飲むと痩せるのかを冷静に整理。1日の必要量の出し方、飲み物のカロリー早見表、飲むタイミングの決め方、むくみとの関係、飲みすぎのリスクまで解説します。",
-};
+});
 
 const TOC = [
   { id: "why", label: "水分がダイエットに効く4つの理由" },

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/daily-calories" },
+export const metadata: Metadata = columnMetadata("daily-calories", {
   title: "1日の摂取カロリーの目安｜自分に必要な数字の出し方 | サクメシ",
   description:
     "「1日1,500kcal」は誰にでも当てはまる数字ではありません。年齢・身長・体重・活動量から自分専用の必要カロリーを計算する手順と、減らしすぎの危険ラインを解説します。",
-};
+});
 
 const TOC = [
   { id: "why", label: "「1日1,500kcal」が当てにならない理由" },

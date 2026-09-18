@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AUTHOR, MEDICAL_DISCLAIMER_SITE } from "@/lib/author";
 import { SAKU_SUPPU_URL, SAKU_TRAINING_URL } from "@/lib/constants";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/about" },
+export const metadata: Metadata = pageMetadata({
+  path: "/about",
   title: "運営者情報 | サクメシ",
   description:
     "サクメシの運営者情報。運営者のプロフィール・執筆方針・お問い合わせ方法について説明します。",
-};
+});
 
 const personJsonLd = {
   "@context": "https://schema.org",

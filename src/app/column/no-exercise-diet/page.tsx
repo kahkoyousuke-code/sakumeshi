@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/no-exercise-diet" },
+export const metadata: Metadata = columnMetadata("no-exercise-diet", {
   title: "運動なしで痩せる？食事だけダイエットの現実的なやり方 | サクメシ",
   description:
     "運動なしでも体重は落とせます。消費エネルギーの内訳から見た食事優先の理由、削るものの優先順位、NEATで消費を増やす方法、運動なしゆえのデメリットと対策を解説します。",
-};
+});
 
 const TOC = [
   { id: "answer", label: "結論：運動なしでも痩せられる" },

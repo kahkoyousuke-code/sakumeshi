@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/alcohol-diet" },
+export const metadata: Metadata = columnMetadata("alcohol-diet", {
   title: "お酒とダイエットの両立｜太りにくいお酒の選び方と飲み方ルール | サクメシ",
   description:
     "ダイエット中のお酒との付き合い方を解説。お酒別のカロリーと純アルコール量の早見表、飲み会1回のカロリー試算、翌日のリカバリー方法、エンプティカロリーの正しい意味まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "relation", label: "アルコールがダイエットに効く仕組み" },

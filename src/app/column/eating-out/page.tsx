@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/eating-out" },
+export const metadata: Metadata = columnMetadata("eating-out", {
   title: "外食でも太らない食べ方｜定食・ラーメン・居酒屋シーン別ガイド | サクメシ",
   description:
     "外食を続けながら痩せるための選び方を解説。主要メニューのカロリー早見表、1食で使える予算の考え方、定食・麺類・中華・焼肉・ファストフードのシーン別の頼み方まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "budget", label: "まず「1食の予算」を決める" },

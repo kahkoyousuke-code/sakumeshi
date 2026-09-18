@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/eating-out-92kg" },
+export const metadata: Metadata = columnMetadata("eating-out-92kg", {
   title:
     "92kgのとき、外食で何を食べていたか｜メニューより回数が変わった話 | サクメシ",
   description:
     "運営者が92kgだった頃の外食メニューを実際に書き出し、カロリーを積み上げてみました。ヘルシーなメニューを選ぶ努力より、外食する場面そのものが減ったことのほうが効いた、という実体験を数字で検証します。",
-};
+});
 
 const TOC = [
   { id: "menu", label: "92kgの頃、外食で食べていたもの" },

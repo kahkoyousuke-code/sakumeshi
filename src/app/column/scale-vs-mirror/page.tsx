@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/scale-vs-mirror" },
+export const metadata: Metadata = columnMetadata("scale-vs-mirror", {
   title:
     "運動なしで痩せるのか｜体重は落ちたが鏡は変わらなかった話 | サクメシ",
   description:
     "運営者が92kgから落とし始めた最初の1〜3ヶ月は運動ゼロでした。それでも3〜5kg落ちています。ただし見た目はまったく変わらず、ジムを週2回で始めてから鏡が変わったと感じるまでにさらに半年以上かかりました。その順番を実体験で書きます。",
-};
+});
 
 const TOC = [
   { id: "no-exercise", label: "最初の1〜3ヶ月、運動はしていない" },

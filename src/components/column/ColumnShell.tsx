@@ -1,5 +1,6 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { getColumn } from "@/lib/columns";
 import ColumnFooter from "./ColumnFooter";
 import ColumnHeader from "./ColumnHeader";
 
@@ -26,12 +27,13 @@ export default function ColumnShell({
 }: ColumnShellProps) {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <Link
-        href="/column"
-        className="text-sm text-green-600 hover:underline mb-6 inline-block"
-      >
-        ← コラム一覧に戻る
-      </Link>
+      <Breadcrumbs
+        items={[
+          { label: "ホーム", href: "/" },
+          { label: "コラム", href: "/column" },
+          { label: getColumn(slug)?.title ?? h1 ?? "" },
+        ]}
+      />
 
       <article>
         <ColumnHeader slug={slug} h1={h1} />

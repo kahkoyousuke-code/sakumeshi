@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/intermittent-fasting" },
+export const metadata: Metadata = columnMetadata("intermittent-fasting", {
   title: "16時間断食は痩せる？メリット・デメリットと正しいやり方 | サクメシ",
   description:
     "16時間断食が痩せる仕組みを冷静に検証。オートファジーの実際、最大の弱点であるタンパク質不足の対処、生活パターン別の時間割、段階的な始め方、やめるべきサインまで解説します。",
-};
+});
 
 const TOC = [
   { id: "what", label: "16時間断食とは？" },

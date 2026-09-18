@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/meal-prep" },
+export const metadata: Metadata = columnMetadata("meal-prep", {
   title: "作り置きダイエット｜週末2時間で平日5日を乗り切る方法 | サクメシ",
   description:
     "週末2時間の作り置きで平日をラクにする方法を解説。2時間の実際の段取り、食材の買い物リスト、日持ちの目安、飽きない味付けローテーション、衛生管理の注意点まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "why", label: "なぜ作り置きがダイエットに効くのか" },

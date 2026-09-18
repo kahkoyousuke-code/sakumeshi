@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import ColumnFooter from "@/components/column/ColumnFooter";
 import ColumnHeader from "@/components/column/ColumnHeader";
+import { getColumn } from "@/lib/columns";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/pfc-calculation" },
+export const metadata: Metadata = columnMetadata("pfc-calculation", {
   title: "PFCバランスの計算方法｜初心者でも5分で分かるダイエットの基本 | サクメシ",
   description:
     "PFCバランスの計算方法を4ステップで解説。基礎代謝・TDEE・目標カロリー・PFC内訳の出し方を、ダイエット初心者にも分かりやすく説明します。",
-};
+});
 
 const TOC = [
   { id: "what-is-pfc", label: "PFCバランスって何？" },
@@ -59,12 +60,13 @@ const FAQS = [
 export default function PfcCalculation() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <Link
-        href="/column"
-        className="text-sm text-green-600 hover:underline mb-6 inline-block"
-      >
-        ← コラム一覧に戻る
-      </Link>
+      <Breadcrumbs
+        items={[
+          { label: "ホーム", href: "/" },
+          { label: "コラム", href: "/column" },
+          { label: getColumn("pfc-calculation")?.title ?? "" },
+        ]}
+      />
 
       <article>
         {/* ヘッダー */}

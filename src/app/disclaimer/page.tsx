@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/disclaimer" },
+export const metadata: Metadata = pageMetadata({
+  path: "/disclaimer",
   title: "免責事項 | サクメシ",
   description:
     "サクメシの免責事項。掲載情報・AIによる食事プラン・外部リンク・アフィリエイトに関する免責について説明します。",
-};
+});
 
 export default function DisclaimerPage() {
   return (

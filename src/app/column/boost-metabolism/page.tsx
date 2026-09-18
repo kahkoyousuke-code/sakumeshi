@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import ColumnFooter from "@/components/column/ColumnFooter";
 import ColumnHeader from "@/components/column/ColumnHeader";
+import { getColumn } from "@/lib/columns";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/boost-metabolism" },
+export const metadata: Metadata = columnMetadata("boost-metabolism", {
   title: "基礎代謝を上げる食事｜痩せやすい体を作る5つの食べ方 | サクメシ",
   description:
     "基礎代謝を上げる食事のポイントを解説。タンパク質の摂り方、食事回数、体を温める食材など、痩せやすい体を作る具体的な方法を紹介します。",
-};
+});
 
 const TOC = [
   { id: "what-happens", label: "基礎代謝が下がるとどうなる？" },
@@ -21,12 +22,13 @@ const TOC = [
 export default function BoostMetabolism() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <Link
-        href="/column"
-        className="text-sm text-green-600 hover:underline mb-6 inline-block"
-      >
-        ← コラム一覧に戻る
-      </Link>
+      <Breadcrumbs
+        items={[
+          { label: "ホーム", href: "/" },
+          { label: "コラム", href: "/column" },
+          { label: getColumn("boost-metabolism")?.title ?? "" },
+        ]}
+      />
 
       <article>
         {/* ヘッダー */}

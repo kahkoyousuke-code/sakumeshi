@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { columnsByDateDesc } from "@/lib/columns";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column" },
+export const metadata: Metadata = pageMetadata({
+  path: "/column",
   title: "コラム | サクメシ",
   description:
     "ダイエットの食事に関するコラム一覧。PFCバランス・コンビニ飯・外食・停滞期・睡眠など、無理なく続けるための知識を紹介します。",
-};
+});
 
 export default function ColumnListPage() {
   const columns = columnsByDateDesc();
@@ -15,6 +17,8 @@ export default function ColumnListPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
+      <Breadcrumbs items={[{ label: "ホーム", href: "/" }, { label: "コラム" }]} />
+
       <h1 className="text-3xl font-bold text-center text-[var(--primary)] mb-3">
         コラム
       </h1>

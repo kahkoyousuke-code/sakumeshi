@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/late-night-meal" },
+export const metadata: Metadata = columnMetadata("late-night-meal", {
   title: "夜遅い食事で太らない方法｜帰宅が22時以降の人へ | サクメシ",
   description:
     "残業や夜勤で夕食が遅くなる人向けに、夜遅く食べると太る本当の理由と、分食・メニュー選び・翌朝の調整で現実的に対処する方法を解説します。",
-};
+});
 
 const TOC = [
   { id: "why", label: "夜遅い食事が太りやすい3つの理由" },

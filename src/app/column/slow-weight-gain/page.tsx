@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/slow-weight-gain" },
+export const metadata: Metadata = columnMetadata("slow-weight-gain", {
   title:
     "気づいたら太っていた理由｜25kg増を1日あたりに割ると53kcalだった | サクメシ",
   description:
     "運営者は就職してから25kg太り、最大92kgになりました。その増加を1日あたりのカロリーに割り戻すと、驚くほど小さい数字になります。じわじわ太る仕組みと、同じ計算が減量にも効く話を、自分の体を例に解説します。",
-};
+});
 
 const TOC = [
   { id: "gain", label: "25kg増やすのに必要だったカロリー" },

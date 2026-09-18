@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/convenience-diet" },
+export const metadata: Metadata = columnMetadata("convenience-diet", {
   title: "コンビニで買えるダイエット飯の選び方｜セブン・ファミマ・ローソン別おすすめ | サクメシ",
   description:
     "コンビニ食でダイエットを続ける方法を解説。栄養成分表示の読み方、朝昼夜・間食別の組み合わせ例、チェーン別のおすすめ商品、ヘルシーに見えて実は高カロリーな商品まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "basics", label: "コンビニで見るべき3つの基準" },

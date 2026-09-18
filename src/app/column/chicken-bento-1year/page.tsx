@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/chicken-bento-1year" },
+export const metadata: Metadata = columnMetadata("chicken-bento-1year", {
   title:
     "同じ鶏むね弁当を1年続けている｜飽きなかった理由は味ではなかった | サクメシ",
   description:
     "低温調理した鶏むね肉とおにぎりだけの弁当を、運営者が1年以上続けています。週に何kg仕込み、何時間かかり、いくらかかったのかを実数で公開し、飽きなかった理由と、加熱が足りているか分からなくなった失敗までを書きました。",
-};
+});
 
 const TOC = [
   { id: "what", label: "週に1回、鶏むねを2kg仕込むだけ" },

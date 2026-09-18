@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/gut-health-diet" },
+export const metadata: Metadata = columnMetadata("gut-health-diet", {
   title: "腸活×ダイエット｜食物繊維・発酵食品で痩せやすい体を作る | サクメシ",
   description:
     "腸活とダイエットの関係を、期待できることと分かっていないことに分けて解説。食物繊維の目標量と水溶性・不溶性の使い分け、発酵食品の摂り方、4週間の始め方まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "reality", label: "腸活で「痩せる」は本当か" },

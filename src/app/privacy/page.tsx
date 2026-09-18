@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/privacy" },
+export const metadata: Metadata = pageMetadata({
+  path: "/privacy",
   title: "プライバシーポリシー | サクメシ",
   description:
     "サクメシのプライバシーポリシー。広告配信（Google AdSense）・アクセス解析・Cookie の利用、個人情報の取り扱いについて説明します。",
-};
+});
 
 export default function PrivacyPage() {
   return (

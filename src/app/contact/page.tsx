@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CONTACT_FORM_URL } from "@/lib/constants";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/contact" },
+export const metadata: Metadata = pageMetadata({
+  path: "/contact",
   title: "お問い合わせ | サクメシ",
   description:
     "サクメシへのお問い合わせはこちら。ご意見・ご要望・不具合のご連絡をお待ちしています。",
-};
+});
 
 export default function ContactPage() {
   return (

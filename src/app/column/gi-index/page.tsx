@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/gi-index" },
+export const metadata: Metadata = columnMetadata("gi-index", {
   title: "GI値って何？血糖値を意識した食材選びで太りにくく | サクメシ",
   description:
     "GI値の基本と主要食品の目安値、GI値の弱点を補うGL（グリセミック・ロード）の考え方、調理法で値が変わる仕組み、今日からできる置き換え例と注意点まで解説します。",
-};
+});
 
 const TOC = [
   { id: "what", label: "GI値とは？" },

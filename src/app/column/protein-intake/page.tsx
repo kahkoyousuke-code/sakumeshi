@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/protein-intake" },
+export const metadata: Metadata = columnMetadata("protein-intake", {
   title: "タンパク質は1日どれくらい必要？体重別の目安とプロテインの活用法 | サクメシ",
   description:
     "ダイエット中に必要なタンパク質量を体重別に解説。食品100gあたりの含有量一覧、1日の組み立て例、朝食で不足しやすい理由、プロテインの選び方、摂りすぎの注意点まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "why", label: "なぜダイエット中こそタンパク質なのか" },

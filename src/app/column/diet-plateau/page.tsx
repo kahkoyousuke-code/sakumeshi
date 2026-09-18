@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/diet-plateau" },
+export const metadata: Metadata = columnMetadata("diet-plateau", {
   title: "停滞期の乗り越え方｜体重が落ちなくなったらやるべきこと | サクメシ",
   description:
     "ダイエットの停滞期はなぜ起きるのか、いつまで続くのかを解説。やってはいけないNG行動と、チートデイの正しいやり方も紹介します。",
-};
+});
 
 const TOC = [
   { id: "what", label: "停滞期はなぜ起きる？" },

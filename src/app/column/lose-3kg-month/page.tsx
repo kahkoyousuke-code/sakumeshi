@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/lose-3kg-month" },
+export const metadata: Metadata = columnMetadata("lose-3kg-month", {
   title: "1ヶ月で3kg痩せるには？必要な数字と現実的なペース | サクメシ",
   description:
     "1ヶ月3kg減に必要な赤字カロリーを計算し、あなたの体重で無理のないペースかを判定します。安全な上限の考え方と、間に合わないときの現実的な選択肢も解説。",
-};
+});
 
 const TOC = [
   { id: "math", label: "3kg減に必要なカロリーを計算する" },

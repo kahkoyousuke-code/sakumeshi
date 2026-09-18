@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import ColumnFooter from "@/components/column/ColumnFooter";
 import ColumnHeader from "@/components/column/ColumnHeader";
+import { getColumn } from "@/lib/columns";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/diet-snacks" },
+export const metadata: Metadata = columnMetadata("diet-snacks", {
   title: "ダイエット中の間食おすすめ｜太らないおやつの選び方と目的別リスト | サクメシ",
   description:
     "ダイエット中でも間食はOK！減量・維持・増量の目的別におすすめの間食を紹介。コンビニで買えるダイエットおやつランキングも。",
-};
+});
 
 const TOC = [
   { id: "ok-to-snack", label: "そもそもダイエット中に間食していいの？" },
@@ -22,12 +23,13 @@ const TOC = [
 export default function DietSnacks() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <Link
-        href="/column"
-        className="text-sm text-green-600 hover:underline mb-6 inline-block"
-      >
-        ← コラム一覧に戻る
-      </Link>
+      <Breadcrumbs
+        items={[
+          { label: "ホーム", href: "/" },
+          { label: "コラム", href: "/column" },
+          { label: getColumn("diet-snacks")?.title ?? "" },
+        ]}
+      />
 
       <article>
         {/* ヘッダー */}

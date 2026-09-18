@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/workout-meal-timing" },
+export const metadata: Metadata = columnMetadata("workout-meal-timing", {
   title: "筋トレ前後の食事タイミング｜何をいつ食べるか完全解説 | サクメシ",
   description:
     "筋トレ前後に何をいつ食べるかを解説。よく言われる「30分以内のゴールデンタイム」の実際、朝トレ・夕方トレ・夜トレ別のタイムテーブル、プロテインの使い分け、減量中の調整まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "priority", label: "タイミングの前に決まっていること" },

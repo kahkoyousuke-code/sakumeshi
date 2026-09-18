@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import ColumnFooter from "@/components/column/ColumnFooter";
 import ColumnHeader from "@/components/column/ColumnHeader";
+import { getColumn } from "@/lib/columns";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/lowcarb-vs-lowfat" },
+export const metadata: Metadata = columnMetadata("lowcarb-vs-lowfat", {
   title: "低糖質と低脂質どっちがいい？違いとおすすめの選び方 | サクメシ",
   description:
     "低糖質ダイエットと低脂質ダイエット、どちらが自分に合うか分からない方へ。10年以上のダイエット経験をもとに、それぞれのメリット・デメリットと選び方を解説します。",
-};
+});
 
 const TOC = [
   { id: "basics", label: "そもそも「低糖質」「低脂質」って何？" },
@@ -22,12 +23,13 @@ const TOC = [
 export default function LowcarbVsLowfat() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <Link
-        href="/column"
-        className="text-sm text-green-600 hover:underline mb-6 inline-block"
-      >
-        ← コラム一覧に戻る
-      </Link>
+      <Breadcrumbs
+        items={[
+          { label: "ホーム", href: "/" },
+          { label: "コラム", href: "/column" },
+          { label: getColumn("lowcarb-vs-lowfat")?.title ?? "" },
+        ]}
+      />
 
       <article>
         {/* ヘッダー */}

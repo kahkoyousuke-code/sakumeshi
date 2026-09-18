@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/sleep-diet" },
+export const metadata: Metadata = columnMetadata("sleep-diet", {
   title: "睡眠とダイエットの関係｜寝不足だと太るって本当？ | サクメシ",
   description:
     "睡眠不足が食欲ホルモンと代謝に与える影響を解説。必要な睡眠時間、寝つきを良くする習慣、夜勤・育児で寝られない人の現実的な対策、睡眠の質を上げる食事まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "why", label: "寝不足だと太る4つの理由" },

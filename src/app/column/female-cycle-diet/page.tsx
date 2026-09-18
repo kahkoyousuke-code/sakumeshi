@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/female-cycle-diet" },
+export const metadata: Metadata = columnMetadata("female-cycle-diet", {
   title: "生理周期とダイエット｜痩せやすい時期・停滞する時期を知る | サクメシ",
   description:
     "生理周期で体重や食欲が変動する仕組みと、時期ごとの食事の組み立て方を解説。生理前の食欲・むくみへの対処、周期に合わせた記録のつけ方、受診を検討する目安まで紹介します。",
-};
+});
 
 const TOC = [
   { id: "stance", label: "この記事の立場について" },

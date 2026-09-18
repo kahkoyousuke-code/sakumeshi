@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/eating-order" },
+export const metadata: Metadata = columnMetadata("eating-order", {
   title: "食べる順番ダイエット｜血糖値を抑えて太りにくい食べ方 | サクメシ",
   description:
     "食べる順番を変えるだけで血糖値の上昇を抑えられます。野菜→タンパク質→炭水化物の順番が効く仕組み、丼・麺・コンビニ・居酒屋でのやり方、効果が出ないときの原因まで解説します。",
-};
+});
 
 const TOC = [
   { id: "why", label: "食べる順番で何が変わるのか" },

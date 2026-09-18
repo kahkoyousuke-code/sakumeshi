@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/no-rebound" },
+export const metadata: Metadata = columnMetadata("no-rebound", {
   title: "リバウンドしない食習慣｜落とした体重を維持する食事の考え方 | サクメシ",
   description:
     "リバウンドが起きる仕組みと、維持期の食事の作り方を解説。カロリーを段階的に戻すスケジュール、体重が戻り始めたときの対処、維持期に何をやめて何を残すかまで紹介します。",
-};
+});
 
 const TOC = [
   { id: "why-rebound", label: "なぜリバウンドするのか" },

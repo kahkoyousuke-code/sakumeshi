@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import { columnMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/column/diet-foods" },
+export const metadata: Metadata = columnMetadata("diet-foods", {
   title: "痩せる食材リスト｜スーパーで買える定番をカテゴリ別に | サクメシ",
   description:
     "低カロリー高タンパクの主菜食材から、主食・野菜・間食まで。買い物で迷わないための定番食材をカテゴリ別にまとめ、避けたい食材と冷蔵庫の常備リストも紹介します。",
-};
+});
 
 const TOC = [
   { id: "rule", label: "「痩せる食材」の正しい意味" },
