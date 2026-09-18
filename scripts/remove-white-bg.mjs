@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import { readFileSync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 
 const inputPath = 'public/mascot.png';
 const threshold = 240;
