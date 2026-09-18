@@ -12,7 +12,11 @@ npm run lint     # ESLint 実行
 npm test         # Vitest 実行（栄養計算ロジックのユニットテスト）
 ```
 
-テストは Vitest で `src/lib/nutrition.test.ts`（`calcNutrition` / `assessPace`）のみ。UI・API のテストは無い。
+テストは Vitest で `src/lib/` のロジックのみ（UI・API route 自体のテストは無い）。
+
+- `nutrition.test.ts`：`calcNutrition` / `assessPace`
+- `validate.test.ts`：`validateAnswers`（API の入力チェック）
+- `rate-limit.test.ts`：`getClientIp` / `checkRateLimit`（メモリ方式・Upstash 方式・障害時のフォールバック）
 
 ## 環境変数
 
@@ -57,7 +61,7 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 
 - **栄養計算はサーバーサイドで行う**：`src/lib/nutrition.ts` の `calcNutrition()` でハリス・ベネディクト方程式（男女別）を使い BMR→TDEE→目標カロリー→PFC を計算（`/api/generate` から呼び出す）。この値をプロンプトに埋め込み、Claude には JSON 出力のみ求める。同モジュールの `assessPace()` は目標体重・期間が現実的かを判定し、フォーム（期間ステップ）で無理なペースを警告する。これらは `nutrition.test.ts` でテスト済み。
 - **ストリーミング JSON パース**：`/form/page.tsx` では Claude のストリームを蓄積してから `{` ～ `}` で切り出してパース。パース失敗時はスタックトレースでブラケットを補完する修復ロジックがある。
-- **`UserAnswers` 型の数値フィールド注意**：`StepForm` では `age`/`height`/`currentWeight`/`targetWeight` を文字列として扱うため、送信直前に `Number()` 変換している（`/form/page.tsx` の `handleNext`）。API 側でも `validateAnswers` で型チェックする。型定義は `src/lib/types.ts` の `UserAnswers` に一本化（各 API・コンポーネントはここを import）。
+- **`UserAnswers` 型の数値フィールド注意**：`StepForm` では `age`/`height`/`currentWeight`/`targetWeight` を文字列として扱うため、送信直前に `Number()` 変換している（`/form/page.tsx` の `handleNext`）。API 側でも `src/lib/validate.ts` の `validateAnswers` で型チェックする。型定義は `src/lib/types.ts` の `UserAnswers` に一本化（各 API・コンポーネントはここを import）。
 - **アレルギー・苦手食材**：`UserAnswers.dislikes`（string 配列、`"none"` のみで「特になし」）。`FORM_STEPS` の `dislikes` ステップ（multiselect）で入力し、`/api/generate`・`/api/regenerate-meal` のプロンプトで除外指示に変換する。
 
 ### コンポーネント構成
@@ -96,11 +100,22 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 
 `src/app/sitemap.ts` の `lastModified` は**ビルド時刻ではなく実際の更新日**を入れる。`new Date()` を直接使うとデプロイのたび全ページが更新扱いになり Google が日付を信用しなくなるため、静的ページは同ファイル冒頭の `LAST_MODIFIED` 定数を手で更新する。コラム個別ページは `COLUMNS` の `updated ?? date`、`/column` 一覧はその最新値を自動で使う。
 
-#### canonical
+#### canonical / OGP
 
-全ページの `metadata` に `alternates: { canonical: "<ルートパス>" }` を明示している（`metadataBase` からの相対パス）。**新しいページを追加したら必ず入れる**。`layout.tsx` のルート metadata が `canonical: "/"` を持つため、書き忘れるとトップページの重複扱いになる。
+ページの `metadata` は `src/lib/metadata.ts` のヘルパーで組み立てる。**手書きしない**。
 
-`/form`・`/result` はページ本体が client component で `metadata` を export できないため、`src/app/form/layout.tsx` / `src/app/result/layout.tsx` で宣言している。`/result` はユーザー個別の生成結果なので `robots: { index: false }` も付与（sitemap にも未掲載）。
+- 通常ページ：`pageMetadata({ path, title, description })`
+- コラム記事：`columnMetadata(slug, { title, description })`（`COLUMNS` の公開日・更新日と `AUTHOR` を OGP の article として付ける）
+
+canonical（`metadataBase` からのルート相対パス）と `openGraph` / `twitter` をここでまとめて生成するので、両者がずれない。**新しいページを追加したら必ずどちらかを使う**。
+
+ヘルパーを使う理由：Next.js は `openGraph` を layout とページで**マージしない**。ページ側で書かないとルート `layout.tsx` の OGP をそのまま継承するため、書き忘れると全ページがトップページのタイトル・説明・URL でシェアされる（実際に全コラムがこの状態だった）。canonical だけ書いても OGP は直らない。
+
+`/form`・`/result` はページ本体が client component で `metadata` を export できないため、`src/app/form/layout.tsx` / `src/app/result/layout.tsx` で宣言している。この2つは意図的にトップページの OGP を継承する（`/result` はユーザー個別の生成結果なので `robots: { index: false }` も付与、sitemap にも未掲載）。
+
+#### パンくずリスト
+
+`src/components/Breadcrumbs.tsx` が見えるパンくずと `BreadcrumbList` の JSON-LD を同時に出す（Google は表示内容と構造化データの一致を求めるため、必ず同じ配列から作る）。コラム記事は `ColumnShell` が自動で出すので新規記事側の作業は不要。`ColumnShell` を使わない旧記事4本（boost-metabolism / diet-snacks / lowcarb-vs-lowfat / pfc-calculation）は個別に置いている。
 
 ### スタイリング
 
