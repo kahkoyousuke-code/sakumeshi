@@ -285,6 +285,15 @@ export const COLUMNS: ColumnMeta[] = [
     emoji: "🪞",
     related: ["no-exercise-diet", "slow-weight-gain", "protein-intake"],
   },
+  {
+    slug: "weight-weekly-average",
+    title: "毎朝の体重に一喜一憂して、昼を抜いていた｜週平均に変えるまで",
+    description:
+      "毎朝の体重が増えていると昼を抜き、夕方に反動で食べていた頃の話。1日で増えた1kgが脂肪ではありえないことを当時の実数で計算します。",
+    date: "2026-09-19",
+    emoji: "🧮",
+    related: ["salt-swelling", "no-rebound", "diet-plateau"],
+  },
 ];
 
 export function getColumn(slug: string): ColumnMeta | undefined {
