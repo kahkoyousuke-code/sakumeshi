@@ -98,7 +98,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-05-09",
     updated: "2026-09-13",
     emoji: "🍺",
-    related: ["eating-out", "diet-snacks", "sleep-diet"],
+    related: ["quit-drinking-diet", "eating-out", "diet-snacks"],
   },
   {
     slug: "gut-health-diet",
@@ -293,6 +293,15 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-09-19",
     emoji: "🧮",
     related: ["salt-swelling", "no-rebound", "diet-plateau"],
+  },
+  {
+    slug: "quit-drinking-diet",
+    title: "酒を2〜3ヶ月やめて分かったこと｜いまは週4回飲んでも戻っていない",
+    description:
+      "運営者が大会準備で2〜3ヶ月だけ完全に断酒した実体験。効いたのは酒のカロリーではなく、酒が連れてくる食事の連鎖でした。維持期のいまの飲み方を実数で比較します。",
+    date: "2026-09-20",
+    emoji: "🥃",
+    related: ["alcohol-diet", "eating-out-92kg", "no-rebound"],
   },
 ];
 
