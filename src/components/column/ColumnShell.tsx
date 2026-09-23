@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { getColumn } from "@/lib/columns";
-import ColumnFooter from "./ColumnFooter";
+import ColumnFooter, { type ColumnFaq } from "./ColumnFooter";
 import ColumnHeader from "./ColumnHeader";
 
 export interface TocItem {
@@ -15,6 +15,8 @@ interface ColumnShellProps {
   h1?: string;
   toc: TocItem[];
   ctaLabel?: string;
+  /** Passed through to ColumnFooter as FAQPage structured data */
+  faqs?: ColumnFaq[];
   children: ReactNode;
 }
 
@@ -23,6 +25,7 @@ export default function ColumnShell({
   h1,
   toc,
   ctaLabel,
+  faqs,
   children,
 }: ColumnShellProps) {
   return (
@@ -58,7 +61,7 @@ export default function ColumnShell({
           {children}
         </div>
 
-        <ColumnFooter slug={slug} ctaLabel={ctaLabel} />
+        <ColumnFooter slug={slug} ctaLabel={ctaLabel} faqs={faqs} />
       </article>
     </div>
   );

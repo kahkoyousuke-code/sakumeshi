@@ -28,12 +28,19 @@ const NOTE_LINKS = [
   },
 ];
 
+export interface ColumnFaq {
+  q: string;
+  a: string;
+}
+
 interface ColumnFooterProps {
   slug: string;
   ctaLabel?: string;
+  /** Rendered as FAQPage structured data when the article has a FAQ section */
+  faqs?: ColumnFaq[];
 }
 
-export default function ColumnFooter({ slug, ctaLabel }: ColumnFooterProps) {
+export default function ColumnFooter({ slug, ctaLabel, faqs }: ColumnFooterProps) {
   const column = getColumn(slug);
   const related = getRelatedColumns(slug);
   const sources = getSources(slug);
@@ -64,12 +71,33 @@ export default function ColumnFooter({ slug, ctaLabel }: ColumnFooterProps) {
       }
     : null;
 
+  // Separate from the Article graph so a malformed FAQ never invalidates it.
+  const faqJsonLd =
+    faqs && faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.q,
+            acceptedAnswer: { "@type": "Answer", text: faq.a },
+          })),
+        }
+      : null;
+
   return (
     <>
       {jsonLd && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
 
