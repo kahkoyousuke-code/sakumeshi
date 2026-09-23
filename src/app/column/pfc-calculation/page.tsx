@@ -12,9 +12,11 @@ export const metadata: Metadata = columnMetadata("pfc-calculation", {
 });
 
 const TOC = [
+  { id: "quick", label: "結論：先に目安だけ知りたい人へ" },
   { id: "what-is-pfc", label: "PFCバランスって何？" },
   { id: "why-important", label: "なぜPFCバランスが大事なの？" },
   { id: "calculation", label: "PFCバランスの計算方法【4ステップ】" },
+  { id: "table", label: "計算しない人のためのPFC早見表" },
   { id: "standard", label: "公的な基準の範囲とどう違う？" },
   { id: "menu", label: "計算した数字を献立に落とす" },
   { id: "mistake", label: "よくある計算ミス5つ" },
@@ -55,6 +57,26 @@ const FAQS = [
     q: "身長・体重を入れるだけのアプリと数字が違う",
     a: "使っている計算式が違うためです。ハリス・ベネディクト式、国立健康・栄養研究所の式など複数あり、数百kcal差が出ることもあります。どれが正解というより、1つ選んで固定し、体重の動きで補正するのが実用的です。",
   },
+];
+
+/** Balanced split (P30 / F25 / C45) applied to common target calories. */
+const PFC_TABLE = [
+  { kcal: "1,200kcal", p: "90g", f: "33g", c: "135g" },
+  { kcal: "1,400kcal", p: "105g", f: "39g", c: "158g" },
+  { kcal: "1,600kcal", p: "120g", f: "44g", c: "180g" },
+  { kcal: "1,800kcal", p: "135g", f: "50g", c: "202g" },
+  { kcal: "2,000kcal", p: "150g", f: "56g", c: "225g" },
+  { kcal: "2,200kcal", p: "165g", f: "61g", c: "248g" },
+  { kcal: "2,400kcal", p: "180g", f: "67g", c: "270g" },
+];
+
+/** Protein floor / target by bodyweight (1.2-1.6 g per kg). */
+const PROTEIN_TABLE = [
+  { weight: "50kg", range: "60〜80g" },
+  { weight: "60kg", range: "72〜96g" },
+  { weight: "70kg", range: "84〜112g" },
+  { weight: "80kg", range: "96〜128g" },
+  { weight: "90kg", range: "108〜144g" },
 ];
 
 export default function PfcCalculation() {
@@ -101,9 +123,42 @@ export default function PfcCalculation() {
               僕もダイエットを始めた頃、PFCと言われても正直ピンと来ませんでした。でも一度理解してしまえばめちゃくちゃシンプルだし、ダイエットの成功率がグッと上がります。
             </p>
             <p>
-              この記事では、PFCバランスの基本から、自分に合った数値の出し方まで、計算が苦手な人でも分かるように解説します。
+              この記事では、PFCバランスの基本から、自分に合った数値の出し方まで、計算が苦手な人でも分かるように解説します。急ぐ方は次の結論だけ読んでください。
             </p>
           </div>
+
+          <hr className="border-green-100" />
+
+          {/* 結論 */}
+          <section>
+            <h2
+              id="quick"
+              className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100"
+            >
+              結論：先に目安だけ知りたい人へ
+            </h2>
+            <div className="space-y-4">
+              <div className="bg-green-50 rounded-xl p-5 border border-green-100 space-y-3">
+                <p className="text-sm font-bold text-green-700">減量中のPFCの決め方（3行）</p>
+                <ul className="space-y-1.5 text-sm text-gray-700">
+                  <li>・<strong>P（タンパク質）＝ 体重1kgあたり1.2〜1.6g</strong>を先に確保する</li>
+                  <li>・<strong>F（脂質）＝ 目標カロリーの20〜25%</strong>。総カロリーの15%は下回らない</li>
+                  <li>・<strong>C（炭水化物）＝ 残り全部</strong>。ここを増減させて総カロリーを合わせる</li>
+                </ul>
+              </div>
+              <p className="text-sm text-gray-600">
+                比率の%から入るとタンパク質が体重に対して過不足しやすいので、
+                <strong>タンパク質だけは体重基準で先に決める</strong>
+                のが失敗しにくいやり方です。目標カロリーごとの具体的なg数は
+                <a href="#table" className="text-green-700 underline hover:no-underline">PFC早見表</a>
+                に載せています。自分の目標カロリーがまだ分からない方は、
+                <a href="/column/daily-calories" className="text-green-700 underline hover:no-underline">
+                  1日の摂取カロリーの目安
+                </a>
+                を先に読んでください。
+              </p>
+            </div>
+          </section>
 
           <hr className="border-green-100" />
 
@@ -351,6 +406,13 @@ export default function PfcCalculation() {
                       </tbody>
                     </table>
                   </div>
+                  <p className="text-xs text-gray-500">
+                    低糖質と低脂質のどちらを選ぶか迷う場合は、
+                    <a href="/column/lowcarb-vs-lowfat" className="text-green-700 underline hover:no-underline">
+                      低糖質と低脂質の比較記事
+                    </a>
+                    を読んでから決めてください。結論としては「続けられるほう」です。
+                  </p>
                   <div className="bg-green-50 rounded-lg p-3 text-sm border border-green-100 space-y-2">
                     <p className="font-medium text-green-800">例：減量目的、1759kcal、バランス型の場合</p>
                     <div className="space-y-1 text-gray-600">
@@ -365,6 +427,94 @@ export default function PfcCalculation() {
                 </div>
               </div>
 
+            </div>
+          </section>
+
+          <hr className="border-green-100" />
+
+          {/* PFC早見表 */}
+          <section>
+            <h2
+              id="table"
+              className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100"
+            >
+              計算しない人のためのPFC早見表
+            </h2>
+            <div className="space-y-6">
+              <p>
+                目標カロリーさえ決まっていれば、あとは表から拾うだけで済みます。バランス型（P30% / F25% / C45%）で計算した値です。
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border-collapse">
+                  <thead>
+                    <tr className="bg-green-50">
+                      <th className="text-left p-2 border border-green-100 font-semibold text-green-800">目標カロリー</th>
+                      <th className="text-center p-2 border border-green-100 font-semibold text-green-800">P</th>
+                      <th className="text-center p-2 border border-green-100 font-semibold text-green-800">F</th>
+                      <th className="text-center p-2 border border-green-100 font-semibold text-green-800">C</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-gray-600">
+                    {PFC_TABLE.map((row, i) => (
+                      <tr key={row.kcal} className={i % 2 === 1 ? "bg-gray-50" : undefined}>
+                        <td className="p-2 border border-green-100 font-medium whitespace-nowrap">{row.kcal}</td>
+                        <td className="p-2 border border-green-100 text-center whitespace-nowrap">{row.p}</td>
+                        <td className="p-2 border border-green-100 text-center whitespace-nowrap">{row.f}</td>
+                        <td className="p-2 border border-green-100 text-center whitespace-nowrap">{row.c}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-amber-50 rounded-xl p-4 border border-amber-100 space-y-2">
+                <p className="font-bold text-amber-800 text-sm">%だけで決めるとズレる場面がある</p>
+                <p className="text-sm text-gray-600">
+                  比率は総カロリーに連動するので、<strong>カロリーが低いとタンパク質が体重に対して多すぎ、高いと足りなくなる</strong>ことがあります。表の値と、次のタンパク質の目安がずれた場合は、
+                  <strong>体重基準のほうを優先</strong>
+                  してください。
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm font-bold text-gray-700 mb-2">体重別のタンパク質の目安（1.2〜1.6g / kg）</p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse">
+                    <thead>
+                      <tr className="bg-green-50">
+                        <th className="text-left p-2 border border-green-100 font-semibold text-green-800">体重</th>
+                        <th className="text-left p-2 border border-green-100 font-semibold text-green-800">1日のタンパク質</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-gray-600">
+                      {PROTEIN_TABLE.map((row, i) => (
+                        <tr key={row.weight} className={i % 2 === 1 ? "bg-gray-50" : undefined}>
+                          <td className="p-2 border border-green-100 font-medium whitespace-nowrap">{row.weight}</td>
+                          <td className="p-2 border border-green-100 whitespace-nowrap">{row.range}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  体重は現体重で計算します。肥満度が高い場合は目標体重で計算するほうが現実的な量になります。詳しくは
+                  <a href="/column/protein-intake" className="text-green-700 underline hover:no-underline">
+                    タンパク質の摂取量の記事
+                  </a>
+                  に書いています。
+                </p>
+              </div>
+
+              <div className="bg-white rounded-xl border border-green-100 p-4 space-y-2">
+                <p className="text-sm font-bold text-gray-800">女性の計算例：40歳・158cm・58kg・週1〜2回運動</p>
+                <ul className="space-y-1.5 text-sm text-gray-600">
+                  <li>・BMR ＝ 447.6 ＋（9.2×58）＋（3.1×158）−（4.3×40） ＝ <strong>約1,300kcal</strong></li>
+                  <li>・TDEE ＝ 1,300 × 1.375 ＝ <strong>約1,788kcal</strong></li>
+                  <li>・目標 ＝ 1,788 − 300 ＝ <strong>約1,488kcal</strong>（−500だと下限1,200に近づくため−300で設定）</li>
+                  <li>・PFC ＝ <strong>P112g / F41g / C167g</strong></li>
+                  <li>・体重基準のタンパク質は70〜93g。%計算の112gはこれを上回っているので、そのままでOK</li>
+                </ul>
+              </div>
             </div>
           </section>
 
@@ -678,7 +828,11 @@ export default function PfcCalculation() {
 
         </div>
 
-        <ColumnFooter slug="pfc-calculation" ctaLabel="サクメシで自分のPFCバランスを計算する →" />
+        <ColumnFooter
+          slug="pfc-calculation"
+          ctaLabel="サクメシで自分のPFCバランスを計算する →"
+          faqs={FAQS}
+        />
       </article>
     </div>
   );

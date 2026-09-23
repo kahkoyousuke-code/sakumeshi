@@ -23,9 +23,9 @@ export const COLUMNS: ColumnMeta[] = [
   {
     slug: "pfc-calculation",
     title: "PFCバランスの計算方法を分かりやすく解説！",
-    description: "ダイエット初心者でも5分で分かるPFC計算の4ステップ",
+    description: "ダイエット初心者でも5分で分かるPFC計算の4ステップと早見表",
     date: "2026-03-20",
-    updated: "2026-09-13",
+    updated: "2026-09-23",
     emoji: "📊",
     related: ["daily-calories", "lowcarb-vs-lowfat", "protein-intake"],
   },
@@ -220,8 +220,9 @@ export const COLUMNS: ColumnMeta[] = [
   {
     slug: "daily-calories",
     title: "1日の摂取カロリーの目安｜自分に必要な数字の出し方",
-    description: "年齢・身長・体重・活動量から必要カロリーを計算する手順と、減らしすぎの危険ラインを解説",
+    description: "年代・体格別の早見表と、必要カロリーを自分で計算する3ステップ、減らしすぎの危険ラインを解説",
     date: "2026-07-26",
+    updated: "2026-09-23",
     emoji: "🔢",
     related: ["pfc-calculation", "lose-3kg-month", "no-exercise-diet"],
   },
