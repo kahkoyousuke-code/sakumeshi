@@ -153,3 +153,5 @@ Tailwind クラスで `text-[var(--primary)]` のように参照する。
 ### アフィリエイト
 
 `src/lib/affiliate.ts` の `rakutenSearchUrl()` / `amazonSearchUrl()` が楽天・Amazon の検索 URL を生成。食材・間食カードに使用している。環境変数が未設定でも URL は生成される（アフィリエイトタグなしになるだけ）。
+
+宅食の ASP 案件（A8.net / afb）は `src/lib/mealDelivery.ts` の `MEAL_DELIVERY_SERVICES` がシングルソース。結果ページの「7日間の食事メニュー」直後に「PR」表記付きで出す。`url` が空の案件は非表示（提携審査待ちを先に登録できる）、全件空ならセクションごと出ない。広告枠には必ず「PR」「広告」表記を付ける（ステマ規制）。

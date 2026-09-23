@@ -80,7 +80,7 @@ export default function PrivacyPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-gray-800">アフィリエイトについて</h2>
           <p>
-            当サイトは、Amazon アソシエイト・楽天アフィリエイトなどの
+            当サイトは、Amazon アソシエイト・楽天アフィリエイト・A8.net・afb などの
             アフィリエイトプログラムに参加しています。これらのプログラムにより
             商品を紹介し、当サイトが収益を得る場合があります。リンク先での購入時に
             Cookie が使用されることがあります。
