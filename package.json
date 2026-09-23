@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "seo:fetch": "node scripts/gsc-fetch.mjs",
+    "seo:report": "node scripts/seo-report.mjs",
     "test": "vitest run"
   },
   "dependencies": {

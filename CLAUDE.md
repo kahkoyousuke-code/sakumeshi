@@ -10,6 +10,8 @@ npm run build    # プロダクションビルド
 npm run start    # プロダクションサーバー起動
 npm run lint     # ESLint 実行
 npm test         # Vitest 実行（栄養計算ロジックのユニットテスト）
+npm run seo:fetch   # Search Console から検索パフォーマンスを取得（.gsc/latest.json）
+npm run seo:report  # 取得結果から「次にどこを直すか」の一覧を Markdown で出す
 ```
 
 テストは Vitest で `src/lib/` のロジックのみ（UI・API route 自体のテストは無い）。
@@ -28,6 +30,8 @@ npm test         # Vitest 実行（栄養計算ロジックのユニットテス
 | `UPSTASH_REDIS_REST_URL` | レート制限用 Upstash Redis の REST URL（任意・未設定ならメモリ方式） |
 | `UPSTASH_REDIS_REST_TOKEN` | 同上のトークン（任意） |
 | `NEXT_PUBLIC_CONTACT_FORM_URL` | お問い合わせページの Google フォーム URL（任意・未設定なら準備中表示） |
+| `GSC_SERVICE_ACCOUNT_JSON` | Search Console API 用サービスアカウントの鍵 JSON（または その base64。任意・`npm run seo:fetch` のみが使う） |
+| `GSC_SITE_URL` | Search Console の対象プロパティ（任意・既定は `seo.config.mjs` の `https://sakumeshi.app/`） |
 
 ## アーキテクチャ
 
@@ -116,6 +120,22 @@ canonical（`metadataBase` からのルート相対パス）と `openGraph` / `t
 #### パンくずリスト
 
 `src/components/Breadcrumbs.tsx` が見えるパンくずと `BreadcrumbList` の JSON-LD を同時に出す（Google は表示内容と構造化データの一致を求めるため、必ず同じ配列から作る）。コラム記事は `ColumnShell` が自動で出すので新規記事側の作業は不要。`ColumnShell` を使わない旧記事4本（boost-metabolism / diet-snacks / lowcarb-vs-lowfat / pfc-calculation）は個別に置いている。
+
+#### Search Console を見て対策を立てる
+
+`docs/seo-workflow.md` が手順の正本。`.claude/agents/seo-analyst.md`（SEO担当エージェント）も
+そこを読みに来るだけにしてある。
+
+- `npm run seo:fetch` で Search Console から取得し、`npm run seo:report` で
+  「あと一歩のクエリ」「クリックされていないページ」「未インデックス」などを一覧にする
+- 認証情報が無くても、GSC の画面からエクスポートした CSV を `.gsc/csv/` に置けば
+  `seo:report` だけで動く
+- **`.gsc/` は git 管理外**。認証情報も取得データもコミットしない
+- `scripts/` の3ファイル（`gsc-fetch.mjs` / `seo-report.mjs` / `seo-config.mjs`）は
+  サイトに依存せず、姉妹サービス（サクサプ・サクトレ）と同一。サクメシ固有の設定は
+  **`seo.config.mjs`** の1枚だけ。記事を足したらそこの `keywords` にも足す
+- レポートが「タイトルを直せ」と言うのは `src/app/column/<slug>/page.tsx` の
+  `columnMetadata()` のほう（検索結果に出るのはこちら）
 
 ### スタイリング
 

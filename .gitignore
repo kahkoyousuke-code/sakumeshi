@@ -37,7 +37,11 @@ yarn-error.log*
 .vercel
 
 # local tooling
-.claude/
+.claude/*
+!.claude/agents/
+
+# Search Console の取得データと認証情報。絶対にコミットしない
+.gsc/
 
 # typescript
 *.tsbuildinfo
