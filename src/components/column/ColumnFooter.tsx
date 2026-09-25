@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MealDeliveryBox from "@/components/MealDeliveryBox";
 import { AUTHOR, MEDICAL_DISCLAIMER } from "@/lib/author";
 import { getColumn, getRelatedColumns } from "@/lib/columns";
 import { getSources } from "@/lib/sources";
@@ -159,6 +160,9 @@ export default function ColumnFooter({ slug, ctaLabel, faqs }: ColumnFooterProps
           無料・登録不要。質問に答えるだけで7日分の食事プランが完成します。
         </p>
       </div>
+
+      {/* 宅食（ASP アフィリエイト）：自サービスの CTA より下に置く */}
+      <MealDeliveryBox className="mt-12 bg-white rounded-2xl border border-gray-200 p-5" />
 
       {/* 関連コラム */}
       {related.length > 0 && (

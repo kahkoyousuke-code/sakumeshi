@@ -74,6 +74,7 @@ npm run seo:report  # 取得結果から「次にどこを直すか」の一覧�
 - **`ResultTabs`**：7日間メニューをタブ切替で表示、各食事に1食差し替えボタン付き。
 - **`DonutChart`**：PFC バランスを円グラフで描画。
 - **`MealCard`**：食事1件の表示。
+- **`MealDeliveryBox`**：宅食（ASP アフィリエイト）の広告枠。`src/lib/mealDelivery.ts` の `activeMealDeliveryServices()` から案件を取得。結果ページとコラム記事末尾で共通利用。提携済み案件がなければ描画しない。
 
 ### コラム
 
@@ -154,4 +155,4 @@ Tailwind クラスで `text-[var(--primary)]` のように参照する。
 
 `src/lib/affiliate.ts` の `rakutenSearchUrl()` / `amazonSearchUrl()` が楽天・Amazon の検索 URL を生成。食材・間食カードに使用している。環境変数が未設定でも URL は生成される（アフィリエイトタグなしになるだけ）。
 
-宅食の ASP 案件（A8.net / afb）は `src/lib/mealDelivery.ts` の `MEAL_DELIVERY_SERVICES` がシングルソース。結果ページの「7日間の食事メニュー」直後に「PR」表記付きで出す。`url` が空の案件は非表示（提携審査待ちを先に登録できる）、全件空ならセクションごと出ない。広告枠には必ず「PR」「広告」表記を付ける（ステマ規制）。
+宅食の ASP 案件（A8.net / afb）は `src/lib/mealDelivery.ts` の `MEAL_DELIVERY_SERVICES` がシングルソース。結果ページの「7日間の食事メニュー」直後と、コラム記事末尾（`ColumnFooter` の CTA の下）に「PR」表記付きで出す（表示部品は `src/components/MealDeliveryBox.tsx`）。`url` が空の案件は非表示（提携審査待ちを先に登録できる）、全件空ならセクションごと出ない。広告枠には必ず「PR」「広告」表記を付ける（ステマ規制）。
