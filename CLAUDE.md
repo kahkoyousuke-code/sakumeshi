@@ -19,6 +19,8 @@ npm run seo:report  # 取得結果から「次にどこを直すか」の一覧�
 - `nutrition.test.ts`：`calcNutrition` / `assessPace`
 - `validate.test.ts`：`validateAnswers`（API の入力チェック）
 - `rate-limit.test.ts`：`getClientIp` / `checkRateLimit`（メモリ方式・Upstash 方式・障害時のフォールバック）
+- `affiliate.test.ts`：Amazon の検索リンク・商品リンク（ASIN）の組み立て
+- `recommendedItems.test.ts`：`pickRecommendedItems`（回答による出し分け）と `COLUMN_AFFILIATES` の参照整合性
 
 ## 環境変数
 
@@ -154,5 +156,11 @@ Tailwind クラスで `text-[var(--primary)]` のように参照する。
 ### アフィリエイト
 
 `src/lib/affiliate.ts` の `rakutenSearchUrl()` / `amazonSearchUrl()` が楽天・Amazon の検索 URL を生成。食材・間食カードに使用している。環境変数が未設定でも URL は生成される（アフィリエイトタグなしになるだけ）。
+
+- **Amazon の商品直リンク**：`amazonUrl(item, placement)` は `asin` があれば `/dp/<ASIN>/`、なければ検索結果へ飛ばす。
+- **置き場所別のクリック計測**：Vercel は Hobby プランでカスタムイベントが使えないため、Amazon のトラッキングIDを置き場所（`"result"` / `"column"`）ごとに分けて計測する。`AMAZON_PLACEMENT_TAGS` に Amazon 管理画面で作成済みの ID を入れる（現在は結果ページ `sakumeshi01-22`／コラム `sakumeshi02-22`。既定タグ `NEXT_PUBLIC_AMAZON_AFFILIATE_TAG` は置き場所を渡さないリンク用。未作成の ID を入れると報酬が付かない）。
+- **ダイエット応援アイテム**：`src/lib/recommendedItems.ts` の `RECOMMENDED_ITEMS` がシングルソース。結果ページは `pickRecommendedItems()` でフォームの回答（目標・運動・食事スタイル・アレルギー）に合わせて6件を選ぶ（`goals` で絞り込み、`excludeIf` で除外、`preferences` / `forExercisers` で上位へ、`replaces` は置き換え先が除外されたときだけ出す）。
+- **コラム末尾の枠**：`src/lib/columnAffiliates.ts` の `COLUMN_AFFILIATES`（slug → 商品 id・導入の一文）。`ColumnFooter` 内の `ColumnAffiliateBox` が本文直後に「PR」付きで1枠だけ出す。未登録の記事には何も出さない。健康ジャンルは広告過多が AdSense 審査に響くので、記事内容と関係の薄い商品は置かず、1記事あたり商品2つまで。宅食は全記事共通の `MealDeliveryBox`（CTA の下）が出すので、この枠には入れない。
+- 商品カードは `src/components/AffiliateItemCard.tsx` を結果ページとコラムで共用する。
 
 宅食の ASP 案件（A8.net / afb）は `src/lib/mealDelivery.ts` の `MEAL_DELIVERY_SERVICES` がシングルソース。結果ページの「7日間の食事メニュー」直後と、コラム記事末尾（`ColumnFooter` の CTA の下）に「PR」表記付きで出す（表示部品は `src/components/MealDeliveryBox.tsx`）。`url` が空の案件は非表示（提携審査待ちを先に登録できる）、全件空ならセクションごと出ない。広告枠には必ず「PR」「広告」表記を付ける（ステマ規制）。

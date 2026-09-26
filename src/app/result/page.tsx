@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { DietPlan, MealItem, ShoppingList, ShoppingCategory, UserAnswers } from "@/lib/types";
 import { rakutenSearchUrl, amazonSearchUrl } from "@/lib/affiliate";
-import { RECOMMENDED_ITEMS } from "@/lib/recommendedItems";
+import { pickRecommendedItems } from "@/lib/recommendedItems";
 import MealDeliveryBox from "@/components/MealDeliveryBox";
 import { SAKU_SUPPU_URL } from "@/lib/constants";
+import AffiliateItemCard from "@/components/AffiliateItemCard";
 import DonutChart from "@/components/DonutChart";
 import ResultTabs from "@/components/ResultTabs";
 
@@ -35,6 +36,7 @@ const SNACK_SUGGESTIONS = {
 export default function ResultPage() {
   const router = useRouter();
   const [result, setResult] = useState<DietPlan | null>(null);
+  const [answers, setAnswers] = useState<UserAnswers | null>(null);
   const [shoppingList, setShoppingList] = useState<ShoppingList | null>(null);
   const [shoppingLoading, setShoppingLoading] = useState(false);
   const [shoppingError, setShoppingError] = useState<string | null>(null);
@@ -49,6 +51,14 @@ export default function ResultPage() {
       return;
     }
     setResult(JSON.parse(stored));
+    const storedAnswers = sessionStorage.getItem("userAnswers") ?? localStorage.getItem("userAnswers");
+    if (storedAnswers) {
+      try {
+        setAnswers(JSON.parse(storedAnswers));
+      } catch {
+        // Recommendations fall back to the plan-derived goal
+      }
+    }
   }, [router]);
 
   // 1食分を再生成して新しい MealItem を返す（state は更新しない）
@@ -218,6 +228,12 @@ export default function ResultPage() {
 
   const goal = result.weeklyChange < 0 ? "lose" : result.weeklyChange > 0 ? "gain" : "maintain";
   const snacks = SNACK_SUGGESTIONS[goal];
+  const recommendedItems = pickRecommendedItems({
+    goal: answers?.goal ?? goal,
+    exercise: answers?.exercise ?? "none",
+    preference: answers?.preference ?? "none",
+    dislikes: answers?.dislikes ?? [],
+  });
 
   // DonutChart 用に PFCBalance 形式に変換
   const pfc = {
@@ -458,7 +474,7 @@ export default function ResultPage() {
                               楽天
                             </a>
                             <a
-                              href={amazonSearchUrl(item.name)}
+                              href={amazonSearchUrl(item.name, "result")}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded text-white bg-orange-400 hover:bg-orange-500 transition-colors"
@@ -508,7 +524,7 @@ export default function ResultPage() {
                     楽天
                   </a>
                   <a
-                    href={amazonSearchUrl(snack.name)}
+                    href={amazonSearchUrl(snack.name, "result")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[10px] font-bold px-1.5 py-0.5 rounded text-white bg-orange-400 hover:bg-orange-500 transition-colors"
@@ -524,40 +540,18 @@ export default function ResultPage() {
 
       {/* ダイエット応援アイテム（アフィリエイト） */}
       <section className="bg-white rounded-2xl shadow-md p-6">
-        <h3 className="text-lg font-semibold mb-1 text-gray-700">🛒 ダイエット応援アイテム</h3>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded border border-gray-300 text-gray-500">
+            PR
+          </span>
+          <h3 className="text-lg font-semibold text-gray-700">🛒 ダイエット応援アイテム</h3>
+        </div>
         <p className="text-xs text-gray-400 mb-4">
-          続けやすくなる定番アイテム。<span className="whitespace-nowrap">※リンクにはアフィリエイトを含みます</span>
+          あなたの目標と食事スタイルに合わせて選んだ定番アイテム。<span className="whitespace-nowrap">※広告リンクを含みます</span>
         </p>
-        <div className="grid grid-cols-2 gap-3">
-          {RECOMMENDED_ITEMS.map((item) => (
-            <div
-              key={item.name}
-              className="flex items-start gap-3 bg-amber-50 rounded-xl p-3 border border-amber-100"
-            >
-              <span className="text-2xl leading-none mt-0.5">{item.emoji}</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-amber-900">{item.name}</p>
-                <p className="text-xs text-amber-700 mt-0.5">{item.detail}</p>
-                <div className="flex gap-1.5 mt-2">
-                  <a
-                    href={rakutenSearchUrl(item.keyword)}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    className="text-xs font-bold px-2 py-1 rounded text-white bg-red-500 hover:bg-red-600 transition-colors"
-                  >
-                    楽天で見る
-                  </a>
-                  <a
-                    href={amazonSearchUrl(item.keyword)}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    className="text-xs font-bold px-2 py-1 rounded text-white bg-orange-400 hover:bg-orange-500 transition-colors"
-                  >
-                    Amazonで見る
-                  </a>
-                </div>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {recommendedItems.map((item) => (
+            <AffiliateItemCard key={item.id} item={item} placement="result" />
           ))}
         </div>
       </section>

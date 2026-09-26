@@ -3,6 +3,7 @@ import MealDeliveryBox from "@/components/MealDeliveryBox";
 import { AUTHOR, MEDICAL_DISCLAIMER } from "@/lib/author";
 import { getColumn, getRelatedColumns } from "@/lib/columns";
 import { getSources } from "@/lib/sources";
+import ColumnAffiliateBox from "./ColumnAffiliateBox";
 
 const BASE_URL = "https://sakumeshi.app";
 
@@ -101,6 +102,8 @@ export default function ColumnFooter({ slug, ctaLabel, faqs }: ColumnFooterProps
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
+
+      <ColumnAffiliateBox slug={slug} />
 
       {/* 出典 */}
       <div className="mt-12 border-t border-gray-200 pt-6">
