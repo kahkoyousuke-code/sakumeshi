@@ -119,6 +119,9 @@ const config = {
     { kw: "弁当", path: "/column/chicken-bento-1year" },
     { kw: "週平均", path: "/column/weight-weekly-average" },
     { kw: "見た目", path: "/column/scale-vs-mirror" },
+    { kw: "減量期", path: "/column/cutting-meal-plan" },
+    { kw: "献立", path: "/column/cutting-meal-plan" },
+    { kw: "ミールプラン", path: "/column/cutting-meal-plan" },
   ],
 
   /** 記事に加えて、流入の入口になる固定ページも URL 検査にかける。 */

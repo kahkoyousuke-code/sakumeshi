@@ -69,6 +69,10 @@ export const COLUMN_AFFILIATES: Record<string, ColumnAffiliate> = {
     lead: "1か月続けるなら、体重と体脂肪率を毎日記録して変化を見える化するのがコツです。",
     items: ["body-scale"],
   },
+  "cutting-meal-plan": {
+    lead: "平日の型を回すなら、鶏むね肉を低温調理でまとめて仕込み、最初の数週間だけでもご飯や肉の量を量ってみるのが近道です。",
+    items: ["boniq", "kitchen-scale"],
+  },
 };
 
 export function getColumnAffiliate(slug: string): ColumnAffiliate | undefined {

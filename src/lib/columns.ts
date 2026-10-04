@@ -304,6 +304,15 @@ export const COLUMNS: ColumnMeta[] = [
     emoji: "🥃",
     related: ["alcohol-diet", "eating-out-92kg", "no-rebound"],
   },
+  {
+    slug: "cutting-meal-plan",
+    title: "減量期の食事メニュー｜会社員が平日続けられる1週間の献立例",
+    description:
+      "平日の朝・昼・間食は固定、夜は主菜だけ日替わり。飲み会のある1週間の献立例とカロリーの合計、弁当にできない日の代わりまで、会社員向けに数字で組み立てます。",
+    date: "2026-10-03",
+    emoji: "🍱",
+    related: ["daily-calories", "meal-prep", "chicken-bento-1year"],
+  },
 ];
 
 export function getColumn(slug: string): ColumnMeta | undefined {
