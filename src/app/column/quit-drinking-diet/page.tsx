@@ -543,7 +543,7 @@ export default function QuitDrinkingDiet() {
             </li>
             <li>
               <strong>1人の1例。</strong>
-              身長174cm・開始92kgの成人男性の話です。アルコールの分解能力には個人差が大きく、同じ量でも影響は変わります
+              身長173cm・開始92kgの成人男性の話です。アルコールの分解能力には個人差が大きく、同じ量でも影響は変わります
             </li>
           </ul>
           <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">

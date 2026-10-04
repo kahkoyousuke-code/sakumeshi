@@ -70,7 +70,7 @@ export default function SlowWeightGain() {
       <div className="space-y-4">
         <p>
           学生時代の私は67kgでした。それが就職してから増え続け、最大で
-          <strong>92kg</strong>になりました。身長は174cmなので、かなりの体型です。
+          <strong>92kg</strong>になりました。身長は173cmなので、かなりの体型です。
           <strong>25kgの増加</strong>です。
         </p>
         <p>

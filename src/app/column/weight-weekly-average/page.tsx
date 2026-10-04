@@ -548,7 +548,7 @@ export default function WeightWeeklyAverage() {
             </li>
             <li>
               <strong>1人の1例。</strong>
-              身長174cm・開始92kgの成人男性の話です。振れ幅の大きさは体格や食事内容でも変わります
+              身長173cm・開始92kgの成人男性の話です。振れ幅の大きさは体格や食事内容でも変わります
             </li>
           </ul>
           <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
