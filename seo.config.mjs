@@ -122,6 +122,9 @@ const config = {
     { kw: "減量期", path: "/column/cutting-meal-plan" },
     { kw: "献立", path: "/column/cutting-meal-plan" },
     { kw: "ミールプラン", path: "/column/cutting-meal-plan" },
+    { kw: "増量期", path: "/column/bulking-meal-plan" },
+    { kw: "増量", path: "/column/bulking-meal-plan" },
+    { kw: "バルクアップ", path: "/column/bulking-meal-plan" },
   ],
 
   /** 記事に加えて、流入の入口になる固定ページも URL 検査にかける。 */

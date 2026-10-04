@@ -497,6 +497,13 @@ export default function CuttingMealPlan() {
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">4.</span><span>弁当にできない日・遅い日・仕込めない週の<strong>代わりを先に決めておく</strong></span></li>
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">5.</span><span>判断は<strong>2週間の体重平均</strong>で。止まったら夜のご飯か歩数で調整する</span></li>
           </ol>
+          <p className="text-sm text-gray-600">
+            減量が終わって体を大きくしたくなったら、この型に主食を足す形で
+            <a href="/column/bulking-meal-plan" className="text-green-700 underline hover:no-underline">
+              増量期の食事メニュー
+            </a>
+            に移れます。
+          </p>
           <p>
             この記事の数字はモデルケースのものです。サクメシなら、自分の身長・体重・活動量から目標カロリーを計算し、7日分の献立まで無料で作れます。まずは自分の枠を出してみてください。
           </p>

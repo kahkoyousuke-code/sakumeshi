@@ -311,7 +311,16 @@ export const COLUMNS: ColumnMeta[] = [
       "平日の朝・昼・間食は固定、夜は主菜だけ日替わり。飲み会のある1週間の献立例とカロリーの合計、弁当にできない日の代わりまで、会社員向けに数字で組み立てます。",
     date: "2026-10-03",
     emoji: "🍱",
-    related: ["daily-calories", "meal-prep", "chicken-bento-1year"],
+    related: ["bulking-meal-plan", "daily-calories", "meal-prep"],
+  },
+  {
+    slug: "bulking-meal-plan",
+    title: "増量期の食事メニュー｜太りすぎない会社員の1週間の献立例",
+    description:
+      "増量期は維持カロリー＋300kcalで十分。減量期の型に主食を足す形で、食が細い会社員でも入る1日の型と筋トレ週3回の1週間の献立例、太りすぎていないかの確かめ方をまとめます。",
+    date: "2026-10-04",
+    emoji: "🍙",
+    related: ["cutting-meal-plan", "protein-intake", "workout-meal-timing"],
   },
 ];
 

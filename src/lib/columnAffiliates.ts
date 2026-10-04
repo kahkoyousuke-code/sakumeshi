@@ -73,6 +73,10 @@ export const COLUMN_AFFILIATES: Record<string, ColumnAffiliate> = {
     lead: "平日の型を回すなら、鶏むね肉を低温調理でまとめて仕込み、最初の数週間だけでもご飯や肉の量を量ってみるのが近道です。",
     items: ["boniq", "kitchen-scale"],
   },
+  "bulking-meal-plan": {
+    lead: "昼に肉を食べられなかった日や、筋トレのあとすぐに食事をとれない日の代わりを用意しておくと、増量期の合計が崩れにくくなります。",
+    items: ["whey-protein", "protein-bar"],
+  },
 };
 
 export function getColumnAffiliate(slug: string): ColumnAffiliate | undefined {
