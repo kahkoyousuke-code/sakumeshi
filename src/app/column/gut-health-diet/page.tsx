@@ -73,6 +73,7 @@ export default function GutHealthDiet() {
       slug="gut-health-diet"
       h1="腸活×ダイエット｜食物繊維・発酵食品で痩せやすい体を作る方法"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

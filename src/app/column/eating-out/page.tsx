@@ -91,6 +91,7 @@ export default function EatingOut() {
       slug="eating-out"
       h1="外食でも太らない食べ方｜定食・ラーメン・居酒屋シーン別ガイド"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

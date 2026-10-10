@@ -68,6 +68,7 @@ export default function NoExerciseDiet() {
       slug="no-exercise-diet"
       h1="運動なしで痩せる？食事だけダイエットの現実的なやり方"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

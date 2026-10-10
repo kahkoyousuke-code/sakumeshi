@@ -60,6 +60,7 @@ export default function FemaleCycleDiet() {
       slug="female-cycle-diet"
       h1="生理周期とダイエット｜痩せやすい時期・停滞する時期を知る"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

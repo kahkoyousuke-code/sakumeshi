@@ -78,6 +78,7 @@ export default function MealPrep() {
       h1="作り置きダイエット｜週末2時間で平日5日を乗り切る方法"
       toc={TOC}
       ctaLabel="サクメシで1週間分の献立を作る →"
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

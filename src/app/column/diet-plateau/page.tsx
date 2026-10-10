@@ -61,6 +61,7 @@ export default function DietPlateau() {
       h1="停滞期の乗り越え方｜体重が落ちなくなったらやるべきこと"
       toc={TOC}
       ctaLabel="サクメシで食事プランを見直す →"
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

@@ -76,6 +76,7 @@ export default function DietOver40() {
       slug="diet-over-40"
       h1="40代からのダイエット｜若い頃と同じやり方が通用しない理由"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

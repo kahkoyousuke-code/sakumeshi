@@ -98,6 +98,7 @@ export default function WorkoutMealTiming() {
       slug="workout-meal-timing"
       h1="筋トレ前後の食事タイミング｜何をいつ食べるか10年筋トレ民が完全解説"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

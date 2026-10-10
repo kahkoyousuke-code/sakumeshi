@@ -77,6 +77,7 @@ export default function WaterIntake() {
       slug="water-intake"
       h1="ダイエット中の水分補給｜水は1日どれくらい飲めばいい？"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

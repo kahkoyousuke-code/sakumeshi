@@ -79,6 +79,7 @@ export default function IntermittentFasting() {
       slug="intermittent-fasting"
       h1="16時間断食は痩せる？メリット・デメリットと正しいやり方"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

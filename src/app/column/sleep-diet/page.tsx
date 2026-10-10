@@ -67,6 +67,7 @@ export default function SleepDiet() {
       slug="sleep-diet"
       h1="睡眠とダイエットの関係｜寝不足だと太るって本当？"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

@@ -61,6 +61,7 @@ export default function SaltSwelling() {
       slug="salt-swelling"
       h1="体重が一晩で2kg増えた｜むくみと塩分の関係を正しく理解する"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

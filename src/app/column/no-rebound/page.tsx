@@ -76,6 +76,7 @@ export default function NoRebound() {
       slug="no-rebound"
       h1="リバウンドしない食習慣｜落とした体重を維持する食事の考え方"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

@@ -66,6 +66,7 @@ export default function AlcoholDiet() {
       slug="alcohol-diet"
       h1="お酒とダイエットの両立｜太りにくいお酒の選び方と飲み方ルール"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

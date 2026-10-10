@@ -97,6 +97,7 @@ export default function GiIndex() {
       slug="gi-index"
       h1="GI値って何？血糖値を意識した食材選びで太りにくく"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

@@ -56,6 +56,7 @@ export default function AppetiteControl() {
       slug="appetite-control"
       h1="食欲を抑える方法｜我慢に頼らず食べすぎを止める7つのコツ"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

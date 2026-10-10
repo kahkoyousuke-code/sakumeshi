@@ -79,6 +79,7 @@ export default function ProteinIntake() {
       h1="タンパク質は1日どれくらい必要？体重別の目安とプロテインの活用法"
       toc={TOC}
       ctaLabel="サクメシで高タンパクな食事プランを作る →"
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

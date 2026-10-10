@@ -104,6 +104,7 @@ export default function ConvenienceDiet() {
       slug="convenience-diet"
       h1="コンビニで買えるダイエット飯の選び方｜セブン・ファミマ・ローソン別おすすめ商品を解説"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">

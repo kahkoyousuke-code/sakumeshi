@@ -115,6 +115,7 @@ export default function EatingOrder() {
       slug="eating-order"
       h1="食べる順番ダイエット｜血糖値を抑えて太りにくい体を作る食べ方"
       toc={TOC}
+      faqs={FAQS}
     >
       {/* リード文 */}
       <div className="space-y-4">
