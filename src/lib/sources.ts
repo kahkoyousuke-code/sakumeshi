@@ -43,6 +43,11 @@ export const SOURCES = {
     publisher: "厚生労働省 健康づくりサポートネット（e-ヘルスネット）",
     url: "https://kennet.mhlw.go.jp/information/information/food/e-05-001.html",
   },
+  dietaryFiberTypes: {
+    label: "食物繊維（用語解説）",
+    publisher: "厚生労働省 健康づくりサポートネット（e-ヘルスネット）",
+    url: "https://kennet.mhlw.go.jp/information/information/dictionary/food/ye-016.html",
+  },
   gutBacteria: {
     label: "腸内細菌と健康",
     publisher: "厚生労働省 健康づくりサポートネット（e-ヘルスネット）",
@@ -112,7 +117,7 @@ const COLUMN_SOURCE_KEYS: Partial<Record<string, SourceKey[]>> = {
   "boost-metabolism": ["energyMetabolism", "protein", "dietaryReference"],
   "convenience-diet": ["nutritionLabel", "dietaryReference", "obesity"],
   "workout-meal-timing": ["protein", "energyMetabolism", "dietaryReference"],
-  "eating-order": ["bloodSugar", "insulin", "dietaryFiber"],
+  "eating-order": ["bloodSugar", "insulin", "dietaryFiberTypes", "dietaryFiber"],
   "eating-out": ["nutritionLabel", "obesity", "dietaryReference"],
   "no-rebound": ["obesity", "energyMetabolism", "dietaryReference"],
   "alcohol-diet": ["alcoholGuideline", "alcoholAbsorption", "alcoholEffects"],

@@ -5,17 +5,20 @@ import { columnMetadata } from "@/lib/metadata";
 export const metadata: Metadata = columnMetadata("eating-order", {
   title: "食べる順番ダイエット｜血糖値を抑えて太りにくい食べ方 | サクメシ",
   description:
-    "食べる順番を変えるだけで血糖値の上昇を抑えられます。野菜→タンパク質→炭水化物の順番が効く仕組み、丼・麺・コンビニ・居酒屋でのやり方、効果が出ないときの原因まで解説します。",
+    "食べる順番（ベジファースト）で血糖値の上がり方を緩やかにする方法を解説。野菜→タンパク質→炭水化物の順が効く仕組み、「最初の1品」の選び方、丼・麺・コンビニでのやり方、効果が出ないときの原因まで。",
 });
 
 const TOC = [
+  { id: "quick", label: "結論：今日の食事からできること" },
   { id: "why", label: "食べる順番で何が変わるのか" },
   { id: "order", label: "基本の順番と、それぞれの役割" },
+  { id: "first-dish", label: "「最初の1品」に向くもの・向かないもの" },
   { id: "interval", label: "どれくらい間隔をあければいい？" },
   { id: "blood-sugar", label: "血糖値スパイクとは？" },
   { id: "scenes", label: "シーン別の実践方法" },
   { id: "pitfalls", label: "効果が出ないときの3つの原因" },
   { id: "experience", label: "期待の置きどころ" },
+  { id: "my-way", label: "運営者はどうしていたか" },
   { id: "faq", label: "よくある質問" },
   { id: "summary", label: "まとめ" },
 ];
@@ -25,7 +28,7 @@ const STEPS = [
     step: "① 最初：野菜・きのこ・海藻",
     icon: "🥗",
     time: "3〜5分かける",
-    desc: "食物繊維が胃の中で水分を含んでかさを増し、あとから入ってくる糖の吸収スピードを落とします。サラダ・具だくさんの味噌汁・もずく酢・きのこのソテーなど。生野菜でなくてもかまいません。",
+    desc: "食物繊維（とくに海藻・きのこなどに多い水溶性食物繊維）には、あとから入ってくる糖の吸収を緩やかにする働きがあるとされています。サラダ・具だくさんの味噌汁・もずく酢・きのこのソテーなど。生野菜でなくてもかまいません。",
     color: "bg-emerald-50 border-emerald-100",
     textColor: "text-emerald-700",
   },
@@ -33,7 +36,7 @@ const STEPS = [
     step: "② 次：タンパク質（肉・魚・卵・大豆製品）",
     icon: "🍗",
     time: "5分程度かける",
-    desc: "タンパク質と脂質が胃に入ると、胃から小腸へ食べ物を送り出すスピード（胃排出）が遅くなります。結果、あとから食べる炭水化物の糖もゆっくり吸収されます。満腹感も出るので、主食を食べすぎにくくなります。",
+    desc: "タンパク質と脂質が胃に入ると、胃から小腸へ食べ物を送り出すスピード（胃排出）が遅くなります。その結果、あとから食べる炭水化物の糖もゆっくり吸収されます。満腹感も出るので、主食を食べすぎにくくなります。",
     color: "bg-blue-50 border-blue-100",
     textColor: "text-blue-700",
   },
@@ -44,6 +47,33 @@ const STEPS = [
     desc: "野菜とタンパク質が先に入った状態なら、同じ量のごはんでも血糖の上がり方は緩やかになります。最後に回すことで「思ったより少なくて足りた」となりやすいのもポイントです。",
     color: "bg-orange-50 border-orange-100",
     textColor: "text-orange-700",
+  },
+];
+
+const FIRST_DISHES = [
+  {
+    label: "向いている",
+    mark: "◎",
+    items: "葉物のサラダ、具だくさんの味噌汁・スープ、もずく酢・わかめ、きのこのソテー、おひたし、冷奴、キムチ・漬物（少量）",
+    note: "食物繊維が主体のもの。野菜が用意できなければ、冷奴のようなタンパク質のおかずから始めてもよい",
+    color: "bg-emerald-50 border-emerald-100",
+    textColor: "text-emerald-700",
+  },
+  {
+    label: "条件つきでOK",
+    mark: "○",
+    items: "ドレッシングをたっぷりかけたサラダ、ごまあえ、きんぴらごぼう、ひじきの煮物",
+    note: "食物繊維はとれるが、油や砂糖でカロリーが上がりやすい。量を控えめにすれば問題ない",
+    color: "bg-blue-50 border-blue-100",
+    textColor: "text-blue-700",
+  },
+  {
+    label: "最初の1品には向かない",
+    mark: "△",
+    items: "ポテトサラダ、かぼちゃサラダ、コーン、マカロニサラダ、春雨サラダ、野菜ジュース",
+    note: "見た目は野菜でも、糖質が多いもの（かぼちゃは食物繊維もとれるが糖質も多い）。野菜ジュースは製法によっては食物繊維が少なく、商品によっては糖質も多い",
+    color: "bg-amber-50 border-amber-100",
+    textColor: "text-amber-800",
   },
 ];
 
@@ -61,7 +91,7 @@ const SCENES = [
   {
     scene: "ラーメン・パスタ（麺類）",
     icon: "🍜",
-    how: "麺そのものが炭水化物なので、順番より「先に何か入れる」が主眼。餃子よりサラダ、パスタならスープかサラダを先に。ラーメンなら、まずチャーシューともやし・メンマを食べてから麺に取りかかります。",
+    how: "麺そのものが炭水化物なので、順番より「先に何か入れる」が主眼。ラーメンのサイドは餃子よりサラダ、パスタならスープかサラダを先に。ラーメンなら、まずチャーシューともやし・メンマを食べてから麺に取りかかります。",
   },
   {
     scene: "コンビニ",
@@ -71,7 +101,7 @@ const SCENES = [
   {
     scene: "居酒屋",
     icon: "🍺",
-    how: "枝豆・冷奴・お浸し・キムチ → 焼き鳥・刺身 → 締めのごはんもの。もともと順番に運ばれてくるので、締めを最後にするという当たり前を守るだけで成立します。",
+    how: "枝豆・冷奴・おひたし・キムチ → 焼き鳥・刺身 → 締めのごはんもの。もともと順番に運ばれてくるので、締めを最後にするという当たり前を守るだけで成立します。",
   },
 ];
 
@@ -82,7 +112,7 @@ const PITFALLS = [
   },
   {
     title: "「野菜」がポテトサラダやコーンサラダ",
-    desc: "ポテトサラダ・かぼちゃサラダ・コーンは、野菜の見た目をした炭水化物です。最初に食べる意味がほぼありません。葉物・きのこ・海藻・大根・ブロッコリーなど、食物繊維が主体のものを選びます。",
+    desc: "ポテトサラダ・かぼちゃサラダ・コーンは、野菜の見た目をした炭水化物です。最初の1品に何を選べばいいかは、前半の「向くもの・向かないもの」の一覧を参考にしてください。",
   },
   {
     title: "早食いで全部10分以内に終わっている",
@@ -107,6 +137,14 @@ const FAQS = [
     q: "1日3食すべてやる必要はある？",
     a: "全部できるならそれがベストですが、続かないなら夕食だけでもかまいません。夕食は量が多くなりやすく、そのあと寝るだけで活動量も少ないため、1食選ぶなら効果を感じやすいのは夕食です。",
   },
+  {
+    q: "野菜ジュースを先に飲めば代わりになる？",
+    a: "代わりにはなりにくいです。製法によっては食物繊維が少なく、果汁入りなど糖質の多い商品もあります。飲むなら成分表示で食物繊維と糖質を確認し、できればサラダや味噌汁など噛んで食べるものを1品用意するほうが安心です。",
+  },
+  {
+    q: "朝はパンとコーヒーだけ。どうすればいい？",
+    a: "パンの前に1品足すだけで十分です。ゆで卵・ヨーグルト（無糖）・チーズ・野菜スープなど、手間のかからないものを先に食べてからパンに進みます。何も足せない日は、パンをゆっくり食べるだけでもかまいません。",
+  },
 ];
 
 export default function EatingOrder() {
@@ -125,8 +163,33 @@ export default function EatingOrder() {
           <strong>「順番さえ守れば何を食べても痩せる」という意味ではない</strong>
           ので、そこを勘違いすると効果が出ずに終わります。
         </p>
-        <p>この記事では、順番が効く仕組みと、丼もの・麺類・コンビニなど順番を作りにくい場面での実践方法、そして効果が出ないときに疑うべきポイントまで解説します。</p>
+        <p>この記事では、順番が効く仕組みと、丼もの・麺類・コンビニなど順番を作りにくい場面での実践方法、そして効果が出ないときに疑うべきポイントまで解説します。時間のない方は、まず次の結論だけでも読んでみてください。</p>
       </div>
+
+      <hr className="border-green-100" />
+
+      <section>
+        <h2 id="quick" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
+          結論：今日の食事からできること
+        </h2>
+        <div className="space-y-4">
+          <div className="bg-green-50 rounded-xl p-5 border border-green-100 space-y-3">
+            <p className="text-sm font-bold text-green-700">食べる順番ダイエットの基本ルール</p>
+            <p className="text-sm text-gray-700">
+              <strong>野菜・きのこ・海藻 → 肉・魚・卵・大豆製品 → ごはん・パン・麺</strong>
+              の順に食べ、食事全体で<strong>15〜20分</strong>かける。
+            </p>
+            <p className="text-sm text-gray-700">
+              3段階に分けられない食事（丼・麺・パン1個など）は、<strong>炭水化物の前に何か1品を食べきる</strong>だけでよい。
+            </p>
+          </div>
+          <p className="text-sm text-gray-600">
+            野菜から先に食べるこの方法は「ベジファースト」とも呼ばれます。ただし、順番で変わるのは血糖の上がり方と食べすぎにくさであって、<strong>摂取カロリーそのものは減りません</strong>。体重を落としたいなら、
+            <a href="/column/daily-calories" className="text-green-700 underline hover:no-underline">1日の摂取カロリーの目安</a>
+            を把握したうえで、その中で順番を整えるのが近道です。
+          </p>
+        </div>
+      </section>
 
       <hr className="border-green-100" />
 
@@ -148,11 +211,11 @@ export default function EatingOrder() {
             <div className="bg-green-50 rounded-xl p-4 border border-green-100">
               <p className="font-bold text-green-700 text-sm mb-1">① 食物繊維が糖の吸収を遅らせる</p>
               <p className="text-sm text-gray-600">
-                食物繊維は人の消化酵素では分解されず、胃や腸の中で水分を含んでゲル状になります。この中に糖が取り込まれることで、小腸から吸収されるスピードが落ちます。
+                食物繊維は人の小腸では消化されない成分です。このうち水に溶ける<strong>水溶性食物繊維</strong>は、水分を含んでゲル状になり、糖の吸収を緩やかにして血糖値の上昇を抑える働きがあるとされています。海藻・きのこ・大麦などに多く含まれます。
               </p>
             </div>
             <div className="bg-green-50 rounded-xl p-4 border border-green-100">
-              <p className="font-bold text-green-700 text-sm mb-1">② タンパク質・脂質が胃の出口を遅くする</p>
+              <p className="font-bold text-green-700 text-sm mb-1">② タンパク質・脂質が胃から送り出すスピードを遅くする</p>
               <p className="text-sm text-gray-600">
                 タンパク質や脂質が先に胃に入ると、胃から小腸へ内容物を送り出す速度が落ちます。糖が小腸に到達するタイミングがずれ、血糖の立ち上がりがなだらかになります。
               </p>
@@ -181,6 +244,36 @@ export default function EatingOrder() {
               <p className="text-sm text-gray-600">{item.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <hr className="border-green-100" />
+
+      <section>
+        <h2 id="first-dish" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
+          「最初の1品」に向くもの・向かないもの
+        </h2>
+        <div className="space-y-4">
+          <p>
+            食べる順番で一番つまずきやすいのが、最初に食べるものの選び方です。「野菜っぽいもの」ならなんでもいいわけではありません。目安はこうなります。
+          </p>
+          <div className="space-y-3">
+            {FIRST_DISHES.map((item) => (
+              <div key={item.label} className={`rounded-xl p-4 border ${item.color}`}>
+                <p className={`font-bold text-sm mb-1 ${item.textColor}`}>
+                  {item.mark} {item.label}
+                </p>
+                <p className="text-sm text-gray-700 mb-1">{item.items}</p>
+                <p className="text-xs text-gray-500">{item.note}</p>
+              </div>
+            ))}
+          </div>
+          <p>
+            迷ったときの基準は<strong>「噛みごたえがあって、甘くないもの」</strong>
+            です。噛みごたえのあるものは食べるのに時間がかかりやすいので、食事時間を延ばすという意味でも順番と相性がいいです。食物繊維をとる意味や、多く含む食材については
+            <a href="/column/gut-health-diet" className="text-green-700 underline hover:no-underline">腸活×ダイエット（食物繊維・発酵食品のとり方）</a>
+            でまとめています。
+          </p>
         </div>
       </section>
 
@@ -250,7 +343,12 @@ export default function EatingOrder() {
             ))}
           </div>
           <p>
-            とくに実感しやすいのが3つめの「またすぐ腹が減る」です。昼にうどんや菓子パンだけで済ませた日の15時に猛烈に何か食べたくなるのは、意志が弱いからではなく血糖の動きが原因であることが少なくありません。
+            とくに実感しやすいのが3つめの「またすぐお腹が空く」です。昼にうどんや菓子パンだけで済ませた日の15時に猛烈に何か食べたくなるのは、意志が弱いからではなく血糖の動きが原因であることが少なくありません。
+          </p>
+          <p>
+            順番は「どう食べるか」で血糖の上がり方を緩やかにする方法ですが、「何を食べるか」で同じことを狙うのがGI値の考え方です。両方を組み合わせると取り入れやすくなります。詳しくは
+            <a href="/column/gi-index" className="text-green-700 underline hover:no-underline">GI値を意識した食材選び</a>
+            をどうぞ。
           </p>
           <p className="text-sm text-gray-500">
             ※ ここで挙げているのは一般的な傾向です。すでに血糖値の異常を指摘されている方、治療中の方は、自己判断で食事を変えず主治医の指示に従ってください。
@@ -280,6 +378,13 @@ export default function EatingOrder() {
           <p>
             共通しているのは<strong>「先に食べるものを1品つくる」</strong>という考え方です。順番を完璧に3段階へ分けることより、炭水化物の前に何か入れる習慣のほうが、外食でも崩れにくく続きます。
           </p>
+          <p>
+            メニューの選び方そのものは
+            <a href="/column/eating-out" className="text-green-700 underline hover:no-underline">外食でも太らない食べ方</a>
+            、コンビニで何を買うかは
+            <a href="/column/convenience-diet" className="text-green-700 underline hover:no-underline">コンビニで買えるダイエット飯の選び方</a>
+            で詳しく書いています。
+          </p>
         </div>
       </section>
 
@@ -307,9 +412,7 @@ export default function EatingOrder() {
         </h2>
         <div className="space-y-4">
           <p>
-            食べる順番は「順番を変えるだけで痩せる方法」として紹介されがちですが、
-            <strong>体重が落ちるかどうかを決めるのは、あくまで1日の摂取カロリー</strong>
-            です。同じものを同じ量食べるなら、順番を変えても合計は変わりません。
+            冒頭でも触れたとおり、体重が落ちるかどうかを決めるのは、1日の摂取カロリーと消費カロリーのバランスです。順番を変えても、食べた量の合計は変わりません。
           </p>
           <p>
             それでも取り入れる価値があるのは、
@@ -317,7 +420,30 @@ export default function EatingOrder() {
             からです。野菜から食べ始めると食事に時間がかかり、主食に行き着く頃には満腹感が出てきます。結果として主食や間食の量が自然に減る、というのが現実的な効き方です。
           </p>
           <p>
-            なので期待の置きどころとしては、「これだけで痩せる方法」ではなく「カロリー管理を続けやすくするための補助」が正確です。コストはゼロなので、やらない理由はありません。
+            そのため期待の置きどころとしては、「これだけで痩せる方法」ではなく「カロリー管理を続けやすくするための補助」が正確です。コストはかからないので、試してみる価値はあります。
+          </p>
+        </div>
+      </section>
+
+      <hr className="border-green-100" />
+
+      <section>
+        <h2 id="my-way" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
+          運営者はどうしていたか
+        </h2>
+        <div className="space-y-4">
+          <p>
+            正直に書くと、私（motsu）は92kgから減量していた頃、食べる順番を厳密に守っていたわけではありません。やっていたのは、
+            <strong>外食で定食を食べるときに、ごはんより先におかずや汁物に手をつける</strong>
+            という程度です。毎食ではなく、思い出したときにゆるくやっていました。
+          </p>
+          <p>
+            体重が落ちた理由を振り返ると、大きかったのは外食の回数そのものが減ったことです。順番がどれくらい効いていたのかは、自分では分かりません（当時の外食の中身は
+            <a href="/column/eating-out-92kg" className="text-green-700 underline hover:no-underline">92kgのとき、外食で何を食べていたか</a>
+            に書き出しています）。
+          </p>
+          <p>
+            定食ならメニューを変えずに、手をつける順番を変えるだけで済みます。この記事で「先に1品つくる」を勧めているのも、3段階を厳密に守るより、そのくらいの手軽さで続けるほうが現実的だと考えているからです。
           </p>
         </div>
       </section>
@@ -348,14 +474,15 @@ export default function EatingOrder() {
           <p>食べる順番ダイエットのポイントを整理します。</p>
           <ol className="space-y-2 bg-green-50 rounded-xl p-4 border border-green-100">
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">1.</span><span><strong>野菜・きのこ・海藻</strong>を最初に、3〜5分かけて食べる</span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">2.</span><span>次に<strong>肉・魚・卵・大豆製品</strong>。胃の出口が遅くなり満腹感も出る</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">2.</span><span>次に<strong>肉・魚・卵・大豆製品</strong>。胃から送り出すスピードが遅くなり満腹感も出る</span></li>
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">3.</span><span>最後に<strong>ごはん・パン・麺</strong>。同じ量でも血糖の上がり方が緩やかになる</span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">4.</span><span>丼・麺など混ざっているものは、<strong>先に食べる1品を足す</strong>だけでよい</span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">5.</span><span>全体で<strong>15〜20分</strong>かける。早食いのままでは順番の効果は出にくい</span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">6.</span><span>順番は<strong>カロリー管理の代わりにはならない</strong>。あくまで補助として使う</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">4.</span><span>ポテトサラダ・コーンは「野菜の見た目をした炭水化物」。野菜ジュースも商品によっては<strong>「最初の1品」の代わりになりにくい</strong></span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">5.</span><span>丼・麺など混ざっているものは、<strong>先に食べる1品を足す</strong>だけでよい</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">6.</span><span>全体で<strong>15〜20分</strong>かける。早食いのままでは順番の効果は出にくい</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">7.</span><span>順番は<strong>カロリー管理の代わりにはならない</strong>。あくまで補助として使う</span></li>
           </ol>
           <p>
-            食べる量を変えなくても、順番と食べる速さを整えるだけで、食後の眠気や余計な間食は減らせます。まずは今日の夕食で、ごはんに手をつける前にサラダか味噌汁を食べきるところから始めてみてください。
+            食べる量を変えなくても、順番と食べる速さを整えるだけで、食後の眠気や余計な間食は減らしやすくなります。まずは今日の夕食で、ごはんに手をつける前にサラダか味噌汁を食べきるところから始めてみてください。
           </p>
           <p>
             そのうえで「自分は1日どれくらい食べていいのか」が分かっていないなら、そちらを先に把握したほうが早いです。サクメシなら質問に答えるだけで必要カロリーとPFC、1週間分の献立まで出せます。

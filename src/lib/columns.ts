@@ -69,9 +69,9 @@ export const COLUMNS: ColumnMeta[] = [
     title: "食べる順番ダイエット｜血糖値を抑えて太りにくい食べ方",
     description: "野菜→タンパク質→炭水化物の順番で血糖値スパイクを防ぐ方法",
     date: "2026-05-09",
-    updated: "2026-09-13",
+    updated: "2026-10-10",
     emoji: "🥢",
-    related: ["eating-out", "gut-health-diet", "intermittent-fasting"],
+    related: ["gi-index", "eating-out", "gut-health-diet"],
   },
   {
     slug: "eating-out",
