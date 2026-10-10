@@ -213,7 +213,7 @@ export const COLUMNS: ColumnMeta[] = [
     title: "体重が一晩で2kg増えた｜むくみと塩分の関係を正しく理解する",
     description: "急な体重増の正体は水分。塩分とむくみの仕組みと翌日のリセット方法を解説",
     date: "2026-07-25",
-    updated: "2026-09-13",
+    updated: "2026-10-10",
     emoji: "🧂",
     related: ["water-intake", "diet-plateau", "convenience-diet"],
   },
