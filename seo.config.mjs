@@ -105,6 +105,7 @@ const config = {
     { kw: "ファスティング", path: "/column/intermittent-fasting" },
     { kw: "16時間", path: "/column/intermittent-fasting" },
     { kw: "食欲", path: "/column/appetite-control" },
+    { kw: "空腹", path: "/column/appetite-control" },
     { kw: "運動なし", path: "/column/no-exercise-diet" },
     { kw: "むくみ", path: "/column/salt-swelling" },
     { kw: "塩分", path: "/column/salt-swelling" },

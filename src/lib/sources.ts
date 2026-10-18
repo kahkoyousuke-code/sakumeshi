@@ -131,7 +131,7 @@ const COLUMN_SOURCE_KEYS: Partial<Record<string, SourceKey[]>> = {
   "female-cycle-diet": ["dietaryReference", "obesity", "energyMetabolism"],
   "gi-index": ["bloodSugar", "insulin", "carbohydrate"],
   "intermittent-fasting": ["bloodSugar", "dietaryReference", "obesity"],
-  "appetite-control": ["bloodSugar", "sleepLifestyle", "protein"],
+  "appetite-control": ["bloodSugar", "sleepLifestyle", "protein", "dietaryFiber"],
   "no-exercise-diet": ["energyMetabolism", "obesity", "dietaryReference"],
   "salt-swelling": ["dietaryReference", "obesity", "nutritionLabel"],
   "daily-calories": ["dietaryReference", "energyMetabolism", "obesity"],

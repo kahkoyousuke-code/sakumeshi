@@ -192,10 +192,10 @@ export const COLUMNS: ColumnMeta[] = [
   },
   {
     slug: "appetite-control",
-    title: "食欲を抑える方法｜我慢に頼らず食べすぎを止める7つのコツ",
-    description: "食欲が止まらない原因を血糖値・タンパク質・睡眠から解き明かし、具体策を解説",
+    title: "食欲・空腹を抑える方法｜我慢しない7つのコツと食べ物一覧",
+    description: "今すぐ空腹を抑える3ステップと低カロリーの食べ物一覧、食欲が止まらない原因別の対策を解説",
     date: "2026-07-25",
-    updated: "2026-09-13",
+    updated: "2026-10-18",
     emoji: "🧠",
     related: ["diet-snacks", "gi-index", "sleep-diet"],
   },
