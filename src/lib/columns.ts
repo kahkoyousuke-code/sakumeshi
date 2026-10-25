@@ -1,3 +1,44 @@
+export type ColumnCategory = "basics" | "meals" | "eating-out" | "habits" | "trouble";
+
+/** Display order and copy for the /column index. */
+export const COLUMN_CATEGORIES: {
+  id: ColumnCategory;
+  label: string;
+  emoji: string;
+  description: string;
+}[] = [
+  {
+    id: "basics",
+    label: "カロリー・栄養の基本",
+    emoji: "📊",
+    description: "必要なカロリーとPFC、タンパク質の量など、食事管理の土台になる数字の話",
+  },
+  {
+    id: "meals",
+    label: "献立・食材選び",
+    emoji: "🍱",
+    description: "痩せやすい食材、作り置き、減量期・増量期の1週間の献立例",
+  },
+  {
+    id: "eating-out",
+    label: "外食・コンビニ・お酒",
+    emoji: "🏪",
+    description: "自炊できない日や飲み会がある日でも、崩れにくい選び方",
+  },
+  {
+    id: "habits",
+    label: "食べ方・生活習慣",
+    emoji: "⏰",
+    description: "食べる順番・時間・空腹との付き合い方、睡眠や運動との組み合わせ",
+  },
+  {
+    id: "trouble",
+    label: "停滞期・体重の悩み",
+    emoji: "📉",
+    description: "体重が落ちない・増えた・戻った。年代や体のリズムによる違いも",
+  },
+];
+
 export interface ColumnMeta {
   slug: string;
   title: string;
@@ -6,6 +47,8 @@ export interface ColumnMeta {
   /** set when the article is substantially revised; drives the byline and sitemap */
   updated?: string;
   emoji: string;
+  /** groups the article on the /column index */
+  category: ColumnCategory;
   /** slugs of related columns shown at the bottom of the article */
   related: string[];
 }
@@ -18,6 +61,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-03-20",
     updated: "2026-09-13",
     emoji: "🥗",
+    category: "basics",
     related: ["pfc-calculation", "boost-metabolism", "diet-plateau"],
   },
   {
@@ -27,6 +71,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-03-20",
     updated: "2026-09-23",
     emoji: "📊",
+    category: "basics",
     related: ["daily-calories", "lowcarb-vs-lowfat", "protein-intake"],
   },
   {
@@ -36,6 +81,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-03-21",
     updated: "2026-09-13",
     emoji: "🥜",
+    category: "meals",
     related: ["appetite-control", "convenience-diet", "alcohol-diet"],
   },
   {
@@ -44,6 +90,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "食事で基礎代謝を上げる5つのポイントとやってはいけない食事法",
     date: "2026-03-29",
     emoji: "🔥",
+    category: "basics",
     related: ["no-exercise-diet", "gut-health-diet", "protein-intake"],
   },
   {
@@ -53,6 +100,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-05-09",
     updated: "2026-08-08",
     emoji: "🏪",
+    category: "eating-out",
     related: ["diet-foods", "diet-snacks", "meal-prep"],
   },
   {
@@ -62,6 +110,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-05-09",
     updated: "2026-08-08",
     emoji: "💪",
+    category: "habits",
     related: ["protein-intake", "pfc-calculation", "boost-metabolism"],
   },
   {
@@ -71,6 +120,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-05-09",
     updated: "2026-10-10",
     emoji: "🥢",
+    category: "habits",
     related: ["gi-index", "eating-out", "gut-health-diet"],
   },
   {
@@ -80,6 +130,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-05-09",
     updated: "2026-08-08",
     emoji: "🍽️",
+    category: "eating-out",
     related: ["late-night-meal", "alcohol-diet", "convenience-diet"],
   },
   {
@@ -89,6 +140,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-05-09",
     updated: "2026-09-13",
     emoji: "⚖️",
+    category: "trouble",
     related: ["lose-3kg-month", "diet-plateau", "sleep-diet"],
   },
   {
@@ -98,6 +150,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-05-09",
     updated: "2026-09-13",
     emoji: "🍺",
+    category: "eating-out",
     related: ["quit-drinking-diet", "eating-out", "diet-snacks"],
   },
   {
@@ -107,6 +160,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-05-09",
     updated: "2026-08-08",
     emoji: "🌿",
+    category: "habits",
     related: ["eating-order", "boost-metabolism", "water-intake"],
   },
   {
@@ -116,6 +170,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-09-13",
     emoji: "🍗",
+    category: "basics",
     related: ["pfc-calculation", "workout-meal-timing", "meal-prep"],
   },
   {
@@ -125,6 +180,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-09-13",
     emoji: "⛰️",
+    category: "trouble",
     related: ["lose-3kg-month", "salt-swelling", "no-rebound"],
   },
   {
@@ -134,6 +190,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-09-13",
     emoji: "😴",
+    category: "habits",
     related: ["late-night-meal", "appetite-control", "boost-metabolism"],
   },
   {
@@ -143,6 +200,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-09-13",
     emoji: "💧",
+    category: "basics",
     related: ["salt-swelling", "boost-metabolism", "gut-health-diet"],
   },
   {
@@ -152,6 +210,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-08-08",
     emoji: "🍱",
+    category: "meals",
     related: ["diet-foods", "no-exercise-diet", "convenience-diet"],
   },
   {
@@ -161,6 +220,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-09-13",
     emoji: "👔",
+    category: "trouble",
     related: ["boost-metabolism", "sleep-diet", "protein-intake"],
   },
   {
@@ -170,6 +230,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-08-08",
     emoji: "🌸",
+    category: "trouble",
     related: ["diet-plateau", "sleep-diet", "diet-snacks"],
   },
   {
@@ -179,6 +240,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-09-13",
     emoji: "🍚",
+    category: "basics",
     related: ["eating-order", "lowcarb-vs-lowfat", "convenience-diet"],
   },
   {
@@ -188,6 +250,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-19",
     updated: "2026-09-13",
     emoji: "⏰",
+    category: "habits",
     related: ["eating-order", "diet-plateau", "lowcarb-vs-lowfat"],
   },
   {
@@ -197,6 +260,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-25",
     updated: "2026-10-18",
     emoji: "🧠",
+    category: "habits",
     related: ["diet-snacks", "gi-index", "sleep-diet"],
   },
   {
@@ -206,6 +270,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-25",
     updated: "2026-09-13",
     emoji: "🚶",
+    category: "habits",
     related: ["daily-calories", "pfc-calculation", "meal-prep"],
   },
   {
@@ -215,6 +280,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-25",
     updated: "2026-10-10",
     emoji: "🧂",
+    category: "trouble",
     related: ["water-intake", "diet-plateau", "convenience-diet"],
   },
   {
@@ -224,6 +290,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-07-26",
     updated: "2026-09-23",
     emoji: "🔢",
+    category: "basics",
     related: ["pfc-calculation", "lose-3kg-month", "no-exercise-diet"],
   },
   {
@@ -232,6 +299,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "3kg減に必要な赤字カロリーを計算し、体重別に無理のないペースかどうかを判定する",
     date: "2026-07-26",
     emoji: "📅",
+    category: "basics",
     related: ["daily-calories", "diet-plateau", "no-rebound"],
   },
   {
@@ -240,6 +308,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "低カロリー高タンパクの主菜食材から主食・間食まで、迷ったら選べる定番をまとめて紹介",
     date: "2026-07-26",
     emoji: "🛒",
+    category: "meals",
     related: ["convenience-diet", "protein-intake", "meal-prep"],
   },
   {
@@ -248,6 +317,7 @@ export const COLUMNS: ColumnMeta[] = [
     description: "夜遅く食べると太る理由と、分食・メニュー選び・翌朝の調整で現実的に対処する方法",
     date: "2026-07-26",
     emoji: "🌙",
+    category: "eating-out",
     related: ["sleep-diet", "convenience-diet", "appetite-control"],
   },
   {
@@ -257,6 +327,7 @@ export const COLUMNS: ColumnMeta[] = [
       "運営者が92kgになるまでの25kg増を1日あたりのカロリーに割り戻すと約53kcal。じわじわ太る仕組みと、同じ計算が減量にも効く話を実体験から解説します。",
     date: "2026-08-29",
     emoji: "📉",
+    category: "trouble",
     related: ["daily-calories", "no-rebound", "lose-3kg-month"],
   },
   {
@@ -266,6 +337,7 @@ export const COLUMNS: ColumnMeta[] = [
       "運営者が92kgだった頃の外食メニューを書き出してカロリーを積み上げ、「選び方で削れる量」と「回数で削れる量」を比較します。昼を作り置き弁当に置き換えた実例つき。",
     date: "2026-09-05",
     emoji: "🍱",
+    category: "eating-out",
     related: ["eating-out", "slow-weight-gain", "convenience-diet"],
   },
   {
@@ -275,6 +347,7 @@ export const COLUMNS: ColumnMeta[] = [
       "低温調理の鶏むね弁当を1年続けた実数と、加熱で不安になった話",
     date: "2026-09-06",
     emoji: "🐔",
+    category: "meals",
     related: ["meal-prep", "eating-out-92kg", "protein-intake"],
   },
   {
@@ -284,6 +357,7 @@ export const COLUMNS: ColumnMeta[] = [
       "最初の1〜3ヶ月は運動ゼロで3〜5kg。見た目が変わるまでの実際の時間",
     date: "2026-09-13",
     emoji: "🪞",
+    category: "trouble",
     related: ["no-exercise-diet", "slow-weight-gain", "protein-intake"],
   },
   {
@@ -293,6 +367,7 @@ export const COLUMNS: ColumnMeta[] = [
       "毎朝の体重が増えていると昼を抜き、夕方に反動で食べていた頃の話。1日で増えた1kgが脂肪ではありえないことを当時の実数で計算します。",
     date: "2026-09-19",
     emoji: "🧮",
+    category: "trouble",
     related: ["salt-swelling", "no-rebound", "diet-plateau"],
   },
   {
@@ -302,6 +377,7 @@ export const COLUMNS: ColumnMeta[] = [
       "運営者が大会準備で2〜3ヶ月だけ完全に断酒した実体験。効いたのは酒のカロリーではなく、酒が連れてくる食事の連鎖でした。維持期のいまの飲み方を実数で比較します。",
     date: "2026-09-20",
     emoji: "🥃",
+    category: "eating-out",
     related: ["alcohol-diet", "eating-out-92kg", "no-rebound"],
   },
   {
@@ -311,6 +387,7 @@ export const COLUMNS: ColumnMeta[] = [
       "平日の朝・昼・間食は固定、夜は主菜だけ日替わり。飲み会のある1週間の献立例とカロリーの合計、弁当にできない日の代わりまで、会社員向けに数字で組み立てます。",
     date: "2026-10-03",
     emoji: "🍱",
+    category: "meals",
     related: ["bulking-meal-plan", "daily-calories", "meal-prep"],
   },
   {
@@ -320,6 +397,7 @@ export const COLUMNS: ColumnMeta[] = [
       "増量期は維持カロリー＋300kcalで十分。減量期の型に主食を足す形で、食が細い会社員でも入る1日の型と筋トレ週3回の1週間の献立例、太りすぎていないかの確かめ方をまとめます。",
     date: "2026-10-04",
     emoji: "🍙",
+    category: "meals",
     related: ["cutting-meal-plan", "protein-intake", "workout-meal-timing"],
   },
 ];
@@ -331,6 +409,15 @@ export function getColumn(slug: string): ColumnMeta | undefined {
 /** COLUMNS sorted by date descending (newest first), stable for same-date entries */
 export function columnsByDateDesc(): ColumnMeta[] {
   return [...COLUMNS].sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/** COLUMNS grouped by category in COLUMN_CATEGORIES order, newest first within each */
+export function columnsByCategory() {
+  const sorted = columnsByDateDesc();
+  return COLUMN_CATEGORIES.map((category) => ({
+    ...category,
+    columns: sorted.filter((c) => c.category === category.id),
+  }));
 }
 
 export function getRelatedColumns(slug: string): ColumnMeta[] {

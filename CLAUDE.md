@@ -21,6 +21,7 @@ npm run seo:report  # 取得結果から「次にどこを直すか」の一覧�
 - `rate-limit.test.ts`：`getClientIp` / `checkRateLimit`（メモリ方式・Upstash 方式・障害時のフォールバック）
 - `affiliate.test.ts`：Amazon の検索リンク・商品リンク（ASIN）の組み立て
 - `recommendedItems.test.ts`：`pickRecommendedItems`（回答による出し分け）と `COLUMN_AFFILIATES` の参照整合性
+- `columns.test.ts`：`COLUMNS` の slug 重複・`related` の参照切れ・全記事がいずれかのカテゴリに入っているか
 
 ## 環境変数
 
@@ -82,7 +83,8 @@ npm run seo:report  # 取得結果から「次にどこを直すか」の一覧�
 
 `src/app/column/` 配下に静的ページとして実装。`src/lib/columns.ts` の `COLUMNS` 配列がコラム一覧のシングルソース。新しいコラムを追加するには `COLUMNS` にエントリを追加してから `src/app/column/<slug>/page.tsx` を作成する。
 
-- 各エントリは `related`（記事末尾に表示する関連コラムの slug 配列）が必須。`getRelatedColumns(slug)` が解決し、未解決時は最新3件にフォールバックする。一覧の日付降順ソートは `columnsByDateDesc()`。
+- 各エントリは `related`（記事末尾に表示する関連コラムの slug 配列）が必須。`getRelatedColumns(slug)` が解決し、未解決時は最新3件にフォールバックする。日付降順ソートは `columnsByDateDesc()`（トップの新着・NEW バッジが使う）。
+- 各エントリは `category`（`basics` / `meals` / `eating-out` / `habits` / `trouble`）も必須。`/column` 一覧は `columnsByCategory()` でテーマ別に表示し、見出し・説明文・並び順は `COLUMN_CATEGORIES` で定義する。カテゴリを増やすときは型 `ColumnCategory` と `COLUMN_CATEGORIES` の両方に足す。
 - `updated` は任意。記事を大幅に改稿したときだけ入れる。バイライン（`公開 … / 更新 …`）・JSON-LD の `dateModified`・sitemap の `lastModified` がこれを見る。
 - 記事の共通レイアウト（戻るリンク・ヘッダー・目次・CTA・関連コラム・note誘導・JSON-LD）は `src/components/column/ColumnShell.tsx` と `ColumnFooter.tsx`。新規記事は `ColumnShell` で本文だけ書く。
 - **図解**：記事を新規作成・加筆したら、図にしたほうが速く伝わる箇所（仕組み・因果、流れ・手順、数値の比較・推移、計算の分解、2軸の位置づけ）に `diagram-master` エージェントで図を入れる。1記事0〜2枚、カードや文章で足りている所には入れない。
