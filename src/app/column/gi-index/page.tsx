@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("gi-index", {
@@ -183,6 +184,13 @@ export default function GiIndex() {
           <p className="text-sm text-gray-500">
             ※ ここで扱っているのは健康な人の一般的な傾向です。すでに血糖値の異常を指摘されている方、糖尿病の治療中の方は、自己判断で食事を変えず主治医の指示に従ってください。
           </p>
+          <ColumnFigure
+            caption="高GIは「急に上がって急に下がる」。低GIはなだらか"
+            alt="食後の血糖値の変化を表したイメージ図。高GIの食品は血糖が急上昇したあと急降下し、食前の水準より下がってニセの空腹が来る。低GIの食品はなだらかに上がってなだらかに戻る。"
+            note="イメージ図（実測データではなく、縦軸に数値はありません）"
+          >
+            <GiCurveDiagram />
+          </ColumnFigure>
         </div>
       </section>
 
@@ -242,6 +250,13 @@ export default function GiIndex() {
           <p>
             分かりやすいのが<strong>すいか</strong>です。GI値は70台と高い部類ですが、1切れに含まれる糖質はごくわずか。GLで計算すると1桁になり、実際の影響は小さいことが分かります。
           </p>
+          <ColumnFigure
+            caption="GI値が近くても、食べる量を掛けたGLでは大きな差がつく"
+            alt="すいかと白米の比較グラフ。GI値はすいか約72、白米約80とほぼ同じ高さ。GLにするとすいか1切れは約4、白米茶碗1杯は約44と大きく差がつく。"
+            note="GL＝GI値×1食分の糖質量(g)÷100。数値は下の表と同じ目安"
+          >
+            <GlCompareDiagram />
+          </ColumnFigure>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -443,5 +458,78 @@ export default function GiIndex() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** Conceptual blood-sugar curves after eating: high GI vs low GI. No numeric axis on purpose. */
+function GiCurveDiagram() {
+  return (
+    <svg viewBox="0 0 640 385" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {/* axes */}
+      <line x1="70" y1="40" x2="70" y2="340" stroke="#9CA3AF" strokeWidth="2" />
+      <line x1="70" y1="340" x2="610" y2="340" stroke="#9CA3AF" strokeWidth="2" />
+      <text x="80" y="36" fontSize="18" fill="#374151">血糖値</text>
+      <text x="610" y="370" textAnchor="end" fontSize="18" fill="#374151">食後の時間 →</text>
+      {/* fasting level */}
+      <line x1="70" y1="240" x2="610" y2="240" stroke="#9CA3AF" strokeWidth="1.5" strokeDasharray="4 6" />
+      <text x="606" y="232" textAnchor="end" fontSize="16" fill="#9CA3AF">食前の水準</text>
+      {/* high GI: spike then dip below fasting level */}
+      <path
+        d="M70 240 C 120 240, 140 70, 190 70 C 240 70, 260 296, 320 290 C 370 284, 420 242, 610 240"
+        fill="none"
+        stroke="#F57C00"
+        strokeWidth="4"
+        strokeDasharray="10 6"
+      />
+      {/* low GI: gentle rise and fall */}
+      <path
+        d="M70 240 C 140 240, 200 160, 280 160 C 360 160, 440 236, 610 240"
+        fill="none"
+        stroke="#4CAF50"
+        strokeWidth="5"
+      />
+      <text x="190" y="58" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#F57C00">急上昇</text>
+      <text x="330" y="322" fontSize="18" fontWeight="bold" fill="#F57C00">急降下 → ニセの空腹</text>
+      <text x="290" y="150" fontSize="18" fontWeight="bold" fill="#2E7D32">なだらか</text>
+      {/* legend */}
+      <line x1="370" y1="62" x2="410" y2="62" stroke="#F57C00" strokeWidth="4" strokeDasharray="10 6" />
+      <text x="418" y="68" fontSize="18" fill="#374151">高GI（白米・食パンなど）</text>
+      <line x1="370" y1="96" x2="410" y2="96" stroke="#4CAF50" strokeWidth="5" />
+      <text x="418" y="102" fontSize="18" fill="#374151">低GI（そば・大麦など）</text>
+    </svg>
+  );
+}
+
+/** GI vs GL for watermelon and white rice (2 px per unit, baseline y=300). */
+function GlCompareDiagram() {
+  const bar = (x: number, value: number, fill: string, label: string, color: string) => (
+    <g>
+      <rect x={x} y={300 - value * 2} width="80" height={value * 2} rx="4" fill={fill} />
+      <text x={x + 40} y={290 - value * 2} textAnchor="middle" fontSize="20" fontWeight="bold" fill={color}>{label}</text>
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 640 380" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="170" y="64" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">GI値</text>
+      <text x="470" y="64" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">GL（量を加味）</text>
+      <line x1="320" y1="40" x2="320" y2="360" stroke="#F3F4F6" strokeWidth="2" />
+      <line x1="40" y1="300" x2="300" y2="300" stroke="#9CA3AF" strokeWidth="2" />
+      <line x1="340" y1="300" x2="600" y2="300" stroke="#9CA3AF" strokeWidth="2" />
+      {bar(70, 72, "#9CA3AF", "約72", "#374151")}
+      {bar(190, 80, "#9CA3AF", "約80", "#374151")}
+      {bar(370, 4, "#4CAF50", "約4", "#2E7D32")}
+      {bar(490, 44, "#F57C00", "約44", "#F57C00")}
+      {[
+        { x: 110, name: "すいか", unit: "1切れ" },
+        { x: 230, name: "白米", unit: "茶碗1杯" },
+        { x: 410, name: "すいか", unit: "1切れ" },
+        { x: 530, name: "白米", unit: "茶碗1杯" },
+      ].map((l) => (
+        <g key={l.x}>
+          <text x={l.x} y="326" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">{l.name}</text>
+          <text x={l.x} y="350" textAnchor="middle" fontSize="16" fill="#9CA3AF">{l.unit}</text>
+        </g>
+      ))}
+    </svg>
   );
 }

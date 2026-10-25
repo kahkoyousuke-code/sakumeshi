@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("diet-foods", {
@@ -147,6 +148,13 @@ export default function DietFoods() {
               同じ肉でも<strong>部位でカロリーが2〜3倍変わります</strong>。鶏もも（皮つき）は約190kcal、豚バラは約370kcal。「鶏肉だから安心」ではなく、部位で見るのが正解です。
             </p>
           </div>
+          <ColumnFigure
+            caption="同じ肉でも、部位でカロリーは2〜3倍変わる"
+            alt="100gあたりのカロリーの横棒グラフ。鶏むね肉（皮なし）約110kcal、鶏もも（皮つき）約190kcal、豚ヒレ約120kcal、豚バラ約370kcal。"
+            note="100gあたりの目安"
+          >
+            <MeatCutDiagram />
+          </ColumnFigure>
         </div>
       </section>
 
@@ -376,5 +384,34 @@ export default function DietFoods() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** kcal per 100 g by cut (0.94 px/kcal, bars start at x=210). */
+function MeatCutDiagram() {
+  const rows = [
+    { y: 50, label: "鶏むね（皮なし）", kcal: 110, color: "#4CAF50" },
+    { y: 104, label: "鶏もも（皮つき）", kcal: 190, color: "#9CA3AF" },
+    { y: 186, label: "豚ヒレ", kcal: 120, color: "#4CAF50" },
+    { y: 240, label: "豚バラ", kcal: 370, color: "#F57C00" },
+  ];
+  return (
+    <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="24" y="28" fontSize="16" fill="#9CA3AF">100gあたりのカロリー（kcal）</text>
+      <line x1="210" y1="40" x2="210" y2="284" stroke="#9CA3AF" strokeWidth="2" />
+      <line x1="24" y1="168" x2="616" y2="168" stroke="#F3F4F6" strokeWidth="2" />
+      {rows.map((r) => {
+        const w = Math.round(r.kcal * 0.94);
+        return (
+          <g key={r.label}>
+            <text x="198" y={r.y + 27} textAnchor="end" fontSize="18" fill="#374151">{r.label}</text>
+            <rect x="210" y={r.y} width={w} height="40" rx="4" fill={r.color} />
+            <text x={218 + w} y={r.y + 28} fontSize="20" fontWeight="bold" fill={r.color === "#F57C00" ? "#F57C00" : "#374151"}>
+              約{r.kcal}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
   );
 }

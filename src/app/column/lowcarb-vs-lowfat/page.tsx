@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnFooter from "@/components/column/ColumnFooter";
 import ColumnHeader from "@/components/column/ColumnHeader";
 import { getColumn } from "@/lib/columns";
@@ -19,6 +20,39 @@ const TOC = [
   { id: "important", label: "どっちにしても大事なこと" },
   { id: "summary", label: "まとめ" },
 ];
+
+/** Two different things to cut, one shared rule: intake below expenditure. */
+function SamePrincipleDiagram() {
+  const methods = [
+    { x: 30, name: "低糖質", cut: "糖質を減らす", foods: "ごはん・パン・麺" },
+    { x: 340, name: "低脂質", cut: "脂質を減らす", foods: "揚げ物・油・脂身" },
+  ];
+  return (
+    <svg viewBox="0 0 640 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="same-principle-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4CAF50" />
+        </marker>
+      </defs>
+      {methods.map((m) => (
+        <g key={m.name}>
+          <rect x={m.x} y={20} width={270} height={116} rx={14} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={2} />
+          <text x={m.x + 135} y={56} textAnchor="middle" fontSize={22} fontWeight="bold" fill="#2E7D32">{m.name}</text>
+          <text x={m.x + 135} y={88} textAnchor="middle" fontSize={18} fontWeight="bold" fill="#374151">{m.cut}</text>
+          <text x={m.x + 135} y={116} textAnchor="middle" fontSize={16} fill="#374151">{m.foods}</text>
+        </g>
+      ))}
+      <line x1={165} y1={140} x2={262} y2={214} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#same-principle-arrow)" />
+      <line x1={475} y1={140} x2={378} y2={214} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#same-principle-arrow)" />
+      <rect x={120} y={220} width={400} height={80} rx={14} fill="#2E7D32" />
+      <text x={320} y={252} textAnchor="middle" fontSize={16} fill="#E8F5E9">共通の原則</text>
+      <text x={320} y={282} textAnchor="middle" fontSize={22} fontWeight="bold" fill="#FFFFFF">摂取カロリー ＜ 消費カロリー</text>
+      <line x1={320} y1={304} x2={320} y2={344} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#same-principle-arrow)" />
+      <rect x={200} y={350} width={240} height={56} rx={28} fill="#FFFFFF" stroke="#2E7D32" strokeWidth={2} />
+      <text x={320} y={386} textAnchor="middle" fontSize={22} fontWeight="bold" fill="#2E7D32">どちらでも痩せる</text>
+    </svg>
+  );
+}
 
 export default function LowcarbVsLowfat() {
   return (
@@ -89,6 +123,12 @@ export default function LowcarbVsLowfat() {
               <p>
                 どちらも<strong>総カロリーが消費カロリーを下回れば痩せる</strong>という原則は同じ。違うのは「何を減らすか」だけです。
               </p>
+              <ColumnFigure
+                caption="低糖質も低脂質も、痩せる仕組みは同じ。違うのは「何を減らすか」だけ"
+                alt="2つの方法が1つのゴールに合流する図。低糖質はごはん・パン・麺などの糖質を減らす。低脂質は揚げ物・油・脂身などの脂質を減らす。どちらも総カロリーが消費カロリーを下回れば、痩せる。"
+              >
+                <SamePrincipleDiagram />
+              </ColumnFigure>
             </div>
           </section>
 

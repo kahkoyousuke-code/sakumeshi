@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -70,6 +71,78 @@ const REDUCTION = [
   { how: "深夜のラーメンに行かない", cut: "−800〜1,100kcal", strong: true },
   { how: "飲みに行く回数が週2回から月1回になる", cut: "−月10,000kcal前後", strong: true },
 ];
+
+/** Intake on a drinking day vs. estimated expenditure. Scale: 0-3,000 kcal -> x 40-600. */
+function DayStackDiagram() {
+  const kx = (kcal: number) => 40 + (kcal / 3000) * 560;
+  const meals = [
+    { from: 0, to: 800, label: "昼 800", fill: "#E8F5E9", text: "#2E7D32" },
+    { from: 800, to: 2000, label: "居酒屋 1,200", fill: "#4CAF50", text: "#FFFFFF" },
+    { from: 2000, to: 2900, label: "〆ラーメン 900", fill: "#2E7D32", text: "#FFFFFF" },
+  ];
+  const ticks = [0, 1000, 2000, 3000];
+  return (
+    <svg viewBox="0 0 640 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x={40} y={40} fontSize={18} fontWeight="bold" fill="#374151">飲みに行った日の摂取</text>
+      <text x={600} y={40} textAnchor="end" fontSize={18} fontWeight="bold" fill="#2E7D32">計 約2,900kcal</text>
+      {meals.map((m) => (
+        <g key={m.label}>
+          <rect x={kx(m.from)} y={54} width={kx(m.to) - kx(m.from)} height={60} fill={m.fill} stroke="#2E7D32" strokeWidth={1.5} />
+          <text x={(kx(m.from) + kx(m.to)) / 2} y={90} textAnchor="middle" fontSize={17} fontWeight="bold" fill={m.text}>{m.label}</text>
+        </g>
+      ))}
+
+      <text x={40} y={160} fontSize={18} fontWeight="bold" fill="#374151">1日の消費（見積もり）</text>
+      <rect x={kx(0)} y={174} width={kx(2400) - kx(0)} height={44} fill="#9CA3AF" />
+      <rect x={kx(2400)} y={174} width={kx(2600) - kx(2400)} height={44} fill="#F3F4F6" stroke="#9CA3AF" strokeWidth={1.5} strokeDasharray="5 3" />
+      <text x={kx(2400) - 12} y={203} textAnchor="end" fontSize={17} fontWeight="bold" fill="#FFFFFF">2,400〜2,600kcal</text>
+
+      <line x1={kx(2400)} y1={114} x2={kx(2400)} y2={244} stroke="#F57C00" strokeWidth={1.5} strokeDasharray="4 3" />
+      <line x1={kx(2900)} y1={114} x2={kx(2900)} y2={244} stroke="#F57C00" strokeWidth={1.5} strokeDasharray="4 3" />
+      <line x1={kx(2400)} y1={240} x2={kx(2900)} y2={240} stroke="#F57C00" strokeWidth={4} />
+      <text x={600} y={270} textAnchor="end" fontSize={18} fontWeight="bold" fill="#F57C00">黒字 300〜500kcal</text>
+
+      <line x1={40} y1={290} x2={600} y2={290} stroke="#9CA3AF" strokeWidth={1.5} />
+      {ticks.map((t) => (
+        <g key={t}>
+          <line x1={kx(t)} y1={284} x2={kx(t)} y2={296} stroke="#9CA3AF" strokeWidth={1.5} />
+          <text x={kx(t)} y={318} textAnchor={t === 0 ? "start" : t === 3000 ? "end" : "middle"} fontSize={16} fill="#374151">
+            {t === 3000 ? "3,000kcal" : t.toLocaleString("en-US")}
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+/** Kcal saved per occasion: choosing better vs. not going. Scale: 0-1,200 kcal -> x 40-560. */
+function ReductionCompareDiagram() {
+  const kx = (kcal: number) => 40 + (kcal / 1200) * 520;
+  const ticks = [0, 400, 800, 1200];
+  return (
+    <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x={40} y={40} fontSize={18} fontWeight="bold" fill="#374151">メニューを選び直す（1回あたり）</text>
+      <rect x={kx(0)} y={54} width={kx(100) - kx(0)} height={48} fill="#9CA3AF" />
+      <rect x={kx(100)} y={54} width={kx(300) - kx(100)} height={48} fill="#F3F4F6" stroke="#9CA3AF" strokeWidth={1.5} strokeDasharray="5 3" />
+      <text x={kx(300) + 12} y={85} fontSize={20} fontWeight="bold" fill="#374151">100〜300kcal</text>
+
+      <text x={40} y={160} fontSize={18} fontWeight="bold" fill="#374151">深夜のラーメンに行かない</text>
+      <rect x={kx(0)} y={174} width={kx(800) - kx(0)} height={48} fill="#2E7D32" />
+      <rect x={kx(800)} y={174} width={kx(1100) - kx(800)} height={48} fill="#E8F5E9" stroke="#2E7D32" strokeWidth={1.5} strokeDasharray="5 3" />
+      <text x={56} y={205} fontSize={20} fontWeight="bold" fill="#FFFFFF">800〜1,100kcal</text>
+
+      <line x1={40} y1={252} x2={560} y2={252} stroke="#9CA3AF" strokeWidth={1.5} />
+      {ticks.map((t) => (
+        <g key={t}>
+          <line x1={kx(t)} y1={246} x2={kx(t)} y2={258} stroke="#9CA3AF" strokeWidth={1.5} />
+          <text x={kx(t)} y={282} textAnchor={t === 0 ? "start" : "middle"} fontSize={16} fill="#374151">
+            {t === 1200 ? "1,200kcal" : t.toLocaleString("en-US")}
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
 export default function EatingOut92kg() {
   return (
@@ -205,6 +278,13 @@ export default function EatingOut92kg() {
             程度と見積もられます。体重が重いぶん基礎代謝は高いのですが、それでも
             <strong>1日で300〜500kcalの黒字</strong>です。
           </p>
+          <ColumnFigure
+            caption="飲みに行った日は約2,900kcal。消費を300〜500kcal上回っていた"
+            alt="横棒グラフ。飲みに行った日の摂取は、昼のコンビニ弁当約800kcal、夜の居酒屋約1,200kcal、0時すぎのラーメン約900kcalで合計約2,900kcal。1日の消費の見積もりは2,400〜2,600kcalで、その差の300〜500kcalが黒字。"
+            note="カロリーは一般的な目安。消費量は当時の体格からの見積もりで、灰色の薄い部分は見積もりの幅"
+          >
+            <DayStackDiagram />
+          </ColumnFigure>
           <p>
             ここで注意したいのは、
             <strong>この日が「暴食した日」ではない</strong>ということです。ラーメン2杯食べたわけでも、大盛りを頼み倒したわけでもありません。当時の普通の1日です。そして飲みに行かない日は、もう少し少ない。
@@ -281,6 +361,13 @@ export default function EatingOut92kg() {
             です。対して、その場面に行かなければ<strong>800〜1,100kcal</strong>
             がまるごと消えます。桁がひとつ違います。
           </p>
+          <ColumnFigure
+            caption="メニューの工夫は1回100〜300kcal。行かなければ800〜1,100kcalが消える"
+            alt="横棒グラフ。メニューを選び直して削れるのは1回あたり100〜300kcal。深夜のラーメンに行かなければ800〜1,100kcalが削れる。後者の棒は前者の数倍の長さ。"
+            note="カロリーは上の表の一般的な目安。棒の薄い部分は上限までの幅"
+          >
+            <ReductionCompareDiagram />
+          </ColumnFigure>
           <p>
             しかも選び方の工夫は、<strong>行くたびに毎回やらないといけない</strong>
             。疲れている日、飲んだあと、締め切り前。私が判断力を失っている場面ほど、外食は発生していました。

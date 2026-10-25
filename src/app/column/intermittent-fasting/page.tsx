@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -73,6 +74,37 @@ const FAQS = [
   },
 ];
 
+/**
+ * 24-hour bar for the 12:00-20:00 pattern (25px per hour, 12:00 at x=20).
+ * The sleep span is illustrative only; the article gives its length, not its clock times.
+ */
+function FastingDayDiagram() {
+  return (
+    <svg viewBox="0 0 640 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="20" y="66" fontSize="16" fontWeight="bold" fill="#2E7D32">1食目</text>
+      <text x="120" y="66" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#2E7D32">間食</text>
+      <text x="220" y="66" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#2E7D32">2食目</text>
+      <line x1="21" y1="74" x2="21" y2="98" stroke="#2E7D32" strokeWidth="2" />
+      <line x1="120" y1="74" x2="120" y2="98" stroke="#2E7D32" strokeWidth="2" />
+      <line x1="219" y1="74" x2="219" y2="98" stroke="#2E7D32" strokeWidth="2" />
+
+      <rect x="20" y="100" width="200" height="64" fill="#2E7D32" />
+      <text x="120" y="140" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#FFFFFF">食べる 8時間</text>
+      <rect x="220" y="100" width="400" height="64" fill="#F3F4F6" />
+      <text x="420" y="140" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">食べない 16時間</text>
+
+      <text x="20" y="188" fontSize="16" fill="#374151">12時</text>
+      <text x="120" y="188" textAnchor="middle" fontSize="16" fill="#374151">16時</text>
+      <text x="220" y="188" textAnchor="middle" fontSize="16" fill="#374151">20時</text>
+      <text x="620" y="188" textAnchor="end" fontSize="16" fill="#374151">翌12時</text>
+
+      <path d="M300 200 L300 212 L490 212 L490 200" fill="none" stroke="#9CA3AF" strokeWidth="2" />
+      <text x="395" y="238" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">うち睡眠 7〜8時間</text>
+      <text x="420" y="272" textAnchor="middle" fontSize="16" fill="#374151">水・お茶・ブラックコーヒーはOK</text>
+    </svg>
+  );
+}
+
 export default function IntermittentFasting() {
   return (
     <ColumnShell
@@ -117,6 +149,13 @@ export default function IntermittentFasting() {
             <strong>「朝食を抜いて夜食をやめる」だけ</strong>
             という人も多くいます。16時間と聞くと大変そうですが、そのうち7〜8時間は寝ている計算です。
           </p>
+          <ColumnFigure
+            caption="16時間のうち7〜8時間は睡眠。実質は「朝食を抜いて夜食をやめる」"
+            alt="12時から翌12時までの24時間を1本の横棒で示した図。12時から20時の8時間が食べる時間で、12時に1食目、16時に間食、20時に2食目。20時から翌12時の16時間は食べない時間で、そのうち7〜8時間は睡眠。食べない時間も水・お茶・ブラックコーヒーは飲んでよい。"
+            note="12〜20時に食べる例。睡眠の位置はイメージです"
+          >
+            <FastingDayDiagram />
+          </ColumnFigure>
         </div>
       </section>
 

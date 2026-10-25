@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("salt-swelling", {
@@ -202,6 +203,13 @@ export default function SaltSwelling() {
             飲み会で思いきり食べた日でも、脂肪として増えるのは<strong>数百グラム</strong>
             です。翌朝に1.5kg増えていたら、残りの1kg以上は水分と胃腸の中身ということになります。
           </p>
+          <ColumnFigure
+            caption="翌朝の+1.5kgのうち、脂肪は多くても約0.26kg"
+            alt="翌朝に1.5kg増えたときの内訳を表す横棒。飲み会で約2,000kcal食べすぎた場合、脂肪は多くても約0.26kgで、残りの1kg以上は水分と胃腸の中身。"
+            note="飲み会 約+2,000kcalの例。2,000kcal÷7,700で計算した上限の目安"
+          >
+            <OvernightGainDiagram />
+          </ColumnFigure>
           <p>
             一方で、この数百グラムは水分と違って勝手には消えません。ただ、翌日に食事を抜いて取り返す必要はありません。たとえば飲み会1回分（約2,000kcal）なら、減量中のいつもの食事（1日300〜500kcal控えめ）を4〜7日続ければ相殺できる量です。自分の1日の消費カロリー（維持カロリー）は
             <a href="/column/daily-calories" className="text-green-700 underline hover:no-underline">1日の摂取カロリーの目安</a>
@@ -233,6 +241,13 @@ export default function SaltSwelling() {
               </div>
             ))}
           </div>
+          <ColumnFigure
+            caption="塩分で溜めた水は、水を飲んでカリウムを足せば抜けていく"
+            alt="むくみが起きて戻るまでの流れ図。塩分を多くとると、体が濃度を薄めようと水を溜め、むくみや体重増になる。水を控えても解決しない。水をしっかり飲みカリウムを足すと、余分な塩分が尿として出て、外食1回なら1〜3日で戻る。"
+            note="食事による一時的なむくみの場合。引かないむくみは下の「受診の目安」へ"
+          >
+            <SaltFlowDiagram />
+          </ColumnFigure>
         </div>
       </section>
 
@@ -566,5 +581,67 @@ export default function SaltSwelling() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** Breakdown of an overnight +1.5 kg after a ~2,000 kcal surplus (373 px per kg). */
+function OvernightGainDiagram() {
+  return (
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="40" y="34" fontSize="18" fill="#374151">翌朝 +1.5kg の内訳（飲み会のあと）</text>
+      <rect x="40" y="52" width="97" height="72" fill="#F57C00" />
+      <rect x="137" y="52" width="463" height="72" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" />
+      <text x="368" y="85" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">水分・胃腸の中身</text>
+      <text x="368" y="112" textAnchor="middle" fontSize="18" fill="#374151">1kg以上</text>
+      <line x1="88" y1="124" x2="88" y2="152" stroke="#F57C00" strokeWidth="2" />
+      <text x="40" y="180" fontSize="20" fontWeight="bold" fill="#F57C00">脂肪：多くても約0.26kg</text>
+      <text x="40" y="210" fontSize="16" fill="#9CA3AF">2,000kcal ÷ 7,700kcal ≒ 0.26kg</text>
+    </svg>
+  );
+}
+
+/** How salt causes water retention and how it clears (U-shaped flow). */
+function SaltFlowDiagram() {
+  const top = [
+    { x: 16, l1: "塩分を", l2: "多くとる" },
+    { x: 228, l1: "濃度を薄めようと", l2: "水を溜める" },
+    { x: 440, l1: "むくみ・", l2: "体重が増える" },
+  ];
+  const bottom = [
+    { x: 440, l1: "水をしっかり飲む", l2: "カリウムを足す" },
+    { x: 228, l1: "余分な塩分が", l2: "尿として出る" },
+  ];
+  return (
+    <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="salt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#9CA3AF" />
+        </marker>
+      </defs>
+      {top.map((b) => (
+        <g key={b.l1}>
+          <rect x={b.x} y="20" width="184" height="80" rx="10" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" />
+          <text x={b.x + 92} y="54" textAnchor="middle" fontSize="18" fill="#374151">{b.l1}</text>
+          <text x={b.x + 92} y="80" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">{b.l2}</text>
+        </g>
+      ))}
+      <line x1="200" y1="60" x2="224" y2="60" stroke="#9CA3AF" strokeWidth="3" markerEnd="url(#salt-arrow)" />
+      <line x1="412" y1="60" x2="436" y2="60" stroke="#9CA3AF" strokeWidth="3" markerEnd="url(#salt-arrow)" />
+      <line x1="532" y1="100" x2="532" y2="176" stroke="#9CA3AF" strokeWidth="3" markerEnd="url(#salt-arrow)" />
+      <text x="518" y="136" textAnchor="end" fontSize="16" fontWeight="bold" fill="#F57C00">✕ 水を控えても</text>
+      <text x="518" y="158" textAnchor="end" fontSize="16" fontWeight="bold" fill="#F57C00">解決しない</text>
+      {bottom.map((b) => (
+        <g key={b.l1}>
+          <rect x={b.x} y="180" width="184" height="80" rx="10" fill="#E8F5E9" stroke="#4CAF50" strokeWidth="2" />
+          <text x={b.x + 92} y="214" textAnchor="middle" fontSize="18" fill="#2E7D32">{b.l1}</text>
+          <text x={b.x + 92} y="240" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">{b.l2}</text>
+        </g>
+      ))}
+      <line x1="440" y1="220" x2="416" y2="220" stroke="#9CA3AF" strokeWidth="3" markerEnd="url(#salt-arrow)" />
+      <line x1="228" y1="220" x2="204" y2="220" stroke="#9CA3AF" strokeWidth="3" markerEnd="url(#salt-arrow)" />
+      <rect x="16" y="180" width="184" height="80" rx="10" fill="#2E7D32" />
+      <text x="108" y="214" textAnchor="middle" fontSize="18" fill="#FFFFFF">外食1回なら</text>
+      <text x="108" y="240" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#FFFFFF">1〜3日で戻る</text>
+    </svg>
   );
 }

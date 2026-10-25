@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -90,6 +91,40 @@ const COMPARE = [
   },
   { item: "飲まない日", then: "週5日", now: "週3日", better: false },
 ];
+
+/** Weekly drinking-related kcal: then (2,800-4,000) vs now (560-840). */
+function WeeklyDrinkingDiagram() {
+  // Scale: 4,000kcal = 560px, bars start at x=24
+  const x0 = 24;
+  const scale = 560 / 4000;
+  return (
+    <svg viewBox="0 0 640 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {/* Then */}
+      <text x={x0} y={30} fontSize={18} fontWeight="bold" fill="#374151">
+        92kgの頃（週2回・外飲み・〆あり）
+      </text>
+      <rect x={x0} y={44} width={4000 * scale} height={48} rx={4} fill="#FFFFFF" stroke="#9CA3AF" strokeWidth={1.5} strokeDasharray="6 4" />
+      <rect x={x0} y={44} width={2800 * scale} height={48} rx={4} fill="#F3F4F6" stroke="#9CA3AF" strokeWidth={1.5} />
+      <text x={x0 + 14} y={75} fontSize={19} fontWeight="bold" fill="#374151">
+        週2,800〜4,000kcal
+      </text>
+
+      {/* Now */}
+      <text x={x0} y={142} fontSize={18} fontWeight="bold" fill="#374151">
+        いま（週4回・家飲み・〆なし）
+      </text>
+      <rect x={x0} y={156} width={840 * scale} height={48} rx={4} fill="#FFFFFF" stroke="#2E7D32" strokeWidth={1.5} strokeDasharray="6 4" />
+      <rect x={x0} y={156} width={560 * scale} height={48} rx={4} fill="#2E7D32" />
+      <text x={x0 + 840 * scale + 14} y={187} fontSize={19} fontWeight="bold" fill="#2E7D32">
+        週560〜840kcal
+      </text>
+
+      <text x={320} y={262} fontSize={18} fontWeight="bold" textAnchor="middle" fill="#F57C00">
+        差は週あたり 約2,200〜3,200kcal
+      </text>
+    </svg>
+  );
+}
 
 export default function QuitDrinkingDiet() {
   return (
@@ -441,6 +476,13 @@ export default function QuitDrinkingDiet() {
             </table>
           </div>
 
+          <ColumnFigure
+            caption="回数は倍になっても、酒まわりの週カロリーは4分の1以下"
+            alt="酒まわりの週あたりカロリーを横棒で比較した図。92kgの頃（週2回・外飲み・〆のラーメンあり）は週2,800〜4,000kcal、いま（週4回・家飲み・〆なし）は週560〜840kcal。差は週あたり約2,200〜3,200kcal。"
+            note="酒と〆のラーメンの合計で、つまみは含まない。頻度は記憶、カロリーは概算。濃い部分が下限・点線が上限"
+          >
+            <WeeklyDrinkingDiagram />
+          </ColumnFigure>
           <p>
             <strong>飲む回数は週2回から週4回に増えています</strong>
             。それでも酒まわりのカロリーは週2,800〜4,000kcalから週560〜840kcalになり、

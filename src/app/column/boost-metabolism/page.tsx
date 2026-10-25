@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnFooter from "@/components/column/ColumnFooter";
 import ColumnHeader from "@/components/column/ColumnHeader";
 import { getColumn } from "@/lib/columns";
@@ -18,6 +19,38 @@ const TOC = [
   { id: "training", label: "基礎代謝を上げるのに筋トレも必須" },
   { id: "summary", label: "まとめ" },
 ];
+
+/**
+ * The article's worked example: the same 1,800kcal meal against a BMR of 1,500 vs 1,200kcal.
+ * Bars to scale: 560px = 1,800kcal, starting at x=40.
+ */
+function MetabolismGapDiagram() {
+  const scale = 560 / 1800;
+  const rows = [
+    { y: 64, bmr: 1500, bmrLabel: "基礎代謝 1,500kcal", over: "+300" },
+    { y: 160, bmr: 1200, bmrLabel: "基礎代謝 1,200kcal", over: "+600" },
+  ];
+  return (
+    <svg viewBox="0 0 640 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="620" y="34" textAnchor="end" fontSize="16" fontWeight="bold" fill="#374151">食べた量 1,800kcal</text>
+      {rows.map((r) => {
+        const bmrW = r.bmr * scale;
+        const overW = 560 - bmrW;
+        return (
+          <g key={r.bmr}>
+            <rect x="40" y={r.y} width={bmrW} height="64" rx="8" fill="#E8F5E9" stroke="#4CAF50" strokeWidth="2" />
+            <text x={40 + bmrW / 2} y={r.y + 39} textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">{r.bmrLabel}</text>
+            <rect x={40 + bmrW} y={r.y} width={overW} height="64" rx="8" fill="#F57C00" />
+            <text x={40 + bmrW + overW / 2} y={r.y + 40} textAnchor="middle" fontSize="20" fontWeight="bold" fill="#FFFFFF">{r.over}</text>
+          </g>
+        );
+      })}
+      <line x1="600" y1="44" x2="600" y2="240" stroke="#374151" strokeWidth="2" strokeDasharray="6 4" />
+      <rect x="40" y="252" width="18" height="18" rx="3" fill="#F57C00" />
+      <text x="68" y="267" fontSize="16" fill="#374151">＝ 基礎代謝を上回った分（kcal）</text>
+    </svg>
+  );
+}
 
 export default function BoostMetabolism() {
   return (
@@ -88,8 +121,15 @@ export default function BoostMetabolism() {
               <p>まず、基礎代謝が下がるとどうなるかを知っておきましょう。</p>
               <p><strong>同じ量を食べても太りやすくなります。</strong></p>
               <p>
-                基礎代謝が1500kcalの人と1200kcalの人が、同じ1800kcalの食事をした場合、前者は300kcalのオーバーですが、後者は600kcalのオーバー。この差が毎日積み重なると、1ヶ月で2kg以上の差になります。
+                基礎代謝が1500kcalの人と1200kcalの人が、同じ1800kcalの食事をした場合、前者は300kcalのオーバーですが、後者は600kcalのオーバー。この300kcalの差が毎日積み重なると、1ヶ月で約9,000kcal。体脂肪にして1kg以上の差になります。
               </p>
+              <ColumnFigure
+                caption="同じ1,800kcalを食べても、基礎代謝が低いとオーバー分は2倍になる"
+                alt="同じ1,800kcalの食事を、基礎代謝1,500kcalの人と1,200kcalの人で比べた横棒の図。基礎代謝1,500kcalの人は300kcalのオーバー、1,200kcalの人は600kcalのオーバーになる。"
+                note="本文の計算例（基礎代謝1,500kcalと1,200kcalの人が1,800kcalを食べた場合）を図にしたもの"
+              >
+                <MetabolismGapDiagram />
+              </ColumnFigure>
               <p>基礎代謝が下がる主な原因は：</p>
               <div className="space-y-2">
                 {[

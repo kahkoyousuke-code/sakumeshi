@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -77,6 +78,76 @@ const GAP = [
     mine: "正しかった。ただし自分が変化を感じるまで半年以上かかった",
   },
 ];
+
+/** Phase-by-phase state of the scale vs. the mirror, from the TIMELINE above. */
+function ScaleMirrorTimeline() {
+  const rows = [
+    {
+      y: 70,
+      title: "開始〜1〜3ヶ月",
+      sub: "食事だけ（運動ゼロ）",
+      scale: "3〜5kg減",
+      mirror: "変わらない",
+      changed: false,
+    },
+    {
+      y: 190,
+      title: "そのあと",
+      sub: "ジムで筋トレ週2回",
+      scale: "落ちていた",
+      mirror: "変わらない",
+      changed: false,
+    },
+    {
+      y: 310,
+      title: "ジム開始から半年以上",
+      sub: "約50回やったあと",
+      scale: null,
+      mirror: "変わったと感じた",
+      changed: true,
+    },
+  ];
+  return (
+    <svg viewBox="0 0 640 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x={330} y={44} textAnchor="middle" fontSize={18} fontWeight="bold" fill="#374151">体重計</text>
+      <text x={525} y={44} textAnchor="middle" fontSize={18} fontWeight="bold" fill="#374151">鏡</text>
+      <line x1={36} y1={100} x2={36} y2={360} stroke="#9CA3AF" strokeWidth={3} />
+      {rows.map((r) => (
+        <g key={r.title}>
+          <circle cx={36} cy={r.y + 40} r={9} fill={r.changed ? "#F57C00" : "#4CAF50"} />
+          <text x={56} y={r.y + 34} fontSize={18} fontWeight="bold" fill="#374151">{r.title}</text>
+          <text x={56} y={r.y + 60} fontSize={16} fill="#374151">{r.sub}</text>
+          {r.scale && (
+            <g>
+              <rect x={250} y={r.y} width={160} height={80} rx={12} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={2} />
+              <text x={330} y={r.y + 47} textAnchor="middle" fontSize={20} fontWeight="bold" fill="#2E7D32">{r.scale}</text>
+            </g>
+          )}
+          <rect
+            x={430}
+            y={r.y}
+            width={190}
+            height={80}
+            rx={12}
+            fill={r.changed ? "#FFFFFF" : "#F3F4F6"}
+            stroke={r.changed ? "#F57C00" : "#9CA3AF"}
+            strokeWidth={r.changed ? 3 : 1.5}
+          />
+          <text
+            x={525}
+            y={r.y + 47}
+            textAnchor="middle"
+            fontSize={r.changed ? 18 : 20}
+            fontWeight="bold"
+            fill={r.changed ? "#F57C00" : "#374151"}
+          >
+            {r.mirror}
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
 export default function ScaleVsMirror() {
   return (
@@ -343,6 +414,13 @@ export default function ScaleVsMirror() {
           <p>
             そして、92kgから数えると、見た目が変わったと感じるまでに8〜9ヶ月以上かかっている計算になります。ダイエットの記事でよく見る「1ヶ月で」「2週間で」という単位とは、桁が違いました。
           </p>
+          <ColumnFigure
+            caption="体重計はすぐ動いた。鏡が変わったのは、開始から8〜9ヶ月以上あと"
+            alt="時期ごとに体重計と鏡の状態を並べた図。開始から1〜3ヶ月（食事だけ）は体重計が3〜5kg減、鏡は変わらない。そのあとジムで筋トレ週2回を始めた時期も、体重は落ちていたが鏡は変わらない。ジム開始から半年以上、約50回やったあとで、初めて鏡で変わったと感じた。"
+            note="当時の記録がないため、時期と数字はすべて概数（本文の記述をもとに作図）"
+          >
+            <ScaleMirrorTimeline />
+          </ColumnFigure>
         </div>
       </section>
 

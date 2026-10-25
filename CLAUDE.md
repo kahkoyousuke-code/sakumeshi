@@ -85,6 +85,9 @@ npm run seo:report  # 取得結果から「次にどこを直すか」の一覧�
 - 各エントリは `related`（記事末尾に表示する関連コラムの slug 配列）が必須。`getRelatedColumns(slug)` が解決し、未解決時は最新3件にフォールバックする。一覧の日付降順ソートは `columnsByDateDesc()`。
 - `updated` は任意。記事を大幅に改稿したときだけ入れる。バイライン（`公開 … / 更新 …`）・JSON-LD の `dateModified`・sitemap の `lastModified` がこれを見る。
 - 記事の共通レイアウト（戻るリンク・ヘッダー・目次・CTA・関連コラム・note誘導・JSON-LD）は `src/components/column/ColumnShell.tsx` と `ColumnFooter.tsx`。新規記事は `ColumnShell` で本文だけ書く。
+- **図解**：記事を新規作成・加筆したら、図にしたほうが速く伝わる箇所（仕組み・因果、流れ・手順、数値の比較・推移、計算の分解、2軸の位置づけ）に `diagram-master` エージェントで図を入れる。1記事0〜2枚、カードや文章で足りている所には入れない。
+  - 実装は `src/components/column/ColumnFigure.tsx`（`caption` / `alt` / 任意の `note`）でインライン SVG を包む。画像ファイルは使わない。`viewBox` 幅640前後・文字16以上でスマホでも読めるサイズに。色はサイトのグリーン系＋強調オレンジ #F57C00 まで。
+  - 図の数値・事実は本文に書いてあるものだけ。数値のない概念図は `note` に「イメージ図」と書く。
 - `ColumnHeader.tsx` が H1 と著者バイラインを描画する。`ColumnShell` は自動で使うが、`ColumnShell` を使わない旧記事は個別に `<ColumnHeader slug h1 />` を置いている（H1 が `COLUMNS.title` と異なるため `h1` を渡す）。
 
 #### E-E-A-T（健康＝YMYL 向け・AdSense 対策）

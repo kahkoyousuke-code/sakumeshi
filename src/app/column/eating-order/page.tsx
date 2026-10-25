@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("eating-order", {
@@ -221,6 +222,13 @@ export default function EatingOrder() {
               </p>
             </div>
           </div>
+          <ColumnFigure
+            caption="先に食べた2品が、主食の糖の届き方をゆっくりにする"
+            alt="食べる順番の仕組みの図。①野菜・きのこ・海藻は食物繊維が糖の吸収を緩やかにする。②肉・魚・卵・大豆はタンパク質・脂質が胃から送り出す速度を落とす。この2つが合わさり、③最後に食べるごはん・パン・麺の糖がゆっくり届き、血糖の立ち上がりが緩やかになる。"
+            note="仕組みのイメージ図。血糖の反応には個人差があります"
+          >
+            <EatingOrderDiagram />
+          </ColumnFigure>
           <p className="text-sm text-gray-500">
             補足：血糖の上がり方は個人差が大きく、同じ食事でも人によって反応は違います。順番は「誰でも必ず同じだけ効く裏技」ではなく、コストゼロで試せる工夫という位置づけで捉えるのが現実的です。
           </p>
@@ -490,5 +498,40 @@ export default function EatingOrder() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** Two mechanisms (fiber first, protein second) converging on a slower rise in blood sugar. */
+function EatingOrderDiagram() {
+  const lanes = [
+    { x: 20, food: "① 野菜・きのこ・海藻", line1: "食物繊維が", line2: "糖の吸収を緩やかに" },
+    { x: 330, food: "② 肉・魚・卵・大豆", line1: "タンパク質・脂質が", line2: "胃から送る速度を落とす" },
+  ];
+  return (
+    <svg viewBox="0 0 640 390" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="eo-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#4CAF50" />
+        </marker>
+      </defs>
+      {lanes.map((l) => (
+        <g key={l.food}>
+          <rect x={l.x} y="16" width="290" height="56" rx="10" fill="#E8F5E9" stroke="#4CAF50" strokeWidth="2" />
+          <text x={l.x + 145} y="51" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#2E7D32">{l.food}</text>
+          <line x1={l.x + 145} y1="72" x2={l.x + 145} y2="96" stroke="#4CAF50" strokeWidth="3" markerEnd="url(#eo-arrow)" />
+          <rect x={l.x} y="100" width="290" height="80" rx="10" fill="#FFFFFF" stroke="#4CAF50" strokeWidth="2" />
+          <text x={l.x + 145} y="133" textAnchor="middle" fontSize="18" fill="#374151">{l.line1}</text>
+          <text x={l.x + 145} y="161" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">{l.line2}</text>
+          <line x1={l.x + 145} y1="180" x2={l.x + 145} y2="216" stroke="#4CAF50" strokeWidth="3" markerEnd="url(#eo-arrow)" />
+        </g>
+      ))}
+      <rect x="20" y="220" width="600" height="60" rx="10" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" />
+      <text x="320" y="258" textAnchor="middle" fontSize="19" fill="#374151">
+        ③ 最後のごはん・パン・麺の糖が ゆっくり届く
+      </text>
+      <line x1="320" y1="280" x2="320" y2="304" stroke="#4CAF50" strokeWidth="3" markerEnd="url(#eo-arrow)" />
+      <rect x="20" y="308" width="600" height="64" rx="12" fill="#2E7D32" />
+      <text x="320" y="348" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#FFFFFF">血糖の立ち上がりが緩やかに</text>
+    </svg>
   );
 }

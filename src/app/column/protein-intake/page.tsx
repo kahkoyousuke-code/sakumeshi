@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -72,6 +73,35 @@ const FAQS = [
   },
 ];
 
+/** Diet-induced thermogenesis by macronutrient, bars to scale (400px = 30%). */
+function ThermogenesisDiagram() {
+  const rows = [
+    { label: "タンパク質", pct: 30, text: "約30%", main: true },
+    { label: "糖質", pct: 6, text: "約6%", main: false },
+    { label: "脂質", pct: 4, text: "約4%", main: false },
+  ];
+  return (
+    <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {rows.map((r, i) => {
+        const y = 30 + i * 66;
+        const w = (r.pct / 30) * 400;
+        return (
+          <g key={r.label}>
+            <text x="130" y={y + 27} textAnchor="end" fontSize="18" fontWeight="bold" fill="#374151">{r.label}</text>
+            <rect x="150" y={y} width={w} height="40" rx="6" fill={r.main ? "#2E7D32" : "#9CA3AF"} />
+            {r.main ? (
+              <text x={150 + w - 14} y={y + 28} textAnchor="end" fontSize="20" fontWeight="bold" fill="#FFFFFF">{r.text}</text>
+            ) : (
+              <text x={150 + w + 12} y={y + 28} fontSize="20" fontWeight="bold" fill="#374151">{r.text}</text>
+            )}
+          </g>
+        );
+      })}
+      <line x1="150" y1="20" x2="150" y2="212" stroke="#9CA3AF" strokeWidth="2" />
+    </svg>
+  );
+}
+
 export default function ProteinIntake() {
   return (
     <ColumnShell
@@ -116,6 +146,13 @@ export default function ProteinIntake() {
               </div>
             ))}
           </div>
+          <ColumnFigure
+            caption="消化・吸収に使われるエネルギーは、タンパク質が約30%と突出している"
+            alt="食事誘発性熱産生の割合を三大栄養素で比べた横棒グラフ。タンパク質が約30%、糖質が約6%、脂質が約4%。"
+            note="食事誘発性熱産生：食べたものを消化・吸収するときに使われるエネルギーの割合（本文の値）"
+          >
+            <ThermogenesisDiagram />
+          </ColumnFigure>
         </div>
       </section>
 

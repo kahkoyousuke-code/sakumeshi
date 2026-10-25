@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -70,6 +71,36 @@ const FAQS = [
     a: "炊きたてを熱いうちにラップで包み、粗熱を取ってから冷凍すると、味の落ち方はかなり抑えられます。冷めてから冷凍すると水分が抜けてぱさつきます。",
   },
 ];
+
+/** Weekend batch split into a fridge lane (first half of the week) and a freezer lane (second half). */
+function StorageFlowDiagram() {
+  return (
+    <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="95" y="36" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">週末</text>
+      <text x="285" y="36" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">週前半</text>
+      <text x="510" y="36" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">週後半</text>
+
+      <rect x="20" y="56" width="150" height="214" rx="12" fill="#2E7D32" />
+      <text x="95" y="156" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#FFFFFF">まとめて</text>
+      <text x="95" y="184" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#FFFFFF">作る</text>
+
+      <polygon points="172,96 188,110 172,124" fill="#9CA3AF" />
+      <rect x="190" y="66" width="190" height="88" rx="10" fill="#E8F5E9" stroke="#4CAF50" strokeWidth="2" />
+      <text x="285" y="102" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#2E7D32">冷蔵</text>
+      <text x="285" y="132" textAnchor="middle" fontSize="16" fill="#374151">2〜3日で食べる</text>
+      <text x="510" y="116" textAnchor="middle" fontSize="16" fill="#374151">冷蔵のまま持ち越さない</text>
+
+      <polygon points="172,208 188,222 172,236" fill="#9CA3AF" />
+      <rect x="190" y="178" width="190" height="88" rx="10" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="6 4" />
+      <text x="285" y="214" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">すぐ冷凍</text>
+      <text x="285" y="244" textAnchor="middle" fontSize="16" fill="#374151">目安2〜3週間</text>
+      <polygon points="386,208 402,222 386,236" fill="#9CA3AF" />
+      <rect x="410" y="178" width="200" height="88" rx="10" fill="#E8F5E9" stroke="#4CAF50" strokeWidth="2" />
+      <text x="510" y="214" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#2E7D32">解凍して食べる</text>
+      <text x="510" y="244" textAnchor="middle" fontSize="16" fill="#374151">再加熱する</text>
+    </svg>
+  );
+}
 
 export default function MealPrep() {
   return (
@@ -298,6 +329,13 @@ export default function MealPrep() {
               </tbody>
             </table>
           </div>
+          <ColumnFigure
+            caption="週後半に食べる分は、作った日のうちに冷凍へ回す"
+            alt="週末にまとめて作った作り置きを2つに分ける流れの図。週前半に食べる分は冷蔵して2〜3日で食べ、冷蔵のまま週後半に持ち越さない。週後半に食べる分は作った日にすぐ冷凍し（目安2〜3週間）、週後半に解凍・再加熱して食べる。"
+            note="日持ちは目安です。夏場や梅雨時は1日短く見積もってください"
+          >
+            <StorageFlowDiagram />
+          </ColumnFigure>
           <div className="space-y-2">
             {[
               "週後半に食べる分は最初から冷凍へ。「冷蔵で5日持たせる」は狙わない",

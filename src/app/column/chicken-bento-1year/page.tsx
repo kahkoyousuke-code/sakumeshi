@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("chicken-bento-1year", {
@@ -222,6 +223,14 @@ export default function ChickenBento1Year() {
             <strong>肉とおにぎりしか入れなかった結果</strong>
             そうなりました。
           </p>
+
+          <ColumnFigure
+            caption="昼食のカロリーは、以前の半分以下になった"
+            alt="昼食のカロリー比較の横棒グラフ。以前のコンビニ弁当や菓子パンは700〜900kcal。今の弁当は鶏むね肉200gが約210kcal、おにぎりが約180kcalで、合計400kcal弱。"
+            note="運営者の実例。おにぎりは約180kcalとして概算"
+          >
+            <LunchCompareDiagram />
+          </ColumnFigure>
 
           <h3 className="text-base font-bold text-gray-800 mt-6 mb-2">
             お金の話（おまけ）
@@ -514,5 +523,26 @@ export default function ChickenBento1Year() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** Before/after lunch calories (0.49 px/kcal, bars start at x=40). */
+function LunchCompareDiagram() {
+  return (
+    <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="40" y="36" fontSize="18" fill="#374151">以前（コンビニ弁当・菓子パン）</text>
+      <rect x="40" y="50" width="343" height="50" rx="4" fill="#9CA3AF" />
+      <rect x="383" y="50" width="98" height="50" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="6 4" />
+      <text x="492" y="82" fontSize="20" fontWeight="bold" fill="#374151">700〜900</text>
+
+      <text x="40" y="150" fontSize="18" fill="#374151">今（鶏むね200g＋おにぎり）</text>
+      <rect x="40" y="164" width="103" height="50" rx="4" fill="#2E7D32" />
+      <text x="91" y="196" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#FFFFFF">鶏むね</text>
+      <rect x="143" y="164" width="88" height="50" fill="#4CAF50" />
+      <text x="187" y="196" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#FFFFFF">おにぎり</text>
+      <text x="242" y="196" fontSize="20" fontWeight="bold" fill="#2E7D32">400弱</text>
+
+      <text x="600" y="248" textAnchor="end" fontSize="16" fill="#9CA3AF">単位：kcal</text>
+    </svg>
   );
 }

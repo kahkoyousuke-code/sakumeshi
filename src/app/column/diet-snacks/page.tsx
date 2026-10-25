@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnFooter from "@/components/column/ColumnFooter";
 import ColumnHeader from "@/components/column/ColumnHeader";
 import { getColumn } from "@/lib/columns";
@@ -19,6 +20,71 @@ const TOC = [
   { id: "convenience", label: "コンビニで買えるおすすめ間食トップ5" },
   { id: "summary", label: "まとめ" },
 ];
+
+/** Snack calories (values from this article) against the 200kcal rule. */
+function SnackKcalDiagram() {
+  // Scale: 500kcal = 560px, bars start at x=24
+  const x0 = 24;
+  const scale = 560 / 500;
+  const lineX = x0 + 200 * scale;
+  const rows: { label: string; min: number; max?: number; value: string; ok: boolean }[] = [
+    { label: "◎ ゆで卵 1個", min: 80, value: "約80kcal", ok: true },
+    { label: "◎ ギリシャヨーグルト", min: 60, value: "約60kcal", ok: true },
+    { label: "◎ あたりめ 20g", min: 60, value: "約60kcal", ok: true },
+    { label: "✕ 砂糖入りカフェラテ", min: 200, max: 300, value: "200〜300kcal", ok: false },
+    { label: "✕ ポテトチップス 1袋", min: 340, value: "約340kcal", ok: false },
+    { label: "✕ ケーキ・ドーナツ", min: 300, max: 400, value: "300〜400kcal", ok: false },
+    { label: "✕ 菓子パン", min: 300, max: 500, value: "300〜500kcal", ok: false },
+  ];
+  return (
+    <svg viewBox="0 0 640 490" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <line x1={lineX} y1={38} x2={lineX} y2={478} stroke="#F57C00" strokeWidth={2.5} strokeDasharray="7 5" />
+      <text x={lineX} y={28} fontSize={16} fontWeight="bold" textAnchor="middle" fill="#F57C00">
+        ルール1：200kcal以内
+      </text>
+      {rows.map((r, i) => {
+        const top = 50 + i * 62;
+        const minW = r.min * scale;
+        const maxW = r.max ? r.max * scale : minW;
+        return (
+          <g key={r.label}>
+            <text x={x0} y={top + 18} fontSize={17} fontWeight="bold" fill="#374151">
+              {r.label}
+            </text>
+            {r.ok ? (
+              <>
+                <rect x={x0} y={top + 26} width={minW} height={26} rx={4} fill="#4CAF50" />
+                <text x={x0 + minW + 8} y={top + 45} fontSize={16} fill="#2E7D32" fontWeight="bold">
+                  {r.value}
+                </text>
+              </>
+            ) : (
+              <>
+                {r.max && (
+                  <rect
+                    x={x0}
+                    y={top + 26}
+                    width={maxW}
+                    height={26}
+                    rx={4}
+                    fill="#FFFFFF"
+                    stroke="#9CA3AF"
+                    strokeWidth={1.5}
+                    strokeDasharray="5 4"
+                  />
+                )}
+                <rect x={x0} y={top + 26} width={minW} height={26} rx={4} fill="#F3F4F6" stroke="#9CA3AF" strokeWidth={1.5} />
+                <text x={x0 + 10} y={top + 45} fontSize={16} fill="#374151" fontWeight="bold">
+                  {r.value}
+                </text>
+              </>
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
 
 export default function DietSnacks() {
   return (
@@ -253,6 +319,13 @@ export default function DietSnacks() {
                   </div>
                 ))}
               </div>
+              <ColumnFigure
+                caption="おすすめ間食は200kcalのはるか手前。NG間食は1つでラインを超える"
+                alt="間食のカロリーを横棒で比較した図。ゆで卵約80kcal、ギリシャヨーグルト約60kcal、あたりめ約60kcalは200kcalのラインより大きく下。カフェラテ（砂糖入り）200〜300kcal、ポテトチップス1袋約340kcal、ケーキ・ドーナツ300〜400kcal、菓子パン300〜500kcalはラインを超える。"
+                note="数値は本文の目安。幅のあるものは、濃い部分が下限・点線が上限"
+              >
+                <SnackKcalDiagram />
+              </ColumnFigure>
             </div>
           </section>
 

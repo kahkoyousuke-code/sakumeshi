@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -69,6 +70,50 @@ const FAQS = [
     a: "食事だけでも落ちます。ただし筋肉を守るため、タンパク質は必ず確保してください。そのうえで、通勤で1駅歩く・階段を使うなど、日常の活動量を戻すほうが、ジムに行けない日に落ち込むより現実的です。",
   },
 ];
+
+/** 157 kcal/day -> ~57,000 kcal/year -> ~7 kg of body fat. */
+function YearlyGapDiagram() {
+  const steps = [
+    { y: 20, label: "25歳と45歳のTDEEの差", value: "1日 約157kcal", final: false },
+    { y: 160, label: "1年間積み上がると", value: "約57,000kcal", final: false },
+    { y: 300, label: "脂肪に換算すると", value: "約7kg分", final: true },
+  ];
+  const ops = [
+    { y: 100, text: "× 365日" },
+    { y: 240, text: "÷ 7,700kcal（脂肪1kg）" },
+  ];
+  return (
+    <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="yearly-gap-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4CAF50" />
+        </marker>
+      </defs>
+      {steps.map((s) => (
+        <g key={s.label}>
+          <rect
+            x={140}
+            y={s.y}
+            width={360}
+            height={80}
+            rx={12}
+            fill={s.final ? "#2E7D32" : "#E8F5E9"}
+            stroke={s.final ? "#2E7D32" : "#4CAF50"}
+            strokeWidth={2}
+          />
+          <text x={320} y={s.y + 32} textAnchor="middle" fontSize={17} fill={s.final ? "#E8F5E9" : "#374151"}>{s.label}</text>
+          <text x={320} y={s.y + 64} textAnchor="middle" fontSize={24} fontWeight="bold" fill={s.final ? "#FFFFFF" : "#2E7D32"}>{s.value}</text>
+        </g>
+      ))}
+      {ops.map((o) => (
+        <g key={o.text}>
+          <line x1={320} y1={o.y + 4} x2={320} y2={o.y + 54} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#yearly-gap-arrow)" />
+          <text x={338} y={o.y + 36} fontSize={17} fontWeight="bold" fill="#374151">{o.text}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
 export default function DietOver40() {
   return (
@@ -174,6 +219,13 @@ export default function DietOver40() {
             <strong>1年で約57,000kcal、脂肪に換算すると約7kg分</strong>
             にあたります。「食べる量は変えていないのに、じわじわ増えた」の正体はここです。
           </p>
+          <ColumnFigure
+            caption="1日157kcalの差でも、1年で脂肪約7kg分になる"
+            alt="計算の流れ図。25歳と45歳のTDEEの差は1日約157kcal。365日分で約57,000kcal。体脂肪1kgを約7,700kcalとして割ると、約7kg分。"
+            note="身長170cm・体重70kg・週1〜2回運動の男性で、年齢だけを変えた上の表の計算"
+          >
+            <YearlyGapDiagram />
+          </ColumnFigure>
           <p className="text-sm text-gray-500">
             ※ この計算は年齢の項だけを変えたものです。実際にはこれに加えて筋肉量の減少と活動量の低下が乗るので、差はもっと大きくなることが普通です。
           </p>

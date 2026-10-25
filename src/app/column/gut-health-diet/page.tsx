@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -66,6 +67,46 @@ const FAQS = [
     a: "便通の変化は1〜2週間で感じる人が多いです。体重への影響はもっと間接的で、数ヶ月単位の話になります。すぐに体重が動かなくても、途中でやめないことが前提の取り組みです。",
   },
 ];
+
+/** The four pathways, grouped by what they lead to: lower intake vs. readable weight. */
+function GutPathwayDiagram() {
+  const intakePaths = ["満腹感が長持ちする", "血糖の上がり方が緩やか", "食事の中身が変わる"];
+  return (
+    <svg viewBox="0 0 640 510" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="gut-path-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4CAF50" />
+        </marker>
+      </defs>
+      <rect x={170} y={20} width={300} height={84} rx={14} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={2} />
+      <text x={320} y={54} textAnchor="middle" fontSize={22} fontWeight="bold" fill="#2E7D32">腸活</text>
+      <text x={320} y={86} textAnchor="middle" fontSize={17} fill="#374151">食物繊維・発酵食品を足す</text>
+
+      <line x1={250} y1={106} x2={190} y2={134} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#gut-path-arrow)" />
+      <line x1={400} y1={106} x2={478} y2={206} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#gut-path-arrow)" />
+
+      <rect x={20} y={140} width={310} height={220} rx={14} fill="#F3F4F6" />
+      {intakePaths.map((p, i) => (
+        <g key={p}>
+          <rect x={35} y={152 + i * 68} width={280} height={56} rx={10} fill="#FFFFFF" stroke="#4CAF50" strokeWidth={2} />
+          <text x={175} y={186 + i * 68} textAnchor="middle" fontSize={18} fontWeight="bold" fill="#374151">{p}</text>
+        </g>
+      ))}
+      <rect x={350} y={212} width={270} height={72} rx={10} fill="#FFFFFF" stroke="#4CAF50" strokeWidth={2} />
+      <text x={485} y={255} textAnchor="middle" fontSize={18} fontWeight="bold" fill="#374151">便通が整う</text>
+
+      <line x1={175} y1={362} x2={175} y2={394} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#gut-path-arrow)" />
+      <line x1={485} y1={286} x2={485} y2={394} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#gut-path-arrow)" />
+
+      <rect x={20} y={400} width={310} height={96} rx={14} fill="#2E7D32" />
+      <text x={175} y={440} textAnchor="middle" fontSize={20} fontWeight="bold" fill="#FFFFFF">摂取カロリーが</text>
+      <text x={175} y={470} textAnchor="middle" fontSize={20} fontWeight="bold" fill="#FFFFFF">下がりやすい</text>
+      <rect x={350} y={400} width={270} height={96} rx={14} fill="#E8F5E9" stroke="#2E7D32" strokeWidth={2} />
+      <text x={485} y={440} textAnchor="middle" fontSize={20} fontWeight="bold" fill="#2E7D32">体重の数字が</text>
+      <text x={485} y={470} textAnchor="middle" fontSize={20} fontWeight="bold" fill="#2E7D32">読みやすくなる</text>
+    </svg>
+  );
+}
 
 export default function GutHealthDiet() {
   return (
@@ -142,6 +183,13 @@ export default function GutHealthDiet() {
             </div>
           ))}
         </div>
+        <ColumnFigure
+          caption="腸活は体脂肪に直接ではなく、食事の中身と便通を通じて効く"
+          alt="経路図。腸活（食物繊維・発酵食品を足す）から、満腹感が長持ちする、血糖の上がり方が緩やかになる、食事の中身が変わる、の3つを通じて摂取カロリーが下がりやすくなる。もう1つの経路として、便通が整うことで体重の数字が読みやすくなる。"
+          note="「特定の菌を増やせば痩せる」という因果関係は、まだ確立していません"
+        >
+          <GutPathwayDiagram />
+        </ColumnFigure>
       </section>
 
       <hr className="border-green-100" />

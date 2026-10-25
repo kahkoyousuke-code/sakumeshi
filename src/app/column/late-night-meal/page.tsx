@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -18,6 +19,59 @@ const TOC = [
   { id: "ng", label: "やってはいけない対処" },
   { id: "summary", label: "まとめ" },
 ];
+
+/** Timeline (12:00-24:00): one late dinner vs splitting dinner into two. */
+function SplitMealDiagram() {
+  // 1 hour = 45px, 12:00 at x=60
+  const hx = (h: number) => 60 + (h - 12) * 45;
+  return (
+    <svg viewBox="0 0 640 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {/* Row 1: no split */}
+      <text x={24} y={30} fontSize={18} fontWeight="bold" fill="#374151">
+        分食なし
+      </text>
+      <line x1={hx(12)} y1={92} x2={hx(24)} y2={92} stroke="#F3F4F6" strokeWidth={10} strokeLinecap="round" />
+      <line x1={hx(12) + 16} y1={92} x2={hx(23) - 16} y2={92} stroke="#F57C00" strokeWidth={6} />
+      <circle cx={hx(12)} cy={92} r={13} fill="#4CAF50" />
+      <circle cx={hx(23)} cy={92} r={13} fill="#4CAF50" />
+      <text x={hx(12)} y={68} fontSize={17} textAnchor="middle" fill="#374151">昼食</text>
+      <text x={hx(23)} y={68} fontSize={17} textAnchor="middle" fill="#374151">夕食</text>
+      <text x={(hx(12) + hx(23)) / 2} y={128} fontSize={18} fontWeight="bold" textAnchor="middle" fill="#F57C00">
+        空腹 11時間 → 食べすぎる
+      </text>
+
+      {/* Row 2: split */}
+      <text x={24} y={172} fontSize={18} fontWeight="bold" fill="#374151">
+        分食あり
+      </text>
+      <line x1={hx(12)} y1={234} x2={hx(24)} y2={234} stroke="#F3F4F6" strokeWidth={10} strokeLinecap="round" />
+      <circle cx={hx(12)} cy={234} r={13} fill="#4CAF50" />
+      <text x={hx(12)} y={210} fontSize={17} textAnchor="middle" fill="#374151">昼食</text>
+      <rect x={hx(17)} y={220} width={hx(19) - hx(17)} height={28} rx={6} fill="#4CAF50" />
+      <text x={(hx(17) + hx(19)) / 2} y={210} fontSize={17} textAnchor="middle" fill="#374151">
+        主食 200〜300kcal
+      </text>
+      <rect x={hx(22)} y={220} width={hx(23) - hx(22)} height={28} rx={6} fill="#2E7D32" />
+      <text x={(hx(22) + hx(23)) / 2} y={210} fontSize={17} textAnchor="middle" fill="#374151">
+        帰宅後：おかず
+      </text>
+      <text x={320} y={278} fontSize={18} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+        1日の合計は同じ。分けるだけ
+      </text>
+
+      {/* Time axis */}
+      <line x1={hx(12)} y1={304} x2={hx(24)} y2={304} stroke="#9CA3AF" strokeWidth={1.5} />
+      {[12, 15, 18, 21, 24].map((h) => (
+        <g key={h}>
+          <line x1={hx(h)} y1={298} x2={hx(h)} y2={310} stroke="#9CA3AF" strokeWidth={1.5} />
+          <text x={hx(h)} y={332} fontSize={16} textAnchor="middle" fill="#374151">
+            {h}時
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
 export default function LateNightMeal() {
   return (
@@ -112,6 +166,13 @@ export default function LateNightMeal() {
               <p className="text-sm text-gray-600">すでに空腹が和らいでいるので、この量で自然に満足できる。</p>
             </div>
           </div>
+          <ColumnFigure
+            caption="夕方に主食を先に入れて、11時間の空白をなくす"
+            alt="昼12時から夜24時までの時間軸で2つの食べ方を比較した図。分食なしでは12時の昼食から23時の夕食まで11時間空腹が続き食べすぎにつながる。分食ありでは17〜19時に主食200〜300kcalを入れ、帰宅後はおかず中心にする。"
+            note="帰宅22時ごろの場合のイメージ"
+          >
+            <SplitMealDiagram />
+          </ColumnFigure>
           <p>
             重要なのは、<strong>これは食事を増やしているのではなく、分けているだけ</strong>ということ。1日の合計は変わりません。むしろ「ドカ食い分」が消えるので減ります。
           </p>

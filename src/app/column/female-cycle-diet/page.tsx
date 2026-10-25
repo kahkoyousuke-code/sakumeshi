@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -53,6 +54,52 @@ const FAQS = [
     a: "我慢だけで乗り切ろうとすると、反動でまとめて食べることになりがちです。「食べていいもの」を先に決めておくほうが、結果的に総量は減ります。禁止より置き換えです。",
   },
 ];
+
+/** 28-day cycle timeline with the calorie setting for each phase (from the #tips section). */
+function CycleDiagram() {
+  // 1 day = 20px, day 1 starts at x=40
+  const dayX = (day: number) => 40 + (day - 1) * 20;
+  const phases = [
+    { name: "月経期", days: "1〜7日目", from: 1, to: 8, fill: "#F3F4F6", text: "#374151", kcal: "維持カロリー", sub: "栄養の質を優先" },
+    { name: "卵胞期", days: "8〜14日目", from: 8, to: 15, fill: "#2E7D32", text: "#FFFFFF", kcal: "−500kcal", sub: "ここで攻める" },
+    { name: "黄体期", days: "15〜28日目", from: 15, to: 29, fill: "#E8F5E9", text: "#2E7D32", kcal: "−200kcal程度", sub: "増やさなければ合格" },
+  ];
+  return (
+    <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {phases.map((p) => {
+        const x = dayX(p.from);
+        const w = dayX(p.to) - x;
+        return (
+          <g key={p.name}>
+            <rect x={x} y={20} width={w} height={64} fill={p.fill} stroke="#FFFFFF" strokeWidth={2} />
+            <text x={x + w / 2} y={48} fontSize={19} fontWeight="bold" textAnchor="middle" fill={p.text}>
+              {p.name}
+            </text>
+            <text x={x + w / 2} y={72} fontSize={16} textAnchor="middle" fill={p.text}>
+              {p.days}
+            </text>
+            {/* Calorie setting card under each phase */}
+            <rect x={x + 2} y={150} width={w - 4} height={80} rx={8} fill="#FFFFFF" stroke="#4CAF50" strokeWidth={1.5} />
+            <text x={x + w / 2} y={182} fontSize={19} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+              {p.kcal}
+            </text>
+            <text x={x + w / 2} y={210} fontSize={16} textAnchor="middle" fill="#374151">
+              {p.sub}
+            </text>
+          </g>
+        );
+      })}
+      {/* Ovulation marker around day 14 */}
+      <polygon points={`${dayX(14) + 10},90 ${dayX(14) + 2},104 ${dayX(14) + 18},104`} fill="#374151" />
+      <text x={dayX(14) + 26} y={122} fontSize={16} fill="#374151">
+        排卵期（14日目前後）
+      </text>
+      <text x={320} y={272} fontSize={18} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+        1ヶ月の合計で赤字が出ていれば体重は落ちる
+      </text>
+    </svg>
+  );
+}
 
 export default function FemaleCycleDiet() {
   return (
@@ -343,6 +390,13 @@ export default function FemaleCycleDiet() {
               。毎日同じ数字を守る必要はありません。
             </p>
           </div>
+          <ColumnFigure
+            caption="卵胞期に攻めて、黄体期はゆるめる。合計で赤字が出ればいい"
+            alt="28日周期を横長の帯で表した図。1〜7日目の月経期は維持カロリーで栄養の質を優先、8〜14日目の卵胞期は−500kcalで攻める時期、14日目前後が排卵期、15〜28日目の黄体期は−200kcal程度に緩めて増やさなければ合格。"
+            note="28日周期の場合の目安。周期の長さや体調の出方には個人差があります"
+          >
+            <CycleDiagram />
+          </ColumnFigure>
         </div>
       </section>
 

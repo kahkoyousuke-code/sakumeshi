@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("water-intake", {
@@ -143,6 +144,13 @@ export default function WaterIntake() {
             <strong>体重×約35ml（食事からの分を含む1日の総量）</strong>
             です。体重70kgなら約2.5L。このうち食事から1L前後は摂れるので、飲み水としては1.5L前後という計算になります。
           </p>
+          <ColumnFigure
+            caption="1日の総量から食事の分を引いた残りが、飲み水の目安"
+            alt="体重70kgの例。体重70kg×約35mlで1日の総量は約2.5L。そのうち約1Lは食事から摂れるので、飲み水は約1.5L。コップ200mlなら7〜8杯分にあたる。"
+            note="体重70kgの例。持病で水分制限がある方は主治医の指示を優先してください"
+          >
+            <WaterBreakdownDiagram />
+          </ColumnFigure>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -455,5 +463,39 @@ export default function WaterIntake() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** Daily water for a 70 kg person: total = food + drinking water (224 px per litre). */
+function WaterBreakdownDiagram() {
+  return (
+    <svg viewBox="0 0 640 270" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="320" y="36" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#374151">
+        体重70kg × 約35ml ＝ 1日 約2.5L
+      </text>
+      <rect x="40" y="58" width="224" height="68" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" />
+      <text x="152" y="88" textAnchor="middle" fontSize="18" fill="#374151">食事から</text>
+      <text x="152" y="114" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">約1L</text>
+      <rect x="264" y="58" width="336" height="68" fill="#4CAF50" />
+      <text x="432" y="88" textAnchor="middle" fontSize="18" fill="#FFFFFF">飲み水</text>
+      <text x="432" y="114" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#FFFFFF">約1.5L</text>
+      {Array.from({ length: 8 }, (_, i) => {
+        const x = 272 + i * 41;
+        const optional = i === 7;
+        return (
+          <path
+            key={i}
+            d={`M${x} 156 h30 l-4 44 h-22 z`}
+            fill={optional ? "#FFFFFF" : "#E8F5E9"}
+            stroke="#2E7D32"
+            strokeWidth="2"
+            strokeDasharray={optional ? "4 3" : undefined}
+          />
+        );
+      })}
+      <text x="432" y="236" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">コップ200mlで7〜8杯</text>
+      <text x="152" y="186" textAnchor="middle" fontSize="16" fill="#9CA3AF">食事に含まれる</text>
+      <text x="152" y="208" textAnchor="middle" fontSize="16" fill="#9CA3AF">水分</text>
+    </svg>
   );
 }

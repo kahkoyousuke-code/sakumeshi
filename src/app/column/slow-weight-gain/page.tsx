@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -58,6 +59,54 @@ const FAILURES = [
     why: "上級者向けの良い種目ですが、当時の自分の体重では膝コロすら満足にできず、そのまま部屋の隅で埃をかぶりました。",
   },
 ];
+
+/** Vertical calculation: 25kg -> 192,500kcal -> 53kcal/day -> 7g/day. */
+function DailySurplusDiagram() {
+  const cx = 320;
+  const boxX = 130;
+  const boxW = 380;
+  const arrow = (y1: number, y2: number, label: string) => (
+    <g>
+      <line x1={cx} y1={y1 + 4} x2={cx} y2={y2 - 12} stroke="#9CA3AF" strokeWidth={2.5} />
+      <polygon points={`${cx - 8},${y2 - 14} ${cx + 8},${y2 - 14} ${cx},${y2 - 2}`} fill="#9CA3AF" />
+      <text x={cx + 18} y={(y1 + y2) / 2 + 6} fontSize={17} fill="#374151">
+        {label}
+      </text>
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x={boxX} y={16} width={boxW} height={60} rx={10} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={1.5} />
+      <text x={cx} y={54} fontSize={22} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+        25kg 増えた（67→92kg）
+      </text>
+      {arrow(76, 132, "× 7,700kcal（体脂肪1kg）")}
+
+      <rect x={boxX} y={132} width={boxW} height={60} rx={10} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={1.5} />
+      <text x={cx} y={170} fontSize={22} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+        合計 192,500kcal
+      </text>
+      {arrow(192, 248, "÷ 3,653日（10年の場合）")}
+
+      <rect x={boxX} y={248} width={boxW} height={78} rx={10} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={1.5} />
+      <text x={cx} y={282} fontSize={22} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+        1日あたり 約53kcal
+      </text>
+      <text x={cx} y={310} fontSize={17} textAnchor="middle" fill="#374151">
+        ポテトチップス9枚ぶん
+      </text>
+      {arrow(326, 382, "体重にすると")}
+
+      <rect x={boxX} y={382} width={boxW} height={80} rx={10} fill="#F57C00" />
+      <text x={cx} y={418} fontSize={24} fontWeight="bold" textAnchor="middle" fill="#FFFFFF">
+        1日 約7g
+      </text>
+      <text x={cx} y={446} fontSize={17} fontWeight="bold" textAnchor="middle" fill="#FFFFFF">
+        水分の増減に埋もれて見えない
+      </text>
+    </svg>
+  );
+}
 
 export default function SlowWeightGain() {
   return (
@@ -213,6 +262,13 @@ export default function SlowWeightGain() {
             </strong>
             わけです。
           </p>
+          <ColumnFigure
+            caption="25kgも、10年でならすと1日約7g。体重計では気づけない"
+            alt="25kgの増加を1日あたりに割り戻す計算を縦に並べた図。25kgに7,700kcalをかけると192,500kcal、10年（3,653日）で割ると1日約53kcal（ポテトチップス9枚ぶん）、体重にすると1日約7gで、水分の増減に埋もれる。"
+            note="増えた体重をすべて体脂肪とみなした概算（10年で増えたと仮定）"
+          >
+            <DailySurplusDiagram />
+          </ColumnFigure>
           <p>
             気づくのは、久しぶりに会った人に言われたときか、去年のズボンが入らなくなったときか、健康診断の数字を見たときです。私の場合は、鏡と写真でした。当時の写真は、いま見返すと見ていられません。
           </p>

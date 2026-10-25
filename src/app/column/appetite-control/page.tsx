@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -71,6 +72,75 @@ const FAQS = [
     a: "多くは睡眠不足や食事の中身など生活習慣によるものです。ただし、自分では止められない量を短時間で食べることを繰り返す、食べたあとに自分で吐いたり下剤を使ったりする、気分の落ち込みが続く場合は、摂食障害の可能性があるので心療内科・精神科に相談してください。また、よく食べているのに体重が減る、喉の渇きや尿の量が増えた、動悸や汗が増えたといった場合は、甲状腺の病気や糖尿病などが隠れていることもあります。服用中の薬の影響で食欲が増えることもあるので、急に食欲が変わったときは内科で相談してください。",
   },
 ];
+
+/** Sleep loss pushes both appetite hormones the wrong way. */
+function SleepHormoneDiagram() {
+  const hormones = [
+    { x: 40, name: "グレリン", move: "増える ↑", role: "（空腹を知らせる）" },
+    { x: 340, name: "レプチン", move: "減る ↓", role: "（満腹を知らせる）" },
+  ];
+  return (
+    <svg viewBox="0 0 640 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="sleep-hormone-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4CAF50" />
+        </marker>
+      </defs>
+      <rect x={200} y={20} width={240} height={70} rx={14} fill="#FFFFFF" stroke="#F57C00" strokeWidth={3} />
+      <text x={320} y={64} textAnchor="middle" fontSize={24} fontWeight="bold" fill="#F57C00">睡眠不足</text>
+      <line x1={280} y1={94} x2={186} y2={146} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#sleep-hormone-arrow)" />
+      <line x1={360} y1={94} x2={454} y2={146} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#sleep-hormone-arrow)" />
+      {hormones.map((h) => (
+        <g key={h.name}>
+          <rect x={h.x} y={150} width={260} height={116} rx={14} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={2} />
+          <text x={h.x + 130} y={186} textAnchor="middle" fontSize={22} fontWeight="bold" fill="#374151">{h.name}</text>
+          <text x={h.x + 130} y={220} textAnchor="middle" fontSize={22} fontWeight="bold" fill="#2E7D32">{h.move}</text>
+          <text x={h.x + 130} y={250} textAnchor="middle" fontSize={16} fill="#374151">{h.role}</text>
+        </g>
+      ))}
+      <line x1={170} y1={270} x2={276} y2={326} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#sleep-hormone-arrow)" />
+      <line x1={470} y1={270} x2={364} y2={326} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#sleep-hormone-arrow)" />
+      <rect x={170} y={330} width={300} height={80} rx={14} fill="#2E7D32" />
+      <text x={320} y={380} textAnchor="middle" fontSize={24} fontWeight="bold" fill="#FFFFFF">食欲が強くなる</text>
+    </svg>
+  );
+}
+
+/** Water-and-wait check that separates real hunger from thirst or boredom. */
+function HungerCheckFlow() {
+  return (
+    <svg viewBox="0 0 640 470" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="hunger-flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4CAF50" />
+        </marker>
+      </defs>
+      <rect x={200} y={20} width={240} height={56} rx={28} fill="#F3F4F6" stroke="#9CA3AF" strokeWidth={1.5} />
+      <text x={320} y={55} textAnchor="middle" fontSize={20} fontWeight="bold" fill="#374151">何か食べたい</text>
+      <line x1={320} y1={78} x2={320} y2={104} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#hunger-flow-arrow)" />
+
+      <rect x={110} y={110} width={420} height={70} rx={14} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={2} />
+      <text x={320} y={152} textAnchor="middle" fontSize={20} fontWeight="bold" fill="#2E7D32">水か麦茶を1杯飲んで10分待つ</text>
+      <line x1={320} y1={182} x2={320} y2={214} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#hunger-flow-arrow)" />
+
+      <polygon points="320,220 430,270 320,320 210,270" fill="#FFFFFF" stroke="#4CAF50" strokeWidth={2} />
+      <text x={320} y={277} textAnchor="middle" fontSize={19} fontWeight="bold" fill="#374151">まだ食べたい？</text>
+
+      <polyline points="210,270 155,270 155,349" fill="none" stroke="#4CAF50" strokeWidth={3} markerEnd="url(#hunger-flow-arrow)" />
+      <polyline points="430,270 485,270 485,349" fill="none" stroke="#4CAF50" strokeWidth={3} markerEnd="url(#hunger-flow-arrow)" />
+      <text x={168} y={322} fontSize={18} fontWeight="bold" fill="#374151">消えた</text>
+      <text x={472} y={322} textAnchor="end" fontSize={18} fontWeight="bold" fill="#374151">残る</text>
+
+      <rect x={20} y={355} width={270} height={100} rx={14} fill="#F3F4F6" stroke="#9CA3AF" strokeWidth={1.5} />
+      <text x={155} y={396} textAnchor="middle" fontSize={22} fontWeight="bold" fill="#374151">ニセの空腹</text>
+      <text x={155} y={428} textAnchor="middle" fontSize={16} fill="#374151">喉の渇き・口寂しさ</text>
+
+      <rect x={350} y={355} width={270} height={100} rx={14} fill="#2E7D32" />
+      <text x={485} y={396} textAnchor="middle" fontSize={22} fontWeight="bold" fill="#FFFFFF">本物の空腹</text>
+      <text x={485} y={428} textAnchor="middle" fontSize={16} fill="#FFFFFF">先に決めた1品を食べる</text>
+    </svg>
+  );
+}
 
 export default function AppetiteControl() {
   return (
@@ -185,6 +255,13 @@ export default function AppetiteControl() {
               </tbody>
             </table>
           </div>
+          <ColumnFigure
+            caption="睡眠不足は、食欲を増やす側と抑える側の両方を悪い方向に動かす"
+            alt="因果の図。睡眠不足になると、空腹を知らせるグレリンが増え、満腹を知らせるレプチンが減る。その両方の結果、食欲が強くなる。"
+            note="一般的な傾向です。影響の大きさには個人差があります"
+          >
+            <SleepHormoneDiagram />
+          </ColumnFigure>
           <p>
             表を見ると分かるとおり、
             <strong>睡眠不足はこの両方を悪い方向に動かします</strong>
@@ -223,6 +300,12 @@ export default function AppetiteControl() {
             <strong>ニセの空腹だと分かったら、我慢する必要はありません</strong>
             。水を飲む、歯を磨く、外の空気を吸う、風呂に入る。10分ほどで消えることが多いです。逆に本物なら、素直に食べたほうがあとの反動を防げます。
           </p>
+          <ColumnFigure
+            caption="水を1杯飲んで10分。それでも残る空腹だけが本物"
+            alt="フローチャート。何か食べたいと思ったら、水か麦茶を1杯飲んで10分待つ。まだ食べたいかで分岐し、消えたなら喉の渇きや口寂しさによるニセの空腹。残るなら本物の空腹なので、先に決めておいた1品を食べる。"
+          >
+            <HungerCheckFlow />
+          </ColumnFigure>
         </div>
       </section>
 

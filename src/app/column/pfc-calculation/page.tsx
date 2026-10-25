@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnFooter from "@/components/column/ColumnFooter";
 import ColumnHeader from "@/components/column/ColumnHeader";
 import { getColumn } from "@/lib/columns";
@@ -78,6 +79,55 @@ const PROTEIN_TABLE = [
   { weight: "80kg", range: "96〜128g" },
   { weight: "90kg", range: "108〜144g" },
 ];
+
+/** BMR -> TDEE -> target kcal -> P/F/C grams, using the worked example in this article. */
+function PfcFlowDiagram() {
+  const steps = [
+    { y: 20, label: "① 基礎代謝（BMR）", value: "約1,643kcal" },
+    { y: 160, label: "② 消費カロリー（TDEE）", value: "約2,259kcal" },
+    { y: 300, label: "③ 目標カロリー", value: "約1,759kcal" },
+  ];
+  const ops = [
+    { y: 100, text: "× 活動係数 1.375" },
+    { y: 240, text: "− 500kcal（減量）" },
+    { y: 380, text: "P30% / F25% / C45% に分ける" },
+  ];
+  const pfc = [
+    { x: 30, name: "P タンパク質", g: "約132g", calc: "528kcal ÷ 4" },
+    { x: 230, name: "F 脂質", g: "約49g", calc: "440kcal ÷ 9" },
+    { x: 430, name: "C 炭水化物", g: "約198g", calc: "792kcal ÷ 4" },
+  ];
+  return (
+    <svg viewBox="0 0 640 570" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="pfc-flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4CAF50" />
+        </marker>
+      </defs>
+      {steps.map((s) => (
+        <g key={s.label}>
+          <rect x={120} y={s.y} width={400} height={80} rx={12} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={2} />
+          <text x={320} y={s.y + 32} textAnchor="middle" fontSize={17} fill="#374151">{s.label}</text>
+          <text x={320} y={s.y + 64} textAnchor="middle" fontSize={24} fontWeight="bold" fill="#2E7D32">{s.value}</text>
+        </g>
+      ))}
+      {ops.map((o) => (
+        <g key={o.text}>
+          <line x1={320} y1={o.y + 4} x2={320} y2={o.y + 54} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#pfc-flow-arrow)" />
+          <text x={338} y={o.y + 36} fontSize={17} fontWeight="bold" fill="#374151">{o.text}</text>
+        </g>
+      ))}
+      {pfc.map((p) => (
+        <g key={p.name}>
+          <rect x={p.x} y={440} width={180} height={116} rx={12} fill="#2E7D32" />
+          <text x={p.x + 90} y={472} textAnchor="middle" fontSize={17} fill="#FFFFFF">{p.name}</text>
+          <text x={p.x + 90} y={510} textAnchor="middle" fontSize={28} fontWeight="bold" fill="#FFFFFF">{p.g}</text>
+          <text x={p.x + 90} y={540} textAnchor="middle" fontSize={16} fill="#E8F5E9">{p.calc}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
 export default function PfcCalculation() {
   return (
@@ -253,6 +303,14 @@ export default function PfcCalculation() {
             </h2>
             <div className="space-y-8">
               <p>自分に合ったPFCバランスを計算する方法を、ステップごとに説明します。電卓（スマホの計算機でOK）があれば5分でできます。</p>
+
+              <ColumnFigure
+                caption="PFCは「BMR→TDEE→目標カロリー→3つに分ける」の一本道で決まる"
+                alt="計算の流れ図。基礎代謝 約1,643kcal に活動係数1.375をかけて消費カロリー 約2,259kcal。そこから500kcal引いて目標カロリー 約1,759kcal。これをP30%・F25%・C45%に分けると、タンパク質 約132g、脂質 約49g、炭水化物 約198g。"
+                note="例：35歳男性・身長170cm・体重70kg・週1〜2回運動（下の4ステップと同じ計算例）"
+              >
+                <PfcFlowDiagram />
+              </ColumnFigure>
 
               {/* ステップ1 */}
               <div className="border border-green-200 rounded-xl overflow-hidden">

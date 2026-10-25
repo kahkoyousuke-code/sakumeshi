@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("lose-3kg-month", {
@@ -146,6 +147,13 @@ export default function Lose3kgMonth() {
           <p>
             <strong>体重が75kg以上なら3kg/月は狙えます。</strong>逆に55kg前後の人が同じことをやろうとすると、必要な赤字が維持カロリーに対して大きすぎて、筋肉の減少と反動の過食をほぼ確実に招きます。
           </p>
+          <ColumnFigure
+            caption="同じ3kgでも、体重が軽い人ほど安全な上限を超えてしまう"
+            alt="体重別の1ヶ月の減量上限の棒グラフ。50kgは約2.0kg、60kgは約2.4kg、70kgは約2.8kg、80kgは約3.2kg、90kgは約3.6kg。3kgの線を超えるのは80kgと90kgの棒。"
+            note="上限＝体重の約1%／週として計算した目安（上の表と同じ数値）"
+          >
+            <SafeLimitDiagram />
+          </ColumnFigure>
           <div className="bg-green-50 rounded-xl p-4 border border-green-100">
             <p className="text-sm text-gray-700">
               <strong className="text-green-700">なぜ体重で変わるのか</strong><br />
@@ -186,6 +194,13 @@ export default function Lose3kgMonth() {
           <p>
             2週目で失速したように見えても、それは<strong>失敗ではなく正常</strong>です。ここで焦って食事をさらに削るのが、1ヶ月ダイエットの典型的な失敗パターンです。
           </p>
+          <ColumnFigure
+            caption="1週目の大きな減少は主に水分。2週目からが脂肪の本来のペース"
+            alt="週ごとの体重減少の積み上げ棒グラフ。1週目は約1.5kg減で、うち脂肪は0.5kg程度、残りは水分など。2週目は約0.5kg、3週目と4週目は約0.6kgずつで、いずれも脂肪の減少。2週目は失速に見えるが正常。"
+            note="本文の週別の例をもとにした目安。実際の内訳には個人差があります"
+          >
+            <FirstWeeksDiagram />
+          </ColumnFigure>
         </div>
       </section>
 
@@ -314,5 +329,81 @@ export default function Lose3kgMonth() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** Monthly safe-loss ceiling by body weight vs the 3 kg target (60 px per kg, baseline y=300). */
+function SafeLimitDiagram() {
+  const bars = [
+    { w: 50, kg: 2.0 },
+    { w: 60, kg: 2.4 },
+    { w: 70, kg: 2.8 },
+    { w: 80, kg: 3.2 },
+    { w: 90, kg: 3.6 },
+  ];
+  return (
+    <svg viewBox="0 0 640 370" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="24" y="30" fontSize="18" fill="#374151">1ヶ月で減らせる上限（目安）</text>
+      <line x1="70" y1="300" x2="620" y2="300" stroke="#9CA3AF" strokeWidth="2" />
+      {bars.map((b, i) => {
+        const cx = 134 + i * 108;
+        const h = b.kg * 60;
+        const over = b.kg >= 3;
+        return (
+          <g key={b.w}>
+            <rect x={cx - 35} y={300 - h} width="70" height={h} rx="4" fill={over ? "#4CAF50" : "#9CA3AF"} />
+            <text x={cx} y="286" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#FFFFFF">
+              {b.kg.toFixed(1)}kg
+            </text>
+            <text x={cx} y="326" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">{b.w}kg</text>
+          </g>
+        );
+      })}
+      <line x1="70" y1="120" x2="620" y2="120" stroke="#F57C00" strokeWidth="3" strokeDasharray="10 6" />
+      <text x="76" y="110" fontSize="18" fontWeight="bold" fill="#F57C00">目標 3kg</text>
+      <text x="345" y="356" textAnchor="middle" fontSize="16" fill="#9CA3AF">今の体重</text>
+    </svg>
+  );
+}
+
+/** Weekly loss split into water and fat for the example in the text (140 px per kg, baseline y=290). */
+function FirstWeeksDiagram() {
+  const weeks = [
+    { label: "1週目", fat: 0.5, water: 1.0, total: "−1.5kg" },
+    { label: "2週目", fat: 0.5, water: 0, total: "−0.5kg" },
+    { label: "3週目", fat: 0.6, water: 0, total: "−0.6kg" },
+    { label: "4週目", fat: 0.6, water: 0, total: "−0.6kg" },
+  ];
+  return (
+    <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="24" y="30" fontSize="18" fill="#374151">週ごとの減少量</text>
+      <rect x="420" y="16" width="20" height="20" fill="#4CAF50" />
+      <text x="446" y="32" fontSize="16" fill="#374151">脂肪</text>
+      <rect x="500" y="16" width="20" height="20" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="4 3" />
+      <text x="526" y="32" fontSize="16" fill="#374151">水分など</text>
+      <line x1="80" y1="290" x2="620" y2="290" stroke="#9CA3AF" strokeWidth="2" />
+      {weeks.map((w, i) => {
+        const cx = 155 + i * 130;
+        const fatH = w.fat * 140;
+        const waterH = w.water * 140;
+        const top = 290 - fatH - waterH;
+        return (
+          <g key={w.label}>
+            <rect x={cx - 40} y={290 - fatH} width="80" height={fatH} fill="#4CAF50" />
+            {waterH > 0 && (
+              <>
+                <rect x={cx - 40} y={top} width="80" height={waterH} fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="6 4" />
+                <text x={cx} y={top + waterH / 2 + 6} textAnchor="middle" fontSize="16" fill="#374151">水分など</text>
+                <text x={cx} y={290 - fatH / 2 + 6} textAnchor="middle" fontSize="16" fontWeight="bold" fill="#FFFFFF">脂肪</text>
+              </>
+            )}
+            <text x={cx} y={top - 10} textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">{w.total}</text>
+            <text x={cx} y="316" textAnchor="middle" fontSize="18" fill="#374151">{w.label}</text>
+          </g>
+        );
+      })}
+      <text x="285" y="146" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#F57C00">失速に見えるが</text>
+      <text x="285" y="170" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#F57C00">これが正常</text>
+    </svg>
   );
 }

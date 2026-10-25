@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -109,6 +110,76 @@ const FAQS = [
     a: "始める前に期間か目標体重を決めておくことをすすめます。たとえば「3か月で＋3kg前後」のように区切っておくと、太りすぎる前に止められます。区切りが来たら、維持か減量期に移ります。また体重が3kgほど増えたら維持カロリーも上がるので、その時点で目標カロリーを計算し直してください。",
   },
 ];
+
+/** Stacked column of the day template (2,450kcal) plus the free slot (350kcal) = 2,800kcal. */
+function DayTemplateDiagram() {
+  // 1kcal = 0.13px, column from y=56
+  const scale = 0.13;
+  const top = 56;
+  const segments = [
+    { label: "朝", value: "約570kcal", kcal: 570, fill: "#4CAF50" },
+    { label: "昼", value: "約570kcal", kcal: 570, fill: "#4CAF50" },
+    { label: "間食①", value: "約210kcal", kcal: 210, fill: "#E8F5E9" },
+    { label: "間食②", value: "約270kcal", kcal: 270, fill: "#E8F5E9" },
+    { label: "夜", value: "約830kcal", kcal: 830, fill: "#4CAF50" },
+  ];
+  let y = top;
+  const placed = segments.map((s) => {
+    const h = s.kcal * scale;
+    const item = { ...s, y, h };
+    y += h;
+    return item;
+  });
+  const templateEnd = y;
+  const freeH = 350 * scale;
+  return (
+    <svg viewBox="0 0 640 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x={220} y={38} fontSize={20} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+        目標 約2,800kcal
+      </text>
+      {placed.map((s) => (
+        <g key={s.label}>
+          <rect x={150} y={s.y} width={140} height={s.h} fill={s.fill} stroke="#FFFFFF" strokeWidth={2} />
+          <line x1={290} y1={s.y + s.h / 2} x2={304} y2={s.y + s.h / 2} stroke="#9CA3AF" strokeWidth={1.5} />
+          <text x={312} y={s.y + s.h / 2 + 6} fontSize={17} fill="#374151">
+            <tspan fontWeight="bold">{s.label}</tspan> {s.value}
+          </text>
+        </g>
+      ))}
+      {/* Free slot */}
+      <rect
+        x={151}
+        y={templateEnd + 1}
+        width={138}
+        height={freeH - 2}
+        fill="#FFFFFF"
+        stroke="#F57C00"
+        strokeWidth={2.5}
+        strokeDasharray="7 5"
+      />
+      <line x1={290} y1={templateEnd + freeH / 2} x2={304} y2={templateEnd + freeH / 2} stroke="#F57C00" strokeWidth={1.5} />
+      <text x={312} y={templateEnd + freeH / 2 + 6} fontSize={17} fontWeight="bold" fill="#F57C00">
+        自由枠 約350kcal（使い切る）
+      </text>
+      {/* Bracket for the template total */}
+      <path
+        d={`M140 ${top + 2} H132 V${templateEnd - 2} H140`}
+        fill="none"
+        stroke="#2E7D32"
+        strokeWidth={2}
+      />
+      <text x={122} y={(top + templateEnd) / 2 - 4} fontSize={18} fontWeight="bold" textAnchor="end" fill="#2E7D32">
+        型の合計
+      </text>
+      <text x={122} y={(top + templateEnd) / 2 + 20} fontSize={18} fontWeight="bold" textAnchor="end" fill="#2E7D32">
+        約2,450
+      </text>
+      <text x={122} y={(top + templateEnd) / 2 + 42} fontSize={16} textAnchor="end" fill="#2E7D32">
+        kcal
+      </text>
+    </svg>
+  );
+}
 
 export default function BulkingMealPlan() {
   return (
@@ -266,6 +337,13 @@ export default function BulkingMealPlan() {
               目標の2,800kcalまで<strong>約350kcalの自由枠</strong>があります。減量期の自由枠は「使わずに残してもいい枠」でしたが、増量期は<strong>使い切る枠</strong>です。ナッツ、チーズ、牛乳など、手軽に足せるものを用意しておくと埋めやすくなります。型の部分だけだと脂質は少なめなので、脂質を含むもので自由枠を埋めると、1日全体のバランスも整います。
             </p>
           </div>
+          <ColumnFigure
+            caption="2,800kcalは「型の約2,450kcal＋自由枠約350kcal」で埋める"
+            alt="1日の目標約2,800kcalを縦の積み上げ棒で表した図。朝約570、昼約570、間食①約210、間食②約270、夜約830kcalの型で合計約2,450kcal、残り約350kcalが使い切る自由枠。"
+            note="モデル（30歳男性・172cm・65kg・筋トレ週3回）の数字。カロリーは一般的な量での目安"
+          >
+            <DayTemplateDiagram />
+          </ColumnFigure>
           <p className="text-sm text-gray-600">
             夜のご飯350g（茶碗2杯強）が多いと感じたら、150gを夕方の間食に回して構いません。1日の合計が同じなら、効果は変わりません。
           </p>

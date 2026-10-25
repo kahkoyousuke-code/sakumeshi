@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("alcohol-diet", {
@@ -106,6 +107,12 @@ export default function AlcoholDiet() {
             <strong>すべて「酒以外を食べすぎる」経路</strong>
             だという点です。だから対策も、酒の種類を変えることより、周辺の行動を設計するほうが効きます。
           </p>
+          <ColumnFigure
+            caption="飲酒の影響のうち3つは「酒以外を食べすぎる」経路"
+            alt="飲酒から4つの影響へ矢印が出ている図。ほかの代謝が後回しになる、食欲が増す、判断力が落ちる、睡眠が浅くなる。このうち後半の3つがまとめられ、酒以外を食べすぎることにつながっている。"
+          >
+            <AlcoholPathDiagram />
+          </ColumnFigure>
         </div>
       </section>
 
@@ -257,6 +264,13 @@ export default function AlcoholDiet() {
             差は<strong>約1,250kcal</strong>。飲む回数は同じでも、選ぶものだけでこれだけ動きます。しかも酒の杯数はどちらも3杯です。
             <strong>削るべきは酒より揚げ物と締め</strong>だと分かります。
           </p>
+          <ColumnFigure
+            caption="同じ3杯でも約1,250kcalの差。大きいのは揚げ物と締め"
+            alt="飲み会2パターンの積み上げ棒グラフ。よくあるパターンは酒600、揚げ物700、締め600で約1,900kcal。整えたパターンは酒210、おつまみ440、締めなしで約650kcal。差は約1,250kcal。"
+            note="本文の試算例（生ビール中3杯・唐揚げ・ポテト・締めのラーメン／ハイボール3杯・枝豆・刺身・焼き鳥）"
+          >
+            <DrinkingPartyDiagram />
+          </ColumnFigure>
         </div>
       </section>
 
@@ -409,5 +423,93 @@ export default function AlcoholDiet() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** Causal paths: three of the four effects of drinking lead to eating more non-alcohol food. */
+function AlcoholPathDiagram() {
+  const boxes = [
+    { y: 20, label: "ほかの代謝が後回し", path: false },
+    { y: 96, label: "食欲が増す", path: true },
+    { y: 172, label: "判断力が落ちる", path: true },
+    { y: 248, label: "睡眠が浅くなる", path: true },
+  ];
+  return (
+    <svg viewBox="0 0 640 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="alc-path-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#9CA3AF" />
+        </marker>
+      </defs>
+      <rect x="16" y="125" width="110" height="70" rx="12" fill="#2E7D32" />
+      <text x="71" y="168" textAnchor="middle" fontSize="24" fontWeight="bold" fill="#FFFFFF">飲酒</text>
+      {boxes.map((b) => (
+        <g key={b.label}>
+          <line x1="126" y1="160" x2="166" y2={b.y + 28} stroke="#9CA3AF" strokeWidth="2" markerEnd="url(#alc-path-arrow)" />
+          <rect
+            x="170"
+            y={b.y}
+            width="250"
+            height="56"
+            rx="10"
+            fill={b.path ? "#E8F5E9" : "#F3F4F6"}
+            stroke={b.path ? "#4CAF50" : "#9CA3AF"}
+            strokeWidth="2"
+          />
+          <text x="295" y={b.y + 35} textAnchor="middle" fontSize="20" fill="#374151">{b.label}</text>
+        </g>
+      ))}
+      <path d="M432 96 H448 V304 H432" fill="none" stroke="#F57C00" strokeWidth="3" />
+      <line x1="448" y1="200" x2="466" y2="200" stroke="#F57C00" strokeWidth="3" />
+      <rect x="470" y="150" width="154" height="100" rx="12" fill="#FFFFFF" stroke="#F57C00" strokeWidth="3" />
+      <text x="547" y="193" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#F57C00">酒以外を</text>
+      <text x="547" y="225" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#F57C00">食べすぎる</text>
+    </svg>
+  );
+}
+
+/** Stacked columns comparing the two drinking-party patterns from the simulation above. */
+function DrinkingPartyDiagram() {
+  return (
+    <svg viewBox="0 0 640 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="alc-diff-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#374151" />
+        </marker>
+      </defs>
+      {/* baseline */}
+      <line x1="80" y1="400" x2="480" y2="400" stroke="#9CA3AF" strokeWidth="2" />
+
+      {/* usual pattern: 600 + 700 + 600 = 1,900 kcal (0.16 px/kcal) */}
+      <rect x="110" y="304" width="140" height="96" fill="#4CAF50" />
+      <text x="180" y="345" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#FFFFFF">酒（3杯）</text>
+      <text x="180" y="370" textAnchor="middle" fontSize="18" fill="#FFFFFF">600</text>
+      <rect x="110" y="192" width="140" height="112" fill="#F57C00" stroke="#FFFFFF" strokeWidth="2" />
+      <text x="180" y="242" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#FFFFFF">揚げ物</text>
+      <text x="180" y="267" textAnchor="middle" fontSize="18" fill="#FFFFFF">700</text>
+      <rect x="110" y="96" width="140" height="96" fill="#F57C00" stroke="#FFFFFF" strokeWidth="2" />
+      <text x="180" y="138" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#FFFFFF">締め</text>
+      <text x="180" y="163" textAnchor="middle" fontSize="18" fill="#FFFFFF">600</text>
+      <text x="180" y="80" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#374151">約1,900kcal</text>
+
+      {/* adjusted pattern: 210 + 440 = 650 kcal */}
+      <rect x="310" y="366" width="140" height="34" fill="#4CAF50" />
+      <text x="380" y="390" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#FFFFFF">酒 210</text>
+      <rect x="310" y="296" width="140" height="70" fill="#E8F5E9" stroke="#4CAF50" strokeWidth="2" />
+      <text x="380" y="325" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">おつまみ</text>
+      <text x="380" y="350" textAnchor="middle" fontSize="18" fill="#2E7D32">440</text>
+      <text x="380" y="252" textAnchor="middle" fontSize="16" fill="#9CA3AF">締めなし</text>
+      <text x="380" y="282" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#2E7D32">約650kcal</text>
+
+      {/* difference */}
+      <line x1="250" y1="96" x2="500" y2="96" stroke="#9CA3AF" strokeWidth="1.5" strokeDasharray="5 5" />
+      <line x1="450" y1="296" x2="500" y2="296" stroke="#9CA3AF" strokeWidth="1.5" strokeDasharray="5 5" />
+      <line x1="490" y1="104" x2="490" y2="288" stroke="#374151" strokeWidth="2" markerStart="url(#alc-diff-arrow)" markerEnd="url(#alc-diff-arrow)" />
+      <text x="504" y="186" fontSize="20" fill="#374151">差は約</text>
+      <text x="504" y="214" fontSize="20" fontWeight="bold" fill="#374151">1,250kcal</text>
+
+      <text x="180" y="432" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">よくある</text>
+      <text x="380" y="432" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">整えた</text>
+    </svg>
   );
 }

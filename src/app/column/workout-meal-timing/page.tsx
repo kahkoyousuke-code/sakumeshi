@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -92,6 +93,36 @@ const FAQS = [
   },
 ];
 
+/** Before / during / after timeline summarizing the "golden" section's conclusion. */
+function WorkoutTimingDiagram() {
+  return (
+    <svg viewBox="0 0 640 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="20" y="40" width="180" height="180" rx="12" fill="#E8F5E9" stroke="#4CAF50" strokeWidth="2" />
+      <text x="110" y="82" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">トレ前</text>
+      <text x="110" y="110" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#2E7D32">1〜2時間前</text>
+      <text x="110" y="156" textAnchor="middle" fontSize="18" fill="#374151">糖質を入れる</text>
+      <text x="110" y="184" textAnchor="middle" fontSize="16" fill="#374151">脂質は控える</text>
+
+      <polygon points="206,116 222,130 206,144" fill="#9CA3AF" />
+
+      <rect x="230" y="40" width="180" height="180" rx="12" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" />
+      <text x="320" y="137" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">トレーニング</text>
+
+      <polygon points="416,116 432,130 416,144" fill="#9CA3AF" />
+
+      <rect x="440" y="40" width="180" height="180" rx="12" fill="#2E7D32" />
+      <text x="530" y="82" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#FFFFFF">トレ後</text>
+      <text x="530" y="110" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#FFFFFF">1〜2時間以内</text>
+      <text x="530" y="156" textAnchor="middle" fontSize="18" fill="#FFFFFF">タンパク質＋糖質</text>
+      <text x="530" y="184" textAnchor="middle" fontSize="16" fill="#FFFFFF">の食事を1回</text>
+
+      <line x1="20" y1="244" x2="606" y2="244" stroke="#9CA3AF" strokeWidth="2" />
+      <polygon points="604,237 620,244 604,251" fill="#9CA3AF" />
+      <text x="320" y="276" textAnchor="middle" fontSize="16" fill="#374151">※ 空腹でトレーニングした日だけは、終わったら早めに補給</text>
+    </svg>
+  );
+}
+
 export default function WorkoutMealTiming() {
   return (
     <ColumnShell
@@ -170,6 +201,12 @@ export default function WorkoutMealTiming() {
             <strong>トレーニング後1〜2時間以内に、タンパク質を含む食事を1回入れる</strong>
             。ストップウォッチを見る必要はありません。
           </p>
+          <ColumnFigure
+            caption="トレ後は30分以内でなくていい。1〜2時間以内に1食入れれば十分"
+            alt="トレーニング前後の食事タイミングを左から右へ並べた図。トレ前は1〜2時間前に糖質を入れ、脂質は控える。トレーニングのあと、1〜2時間以内にタンパク質と糖質の食事を1回とる。空腹でトレーニングした日だけは、終わったら早めに補給する。"
+          >
+            <WorkoutTimingDiagram />
+          </ColumnFigure>
         </div>
       </section>
 

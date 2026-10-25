@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -87,6 +88,51 @@ const FAQS = [
     a: "始める前に期限か目標体重を決めておくことをすすめます。区切りがないと、だらだら続けて疲れたところで崩れやすいからです。また体重が3〜5kg落ちたら維持カロリーも下がるので、その時点で目標カロリーを計算し直してください。",
   },
 ];
+
+/**
+ * Daily totals of the model week (same numbers as WEEK) against the 1,865kcal target.
+ * Bars start at 0kcal so heights are to scale: 0.1px per kcal, baseline at y=330.
+ */
+function WeekTotalsDiagram() {
+  const days = [
+    { day: "月", kcal: 1610 },
+    { day: "火", kcal: 1640 },
+    { day: "水", kcal: 1610 },
+    { day: "木", kcal: 1590 },
+    { day: "金", kcal: 2200, sub: "飲み会" },
+    { day: "土", kcal: 1900, sub: "外食" },
+    { day: "日", kcal: 1800 },
+  ];
+  const base = 330;
+  const targetY = base - 1865 * 0.1;
+  return (
+    <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="320" y="40" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">
+        1週間の合計 約12,350kcal（目標 約13,060kcal）
+      </text>
+      <line x1="44" y1={targetY} x2="610" y2={targetY} stroke="#2E7D32" strokeWidth="2" strokeDasharray="8 5" />
+      <text x="44" y={targetY - 10} fontSize="16" fontWeight="bold" fill="#2E7D32">目標 1,865kcal/日</text>
+      {days.map((d, i) => {
+        const cx = 90 + i * 78;
+        const h = d.kcal * 0.1;
+        const isParty = d.day === "金";
+        return (
+          <g key={d.day}>
+            <rect x={cx - 25} y={base - h} width="50" height={h} rx="4" fill={isParty ? "#F57C00" : "#4CAF50"} />
+            <text x={cx} y={base - h - 8} textAnchor="middle" fontSize="16" fontWeight="bold" fill={isParty ? "#F57C00" : "#374151"} stroke="#FFFFFF" strokeWidth="4" paintOrder="stroke">
+              {d.kcal.toLocaleString("en-US")}
+            </text>
+            <text x={cx} y="356" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#374151">{d.day}</text>
+            {d.sub && (
+              <text x={cx} y="380" textAnchor="middle" fontSize="16" fill="#374151">{d.sub}</text>
+            )}
+          </g>
+        );
+      })}
+      <line x1="44" y1={base} x2="610" y2={base} stroke="#9CA3AF" strokeWidth="2" />
+    </svg>
+  );
+}
 
 export default function CuttingMealPlan() {
   return (
@@ -267,6 +313,13 @@ export default function CuttingMealPlan() {
           <p>
             金曜は目標を<strong>約340kcal超えています</strong>。それでも1週間の合計は目標より約700kcal少なくなっています。月〜木に自由枠を使わずにおいた分が、金曜の飲み会と週末の外食を吸収しているからです。
           </p>
+          <ColumnFigure
+            caption="平日に残した余りが、金曜の飲み会と週末の外食を吸収する"
+            alt="モデルケースの1週間の1日合計カロリーを棒グラフで示した図。月1,610、火1,640、水1,610、木1,590kcalは目標の1,865kcalを下回り、金曜は飲み会で2,200kcalと目標を超える。土曜は外食で1,900、日曜は1,800kcal。1週間の合計は約12,350kcalで、目標の約13,060kcalより少ない。"
+            note="本文のモデルケース（35歳男性・目標1,865kcal）の計算値。実測ではありません"
+          >
+            <WeekTotalsDiagram />
+          </ColumnFigure>
           <div className="bg-green-50 rounded-xl p-4 border border-green-100 space-y-2">
             <p className="text-sm font-bold text-green-700">この1週間の組み方のポイント</p>
             <ul className="space-y-1.5 text-sm text-gray-700">

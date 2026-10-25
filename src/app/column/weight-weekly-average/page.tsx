@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -99,6 +100,79 @@ const BEHAVIOR = [
   },
 ];
 
+/** The daily loop from the LOOP table, drawn as a cycle. */
+function MorningLoopDiagram() {
+  const nodes = [
+    { x: 40, y: 30, when: "起きてすぐ", doing: "体重計に乗る", strong: false },
+    { x: 370, y: 30, when: "午前中", doing: "ずっと気分が悪い", strong: false },
+    { x: 370, y: 290, when: "昼", doing: "食事を抜く", strong: true },
+    { x: 40, y: 290, when: "夕方", doing: "コンビニで食べる", strong: false },
+  ];
+  return (
+    <svg viewBox="0 0 640 410" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="loop-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4CAF50" />
+        </marker>
+      </defs>
+      {nodes.map((n) => (
+        <g key={n.doing}>
+          <rect
+            x={n.x}
+            y={n.y}
+            width={230}
+            height={90}
+            rx={14}
+            fill={n.strong ? "#FFFFFF" : "#E8F5E9"}
+            stroke={n.strong ? "#F57C00" : "#4CAF50"}
+            strokeWidth={n.strong ? 3 : 2}
+          />
+          <text x={n.x + 115} y={n.y + 34} textAnchor="middle" fontSize={16} fill="#374151">{n.when}</text>
+          <text x={n.x + 115} y={n.y + 66} textAnchor="middle" fontSize={20} fontWeight="bold" fill={n.strong ? "#F57C00" : "#2E7D32"}>{n.doing}</text>
+        </g>
+      ))}
+      <line x1={274} y1={75} x2={364} y2={75} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#loop-arrow)" />
+      <line x1={485} y1={124} x2={485} y2={284} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#loop-arrow)" />
+      <line x1={366} y1={335} x2={276} y2={335} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#loop-arrow)" />
+      <line x1={155} y1={286} x2={155} y2={126} stroke="#4CAF50" strokeWidth={3} markerEnd="url(#loop-arrow)" />
+      <text x={170} y={212} fontSize={18} fontWeight="bold" fill="#2E7D32">翌朝</text>
+      <text x={320} y={200} textAnchor="middle" fontSize={18} fill="#374151">毎日</text>
+      <text x={320} y={226} textAnchor="middle" fontSize={18} fill="#374151">くり返す</text>
+    </svg>
+  );
+}
+
+/** Daily fluctuation (1-2kg) vs. actual weekly progress (~0.5kg). 220px per kg. */
+function NoiseVsProgressDiagram() {
+  const ticks = [
+    { x: 40, label: "0" },
+    { x: 150, label: "0.5" },
+    { x: 260, label: "1" },
+    { x: 370, label: "1.5" },
+    { x: 480, label: "2kg" },
+  ];
+  return (
+    <svg viewBox="0 0 640 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x={40} y={44} fontSize={18} fontWeight="bold" fill="#374151">1日の体重の振れ幅</text>
+      <rect x={40} y={58} width={220} height={44} fill="#9CA3AF" />
+      <rect x={260} y={58} width={220} height={44} fill="#F3F4F6" stroke="#9CA3AF" strokeWidth={2} strokeDasharray="6 4" />
+      <text x={494} y={88} fontSize={20} fontWeight="bold" fill="#374151">1〜2kg</text>
+
+      <text x={40} y={160} fontSize={18} fontWeight="bold" fill="#374151">実際に落ちていた速度（1週間）</text>
+      <rect x={40} y={174} width={110} height={44} fill="#4CAF50" />
+      <text x={164} y={204} fontSize={20} fontWeight="bold" fill="#2E7D32">約0.5kg</text>
+
+      <line x1={40} y1={248} x2={480} y2={248} stroke="#9CA3AF" strokeWidth={1.5} />
+      {ticks.map((t) => (
+        <g key={t.label}>
+          <line x1={t.x} y1={242} x2={t.x} y2={254} stroke="#9CA3AF" strokeWidth={1.5} />
+          <text x={t.x} y={278} textAnchor="middle" fontSize={16} fill="#374151">{t.label}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 export default function WeightWeeklyAverage() {
   return (
     <ColumnShell
@@ -188,6 +262,14 @@ export default function WeightWeeklyAverage() {
               </tbody>
             </table>
           </div>
+
+          <ColumnFigure
+            caption="朝の体重から始まる流れが、毎日ぐるぐる回っていた"
+            alt="ループ図。起きてすぐ体重計に乗る、午前中はずっと気分が悪い、昼は食事を抜く、夕方にコンビニで食べる、翌朝また体重計に乗る、の順に一周して最初に戻る。"
+            note="当時の行動を図にしたもの（体重・食事の記録は残っていません）"
+          >
+            <MorningLoopDiagram />
+          </ColumnFigure>
 
           <p>
             自分では「真面目にやっている」つもりでした。毎日測っているし、増えた日には対策もしている。
@@ -384,6 +466,14 @@ export default function WeightWeeklyAverage() {
               </tbody>
             </table>
           </div>
+
+          <ColumnFigure
+            caption="1日の振れ幅（1〜2kg）は、1週間の進捗（約0.5kg）の2〜4倍ある"
+            alt="横棒グラフ。1日の体重の振れ幅は1〜2kg、実際に落ちていた速度は1週間で約0.5kg。振れ幅の棒のほうが2〜4倍長い。"
+            note="進捗は本文の仮定（2ヶ月で4kg）から計算。灰色の薄い部分は振れ幅の上限（2kg）までの幅"
+          >
+            <NoiseVsProgressDiagram />
+          </ColumnFigure>
 
           <p>
             <strong>1日の振れ幅のほうが、1週間ぶんの進捗より大きい</strong>

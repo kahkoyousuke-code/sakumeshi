@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ColumnShell from "@/components/column/ColumnShell";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("no-rebound", {
@@ -235,6 +236,13 @@ export default function NoRebound() {
         </h2>
         <div className="space-y-4">
           <p>いきなりTDEEまで戻すと、体が対応する前に余剰が出ます。2週間ごとに100kcal程度ずつ増やしていくのが安全です。</p>
+          <ColumnFigure
+            caption="カロリーは段階的に戻し、約3ヶ月かけてTDEEへ"
+            alt="カロリーを戻す階段状の図。減量期の水準から、1〜2週目に+100kcal、3〜4週目にさらに+100kcal、5〜8週目にさらに+100〜200kcal、9〜12週目にTDEEと同等まで上げる。体重が横ばいなら次の段へ進む。"
+            note="段の高さはイメージ。増やす量は下の表のとおり"
+          >
+            <ReturnScheduleDiagram />
+          </ColumnFigure>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -290,6 +298,13 @@ export default function NoRebound() {
               <li className="flex gap-2"><span className="font-bold text-green-700 shrink-0">4.</span><span>戻ったら、また維持カロリーに戻す</span></li>
             </ol>
           </div>
+          <ColumnFigure
+            caption="+2kgのラインを超えたら、2〜3週間だけ減量食に戻す"
+            alt="週平均の体重の推移を表したイメージ図。維持したい体重68kgの線と、+2kgの70kgの線が引かれている。週平均がゆっくり上がって70kgの線を超えたところで、2〜3週間だけ減量期の食事に戻し、68kg付近に戻している。"
+            note="イメージ図（本文の例：維持したい体重68kg）"
+          >
+            <PlusTwoRuleDiagram />
+          </ColumnFigure>
           <p>
             2kgならほとんど生活を変えずに戻せます。これが5kg、8kgと積み上がってから動こうとすると、また本格的な減量が必要になり、心理的なハードルが跳ね上がります。
             <strong>小さいうちに小さく戻す</strong>——これがリバウンドしない人がやっていることです。
@@ -379,5 +394,67 @@ export default function NoRebound() {
         </div>
       </section>
     </ColumnShell>
+  );
+}
+
+/** Step-up of calories from the cutting phase to TDEE over 12 weeks (step heights are illustrative). */
+function ReturnScheduleDiagram() {
+  // week 0 at x=110, week 12 at x=610 (about 41.7 px per week)
+  const step = "M40 250 H110 V220 H193 V190 H277 V140 H443 V90 H610";
+  return (
+    <svg viewBox="0 0 640 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d={`${step} V300 H40 Z`} fill="#E8F5E9" />
+      <line x1="40" y1="90" x2="610" y2="90" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="6 6" />
+      <text x="40" y="76" fontSize="18" fontWeight="bold" fill="#374151">TDEE（今の体重で計算）</text>
+      {[193, 277, 443].map((x) => (
+        <line key={x} x1={x} y1="100" x2={x} y2="300" stroke="#FFFFFF" strokeWidth="2" />
+      ))}
+      <path d={step} fill="none" stroke="#2E7D32" strokeWidth="5" strokeLinejoin="round" />
+      <text x="44" y="276" fontSize="16" fontWeight="bold" fill="#2E7D32">減量期</text>
+      <text x="152" y="212" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">+100</text>
+      <text x="235" y="182" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">+100</text>
+      <text x="360" y="132" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">+100〜200</text>
+      <text x="527" y="124" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">TDEEと同等</text>
+      <line x1="40" y1="300" x2="610" y2="300" stroke="#9CA3AF" strokeWidth="2" />
+      {[
+        { x: 152, label: "1〜2週" },
+        { x: 235, label: "3〜4週" },
+        { x: 360, label: "5〜8週" },
+        { x: 527, label: "9〜12週" },
+      ].map((p) => (
+        <text key={p.label} x={p.x} y="326" textAnchor="middle" fontSize="17" fill="#374151">{p.label}</text>
+      ))}
+      <text x="610" y="40" textAnchor="end" fontSize="16" fill="#9CA3AF">体重が横ばいなら次の段へ</text>
+    </svg>
+  );
+}
+
+/** Weekly-average weight drifting over the +2 kg line, then a short cut back to the target (illustrative). */
+function PlusTwoRuleDiagram() {
+  // 68 kg at y=230, 70 kg at y=130 (50 px per kg)
+  return (
+    <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="352" y="40" width="128" height="250" fill="#E8F5E9" />
+      <text x="416" y="66" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">減量食に</text>
+      <text x="416" y="90" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">戻す</text>
+      <text x="416" y="282" textAnchor="middle" fontSize="16" fill="#2E7D32">2〜3週間</text>
+      <line x1="70" y1="130" x2="610" y2="130" stroke="#F57C00" strokeWidth="3" strokeDasharray="10 6" />
+      <line x1="70" y1="230" x2="610" y2="230" stroke="#4CAF50" strokeWidth="3" />
+      <text x="62" y="136" textAnchor="end" fontSize="18" fontWeight="bold" fill="#F57C00">70kg</text>
+      <text x="62" y="236" textAnchor="end" fontSize="18" fontWeight="bold" fill="#2E7D32">68kg</text>
+      <text x="606" y="120" textAnchor="end" fontSize="16" fontWeight="bold" fill="#F57C00">+2kgのライン</text>
+      <text x="606" y="254" textAnchor="end" fontSize="16" fontWeight="bold" fill="#2E7D32">維持したい体重</text>
+      <path
+        d="M80 228 C 130 224, 170 214, 220 196 C 270 178, 310 150, 352 124 C 380 108, 400 112, 420 140 C 445 176, 470 214, 510 226 C 550 234, 580 230, 610 228"
+        fill="none"
+        stroke="#374151"
+        strokeWidth="3"
+      />
+      <circle cx="342" cy="130" r="7" fill="#F57C00" />
+      <text x="330" y="112" textAnchor="end" fontSize="16" fontWeight="bold" fill="#F57C00">週平均が超えたら</text>
+      <text x="80" y="200" fontSize="16" fontWeight="bold" fill="#374151">週平均の体重</text>
+      <line x1="70" y1="290" x2="610" y2="290" stroke="#9CA3AF" strokeWidth="2" />
+      <text x="610" y="318" textAnchor="end" fontSize="16" fill="#9CA3AF">時間 →</text>
+    </svg>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -61,6 +62,60 @@ const FAQS = [
     a: "食事だけで問題ありません。ただし持病やケガでの制限がある場合、食事内容も含めて医師や管理栄養士に相談してください。とくにエネルギーやタンパク質の制限を受けている方は、この記事の一般論を当てはめないでください。",
   },
 ];
+
+/** Daily energy expenditure split (60/30/10) with a callout on physical activity. */
+function EnergyBreakdownDiagram() {
+  // Bar from x=40 to x=600 (560px = 100%)
+  const x0 = 40;
+  const w = 560;
+  const bmrW = w * 0.6;
+  const actW = w * 0.3;
+  const ditW = w * 0.1;
+  const actX = x0 + bmrW;
+  const ditX = actX + actW;
+  return (
+    <svg viewBox="0 0 640 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x={x0} y={30} fontSize={18} fontWeight="bold" fill="#374151">
+        1日の消費エネルギーの内訳
+      </text>
+      <text x={x0 + w} y={52} fontSize={16} textAnchor="end" fill="#374151">
+        食事誘発性熱産生
+      </text>
+      <rect x={x0} y={62} width={bmrW} height={64} fill="#E8F5E9" stroke="#FFFFFF" strokeWidth={2} />
+      <rect x={actX} y={62} width={actW} height={64} fill="#2E7D32" stroke="#FFFFFF" strokeWidth={2} />
+      <rect x={ditX} y={62} width={ditW} height={64} fill="#F3F4F6" stroke="#FFFFFF" strokeWidth={2} />
+      <text x={x0 + bmrW / 2} y={90} fontSize={19} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+        基礎代謝
+      </text>
+      <text x={x0 + bmrW / 2} y={114} fontSize={17} textAnchor="middle" fill="#2E7D32">
+        約60%
+      </text>
+      <text x={actX + actW / 2} y={90} fontSize={19} fontWeight="bold" textAnchor="middle" fill="#FFFFFF">
+        身体活動
+      </text>
+      <text x={actX + actW / 2} y={114} fontSize={17} textAnchor="middle" fill="#FFFFFF">
+        約30%
+      </text>
+      <text x={ditX + ditW / 2} y={102} fontSize={16} textAnchor="middle" fill="#374151">
+        約10%
+      </text>
+      {/* Callout on physical activity */}
+      <path
+        d={`M${actX + 4} 136 V146 H${ditX - 4} V136 M${actX + actW / 2} 146 V168`}
+        fill="none"
+        stroke="#2E7D32"
+        strokeWidth={2}
+      />
+      <rect x={150} y={168} width={450} height={100} rx={10} fill="#FFFFFF" stroke="#2E7D32" strokeWidth={1.5} />
+      <text x={375} y={208} fontSize={18} textAnchor="middle" fill="#374151">
+        通勤・家事・階段・立ち歩きも、ここ
+      </text>
+      <text x={375} y={244} fontSize={18} fontWeight="bold" textAnchor="middle" fill="#2E7D32">
+        週2回のジムは、この中のごく一部
+      </text>
+    </svg>
+  );
+}
 
 export default function NoExerciseDiet() {
   return (
@@ -145,6 +200,12 @@ export default function NoExerciseDiet() {
             <strong>意識的な運動だけを指しているわけではない</strong>
             ことです。通勤、家事、階段、立ち歩き——日常の動作すべてがここに含まれます。週2回ジムに行く程度では、この30%のうちごく一部にしかなりません。
           </p>
+          <ColumnFigure
+            caption="運動は消費の「身体活動 約30%」のさらに一部にすぎない"
+            alt="1日の消費エネルギーの内訳を1本の帯で表した図。基礎代謝が約60%、身体活動が約30%、食事誘発性熱産生が約10%。身体活動には通勤・家事・階段・立ち歩きも含まれ、週2回のジムはその中のごく一部。"
+          >
+            <EnergyBreakdownDiagram />
+          </ColumnFigure>
           <p>
             一方で、摂取側は毎日3回、確実に発生します。
             <strong>1食あたり150kcal変えれば1日450kcal</strong>

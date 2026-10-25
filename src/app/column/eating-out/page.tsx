@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -83,6 +84,57 @@ function levelClass(level: string) {
   if (level === "ok") return "text-green-700";
   if (level === "mid") return "text-amber-700";
   return "text-red-700";
+}
+
+/** Cooking methods ordered by fat (from the FAQ / summary), plus the article's pork example. */
+function CookingMethodDiagram() {
+  const methods = [
+    { x: 20, label: "揚げる", good: false },
+    { x: 175, label: "炒める", good: false },
+    { x: 330, label: "焼く", good: true },
+    { x: 485, label: "蒸す・茹でる", good: true },
+  ];
+  return (
+    <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="20" y="30" fontSize="16" fontWeight="bold" fill="#374151">脂質が多い</text>
+      <text x="620" y="30" textAnchor="end" fontSize="16" fontWeight="bold" fill="#374151">少ない</text>
+      <line x1="20" y1="44" x2="604" y2="44" stroke="#9CA3AF" strokeWidth="2" />
+      <polygon points="602,37 618,44 602,51" fill="#9CA3AF" />
+
+      {methods.map((m) => (
+        <g key={m.label}>
+          <rect
+            x={m.x}
+            y="62"
+            width="135"
+            height="72"
+            rx="10"
+            fill={m.good ? "#E8F5E9" : "#F3F4F6"}
+            stroke={m.good ? "#2E7D32" : "#9CA3AF"}
+            strokeWidth="2"
+          />
+          <text x={m.x + 67.5} y="105" textAnchor="middle" fontSize="20" fontWeight="bold" fill={m.good ? "#2E7D32" : "#374151"}>
+            {m.label}
+          </text>
+        </g>
+      ))}
+      <text x="165" y="105" textAnchor="middle" fontSize="18" fill="#9CA3AF">＞</text>
+      <text x="320" y="105" textAnchor="middle" fontSize="18" fill="#9CA3AF">＞</text>
+      <text x="475" y="105" textAnchor="middle" fontSize="18" fill="#9CA3AF">＞</text>
+
+      <path d="M330 146 L330 156 L620 156 L620 146" fill="none" stroke="#2E7D32" strokeWidth="2" />
+      <text x="475" y="182" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">迷ったら焼き物か蒸し物</text>
+
+      <rect x="20" y="206" width="600" height="118" rx="12" fill="#F3F4F6" />
+      <text x="40" y="234" fontSize="16" fill="#374151">例：同じ豚肉の定食でも</text>
+      <text x="165" y="270" textAnchor="middle" fontSize="16" fill="#374151">生姜焼き定食</text>
+      <text x="165" y="302" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#374151">約750kcal</text>
+      <text x="475" y="270" textAnchor="middle" fontSize="16" fill="#374151">とんかつ定食（揚げる）</text>
+      <text x="475" y="302" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#374151">約1,000kcal</text>
+      <text x="320" y="282" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#F57C00">250kcal以上</text>
+      <polygon points="300,292 340,292 340,286 352,296 340,306 340,300 300,300" fill="#F57C00" />
+    </svg>
+  );
 }
 
 export default function EatingOut() {
@@ -175,6 +227,12 @@ export default function EatingOut() {
           <p>
             見比べると分かるのは、<strong>ジャンルより調理法で決まる</strong>ということです。同じ豚肉でも、生姜焼き定食ととんかつ定食では250kcal以上違います。
           </p>
+          <ColumnFigure
+            caption="外食のカロリーは、ジャンルより調理法で決まる"
+            alt="調理法を脂質の多い順に左から並べた図。揚げる、炒める、焼く、蒸す・茹でるの順に脂質が下がり、迷ったら焼き物か蒸し物を選ぶ。例として、同じ豚肉の定食でも生姜焼き定食は約750kcal、とんかつ定食は約1,000kcalで、250kcal以上の差がある。"
+          >
+            <CookingMethodDiagram />
+          </ColumnFigure>
         </div>
       </section>
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -53,6 +54,26 @@ const FAQS = [
     a: "それは停滞期ではなく、摂取と消費が釣り合っている状態です。体重が減ったぶん必要カロリーも下がっているので、今の体重で計算し直してください。多くの場合、原因はここにあります。",
   },
 ];
+
+/** Bars to scale: a 400kcal daily deficit vs ~300kcal of hidden calories (560px = 400kcal). */
+function HiddenCalorieDiagram() {
+  return (
+    <svg viewBox="0 0 640 310" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x="40" y="40" fontSize="18" fontWeight="bold" fill="#374151">目標の赤字（1日）</text>
+      <rect x="40" y="54" width="560" height="56" rx="8" fill="#2E7D32" />
+      <text x="320" y="90" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#FFFFFF">約400kcal</text>
+
+      <text x="40" y="152" fontSize="18" fontWeight="bold" fill="#374151">隠れカロリーが3つ重なると</text>
+      <rect x="40" y="166" width="420" height="56" rx="8" fill="#F57C00" />
+      <text x="250" y="202" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#FFFFFF">約300kcal</text>
+      <rect x="462" y="167" width="137" height="54" rx="8" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="6 4" />
+      <text x="530" y="201" textAnchor="middle" fontSize="16" fill="#374151">残る赤字</text>
+
+      <text x="40" y="252" fontSize="16" fill="#374151">ドレッシングたっぷり＋職場のお菓子1個＋ナッツ</text>
+      <text x="320" y="292" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#374151">→ 赤字はほぼ帳消し</text>
+    </svg>
+  );
+}
 
 export default function DietPlateau() {
   return (
@@ -157,6 +178,13 @@ export default function DietPlateau() {
               。目標の赤字が400kcalなら、ほぼ帳消しです。体重が動かないのは当然ということになります。
             </p>
           </div>
+          <ColumnFigure
+            caption="隠れカロリー3つで、1日400kcalの赤字がほぼ消える"
+            alt="長さをカロリーに比例させた横棒の比較。上は1日の目標の赤字約400kcal。下は、ドレッシングをたっぷり、職場のお菓子1個、ナッツの3つで約300kcalになり、残る赤字はわずかで、ほぼ帳消しになる。"
+            note="本文の例（目標の赤字400kcal、隠れカロリー1日300kcal前後）を図にしたもの"
+          >
+            <HiddenCalorieDiagram />
+          </ColumnFigure>
           <p>
             対策は難しくありません。
             <strong>3日だけ、口に入れたものを全部記録する</strong>

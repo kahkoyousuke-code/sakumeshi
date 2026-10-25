@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -98,6 +99,48 @@ function ProductList({ items }: { items: { name: string; kcal: string; point: st
   );
 }
 
+/** Mock nutrition label (no values) annotated with the reading order from the list above. */
+function NutritionLabelDiagram() {
+  const rows = [
+    { y: 145, label: "エネルギー", unit: "○kcal", indent: false },
+    { y: 200, label: "たんぱく質", unit: "○g", indent: false },
+    { y: 255, label: "脂質", unit: "○g", indent: false },
+    { y: 310, label: "炭水化物", unit: "○g", indent: false },
+    { y: 360, label: "─ 糖質", unit: "○g", indent: true },
+    { y: 405, label: "─ 食物繊維", unit: "○g", indent: true },
+    { y: 460, label: "食塩相当量", unit: "○g", indent: false },
+  ];
+  const callouts = [
+    { y: 85, n: "1", text: "単位（1個？100g？）" },
+    { y: 200, n: "2", text: "20g以上あるか" },
+    { y: 255, n: "3", text: "20g超は揚げ物・マヨ系" },
+    { y: 360, n: "4", text: "主食1つで40g前後" },
+    { y: 460, n: "5", text: "1食3g超に注意" },
+  ];
+  return (
+    <svg viewBox="0 0 640 510" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x={30} y={20} width={300} height={470} rx={6} fill="#FFFFFF" stroke="#374151" strokeWidth={2} />
+      <text x={180} y={55} textAnchor="middle" fontSize={20} fontWeight="bold" fill="#374151">栄養成分表示</text>
+      <text x={180} y={85} textAnchor="middle" fontSize={18} fill="#374151">（1個当たり）</text>
+      <line x1={30} y1={105} x2={330} y2={105} stroke="#374151" strokeWidth={2} />
+      {rows.map((r) => (
+        <g key={r.label}>
+          <text x={r.indent ? 64 : 48} y={r.y} fontSize={18} fill="#374151">{r.label}</text>
+          <text x={312} y={r.y} textAnchor="end" fontSize={18} fill="#9CA3AF">{r.unit}</text>
+        </g>
+      ))}
+      {callouts.map((c) => (
+        <g key={c.n}>
+          <line x1={334} y1={c.y - 6} x2={348} y2={c.y - 6} stroke="#4CAF50" strokeWidth={2} />
+          <circle cx={364} cy={c.y - 6} r={16} fill="#4CAF50" />
+          <text x={364} y={c.y} textAnchor="middle" fontSize={18} fontWeight="bold" fill="#FFFFFF">{c.n}</text>
+          <text x={390} y={c.y} fontSize={18} fontWeight="bold" fill="#2E7D32">{c.text}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 export default function ConvenienceDiet() {
   return (
     <ColumnShell
@@ -170,6 +213,13 @@ export default function ConvenienceDiet() {
               </div>
             ))}
           </div>
+          <ColumnFigure
+            caption="表示は「単位→たんぱく質→脂質→糖質→食塩」の順に5か所だけ見る"
+            alt="栄養成分表示のイメージに番号を付けた図。1は表示の単位（1個当たりか100g当たりか）、2はたんぱく質（20g以上あるか）、3は脂質（20g超なら揚げ物かマヨネーズ系）、4は糖質（主食1つで40g前後）、5は食塩相当量（1食3g超に注意）。"
+            note="イメージ図（数値は省略）"
+          >
+            <NutritionLabelDiagram />
+          </ColumnFigure>
           <p>
             慣れると3秒で判断できるようになります。最初の1週間だけ意識して見れば、自分がよく買う商品の数字は覚えてしまうので、以降は確認する必要すらなくなります。
           </p>

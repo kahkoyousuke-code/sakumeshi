@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -77,6 +78,79 @@ const FAQS = [
     a: "カロリーは枠、PFC（タンパク質・脂質・炭水化物）は中身です。同じ1,500kcalでもタンパク質が足りないと筋肉が落ち、維持カロリーがさらに下がります。枠が決まったら次はPFCに割り振ってください。",
   },
 ];
+
+/** Example 1 from the article: BMR -> TDEE -> -500 / -300, against the 1,200kcal floor. */
+function ExampleBreakdownDiagram() {
+  // Scale: 1,800kcal = 560px, bars start at x=24
+  const x0 = 24;
+  const scale = 560 / 1800;
+  const floorX = x0 + 1200 * scale;
+  const rows = [
+    { label: "基礎代謝（BMR）", kcal: 1347, value: "約1,347kcal", fill: "#F3F4F6", text: "#374151" },
+    { label: "維持カロリー（BMR×1.2）", kcal: 1616, value: "約1,616kcal", fill: "#E8F5E9", text: "#2E7D32" },
+    { label: "−500kcal → 下限割れ ✕", kcal: 1116, value: "約1,116kcal", fill: "#F57C00", text: "#FFFFFF" },
+    { label: "−300kcal → これに設定 ✓", kcal: 1316, value: "約1,316kcal", fill: "#2E7D32", text: "#FFFFFF" },
+  ];
+  return (
+    <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <text x={x0} y={28} fontSize={18} fontWeight="bold" fill="#374151">
+        例1：35歳女性・160cm・60kg・運動ほぼなし
+      </text>
+      {/* 1,200kcal floor line (drawn first so bars sit on top) */}
+      <line x1={floorX} y1={74} x2={floorX} y2={386} stroke="#374151" strokeWidth={2} strokeDasharray="6 5" />
+      <text x={floorX} y={66} fontSize={16} textAnchor="middle" fill="#374151">
+        下限 1,200kcal
+      </text>
+      {rows.map((r, i) => {
+        const top = 80 + i * 78;
+        const w = r.kcal * scale;
+        return (
+          <g key={r.label}>
+            <text x={x0} y={top + 20} fontSize={18} fontWeight="bold" fill="#374151">
+              {r.label}
+            </text>
+            <rect x={x0} y={top + 30} width={w} height={34} rx={4} fill={r.fill} />
+            <text x={x0 + w - 10} y={top + 53} fontSize={18} fontWeight="bold" textAnchor="end" fill={r.text}>
+              {r.value}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+/** Female maintenance range (table) vs the same range minus 500kcal, against the 1,200kcal floor. */
+function FemaleDeficitDiagram() {
+  // Scale: 800kcal at x=40, 1,800kcal at x=600
+  const toX = (kcal: number) => 40 + (kcal - 800) * 0.56;
+  const floorX = toX(1200);
+  return (
+    <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {/* Row 1: maintenance range */}
+      <text x={40} y={36} fontSize={18} fontWeight="bold" fill="#374151">
+        女性の維持カロリー（早見表の範囲）
+      </text>
+      <rect x={toX(1360)} y={50} width={toX(1740) - toX(1360)} height={36} rx={4} fill="#4CAF50" />
+      <text x={toX(1360)} y={110} fontSize={16} textAnchor="middle" fill="#374151">1,360</text>
+      <text x={toX(1740)} y={110} fontSize={16} textAnchor="middle" fill="#374151">1,740</text>
+
+      {/* Row 2: minus 500kcal */}
+      <text x={40} y={164} fontSize={18} fontWeight="bold" fill="#374151">
+        −500kcal すると
+      </text>
+      <line x1={floorX} y1={150} x2={floorX} y2={226} stroke="#374151" strokeWidth={2} strokeDasharray="6 5" />
+      <text x={floorX} y={144} fontSize={16} textAnchor="middle" fill="#374151">下限 1,200</text>
+      <rect x={toX(860)} y={176} width={floorX - toX(860)} height={36} rx={4} fill="#F57C00" />
+      <rect x={floorX} y={176} width={toX(1240) - floorX} height={36} fill="#E8F5E9" stroke="#4CAF50" strokeWidth={1.5} />
+      <text x={toX(860)} y={240} fontSize={16} textAnchor="middle" fill="#374151">860</text>
+      <text x={toX(1240) + 6} y={240} fontSize={16} textAnchor="start" fill="#374151">1,240</text>
+      <text x={toX(1240) + 30} y={201} fontSize={18} fontWeight="bold" fill="#F57C00">
+        ← ほぼ全部が下限割れ
+      </text>
+    </svg>
+  );
+}
 
 export default function DailyCalories() {
   return (
@@ -242,6 +316,13 @@ export default function DailyCalories() {
             </ul>
           </div>
 
+          <ColumnFigure
+            caption="例1は −500kcal だと下限割れ。−300kcal の約1,316kcalに設定する"
+            alt="例1（35歳女性・160cm・60kg・ほぼ運動しない）の計算を横棒で比較。基礎代謝約1,347kcal、維持カロリー約1,616kcal、そこから500kcal引くと約1,116kcalで下限の1,200kcalを下回り、300kcal引いた約1,316kcalなら下限を上回る。"
+          >
+            <ExampleBreakdownDiagram />
+          </ColumnFigure>
+
           <div className="bg-white rounded-xl border border-green-100 p-4 space-y-3">
             <p className="text-sm font-bold text-gray-800">例2：28歳男性・身長175cm・体重80kg・週1〜2回運動</p>
             <ul className="space-y-1.5 text-sm text-gray-600">
@@ -352,6 +433,13 @@ export default function DailyCalories() {
             上の女性の表をもう一度見てください。維持カロリーは1,360〜1,740kcalの範囲です。ここから定番の−500kcalを引くと、<strong>860〜1,240kcal</strong>。
             <strong>ほぼ全部が下限の1,200kcalを割り込みます</strong>。
           </p>
+          <ColumnFigure
+            caption="女性の維持カロリーから −500kcal すると、ほぼ全部が1,200kcalを割る"
+            alt="女性の維持カロリーの範囲1,360〜1,740kcalと、そこから500kcal引いた860〜1,240kcalの範囲を横棒で比較。下限1,200kcalの線より下の部分がほとんどを占める。"
+            note="早見表（女性・運動習慣なし）の範囲をもとにした図"
+          >
+            <FemaleDeficitDiagram />
+          </ColumnFigure>
           <p>
             「−500kcal」はネット上でいちばんよく見る設定ですが、体格の大きい男性を念頭に置いた数字です。女性がそのまま使うと、最初から続かない設定になります。
           </p>

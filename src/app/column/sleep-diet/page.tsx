@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColumnFigure from "@/components/column/ColumnFigure";
 import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
@@ -61,6 +62,36 @@ const FAQS = [
   },
 ];
 
+/** Four paths from sleep loss, all converging on "eating more" (from the "why" section). */
+function SleepReasonsDiagram() {
+  const boxes = [
+    { x: 40, y: 124, title: "食欲ホルモンが乱れる", sub: "満腹感↓・空腹感↑" },
+    { x: 340, y: 124, title: "自制が効きにくい", sub: "高カロリーを選びがち" },
+    { x: 40, y: 214, title: "回復が追いつかない", sub: "トレーニング効果↓" },
+    { x: 340, y: 214, title: "起きている時間が増える", sub: "夜食の機会が生まれる" },
+  ];
+  return (
+    <svg viewBox="0 0 640 414" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="220" y="16" width="200" height="56" rx="12" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" />
+      <text x="320" y="52" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#374151">睡眠不足</text>
+      <line x1="320" y1="72" x2="320" y2="96" stroke="#9CA3AF" strokeWidth="3" />
+      <polygon points="312,94 328,94 320,106" fill="#9CA3AF" />
+      <rect x="24" y="108" width="592" height="194" rx="16" fill="#E8F5E9" />
+      {boxes.map((b) => (
+        <g key={b.title}>
+          <rect x={b.x} y={b.y} width="260" height="72" rx="10" fill="#FFFFFF" stroke="#4CAF50" strokeWidth="2" />
+          <text x={b.x + 130} y={b.y + 31} textAnchor="middle" fontSize="18" fontWeight="bold" fill="#2E7D32">{b.title}</text>
+          <text x={b.x + 130} y={b.y + 57} textAnchor="middle" fontSize="16" fill="#374151">{b.sub}</text>
+        </g>
+      ))}
+      <line x1="320" y1="302" x2="320" y2="326" stroke="#9CA3AF" strokeWidth="3" />
+      <polygon points="312,324 328,324 320,336" fill="#9CA3AF" />
+      <rect x="170" y="338" width="300" height="60" rx="12" fill="#F57C00" />
+      <text x="320" y="376" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#FFFFFF">食べる量が増える</text>
+    </svg>
+  );
+}
+
 export default function SleepDiet() {
   return (
     <ColumnShell
@@ -104,6 +135,12 @@ export default function SleepDiet() {
             <strong>すべて「食べる量が増える」方向に働く</strong>
             ということです。「睡眠を削って運動する」という発想は、ダイエットにおいては割に合いません。
           </p>
+          <ColumnFigure
+            caption="寝不足の影響は、4つとも「食べる量が増える」方向に向かう"
+            alt="睡眠不足から4つの経路が出ている図。食欲ホルモンが乱れる（満腹感が減り空腹感が増える）、自制が効きにくく高カロリーを選びがち、回復が追いつかずトレーニング効果が下がる、起きている時間が増えて夜食の機会が生まれる。4つとも最終的に「食べる量が増える」に集まる。"
+          >
+            <SleepReasonsDiagram />
+          </ColumnFigure>
         </div>
       </section>
 
