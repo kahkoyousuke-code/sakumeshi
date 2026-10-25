@@ -10,7 +10,7 @@ const BASE_URL = "https://sakumeshi.app";
  * when the corresponding page's content actually changes.
  */
 const LAST_MODIFIED = {
-  home: "2026-08-01",
+  home: "2026-10-25",
   form: "2026-07-20",
   legal: "2026-06-20",
 } as const;

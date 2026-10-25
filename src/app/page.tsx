@@ -1,10 +1,57 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { SAKU_TRAINING_URL, SAKU_SUPPU_URL, TOTAL_STEPS } from "@/lib/constants";
 import { columnsByDateDesc } from "@/lib/columns";
+import { pageMetadata, SITE_NAME } from "@/lib/metadata";
+import { AUTHOR } from "@/lib/author";
+
+const SITE_URL = "https://sakumeshi.app/";
+
+const HOME_TITLE = "無料で1週間のダイエット食事メニューを自動作成｜サクメシ";
+const HOME_DESCRIPTION = `年齢・体重・目標など${TOTAL_STEPS}の質問に答えるだけ。AIが目標カロリーとPFCバランスを計算し、7日分の献立・レシピ・買い物リストを無料で作成します。登録不要・約1分。`;
+
+export const metadata: Metadata = pageMetadata({
+  path: "/",
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
+});
+
+/**
+ * WebSite tells Google the site name shown above the result;
+ * WebApplication describes what the tool does and that it is free.
+ */
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      inLanguage: "ja",
+    },
+    {
+      "@type": "WebApplication",
+      "@id": `${SITE_URL}#app`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: HOME_DESCRIPTION,
+      applicationCategory: "HealthApplication",
+      operatingSystem: "All",
+      browserRequirements: "Requires JavaScript",
+      inLanguage: "ja",
+      isAccessibleForFree: true,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "JPY" },
+      author: {
+        "@type": "Person",
+        name: AUTHOR.name,
+        url: AUTHOR.url,
+        sameAs: AUTHOR.sameAs,
+      },
+    },
+  ],
+};
 
 const COLUMNS_BY_DATE = columnsByDateDesc();
 const LATEST_COLUMNS = COLUMNS_BY_DATE.slice(0, 6);
@@ -39,17 +86,14 @@ const HOW_IT_WORKS = [
 export default function HomePage() {
   return (
     <div className="min-h-[88vh] flex flex-col items-center justify-center px-4 py-10 bg-white">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-col items-center gap-6 max-w-md w-full text-center"
-      >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
+      {/* No fade-in on load: content must be visible in the server HTML (LCP). */}
+      <div className="flex flex-col items-center gap-6 max-w-md w-full text-center">
         {/* マスコット */}
-        <motion.div
-          animate={{ y: [0, -15, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        >
+        <div className="mascot-float">
           <Image
             src="/mascot.png"
             alt="サクメシ マスコット"
@@ -58,7 +102,7 @@ export default function HomePage() {
             className="drop-shadow-md"
             priority
           />
-        </motion.div>
+        </div>
 
         {/* タイトル */}
         <div className="space-y-1">
@@ -74,18 +118,12 @@ export default function HomePage() {
         </p>
 
         {/* CTAボタン */}
-        <motion.div
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.97 }}
-          className="w-full"
+        <Link
+          href="/form"
+          className="block w-full py-4 px-8 bg-[var(--primary)] text-white text-lg font-bold rounded-2xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97]"
         >
-          <Link
-            href="/form"
-            className="block w-full py-4 px-8 bg-[var(--primary)] text-white text-lg font-bold rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300"
-          >
-            無料で食事プランを作る
-          </Link>
-        </motion.div>
+          無料で食事プランを作る
+        </Link>
 
         {/* 所要時間 */}
         <p className="text-xs text-gray-400">所要時間：約1分／登録不要</p>
@@ -202,7 +240,7 @@ export default function HomePage() {
         >
           💊 サプリも選ぼう → サクサプ
         </Link>
-      </motion.div>
+      </div>
     </div>
   );
 }
