@@ -245,10 +245,10 @@ export const COLUMNS: ColumnMeta[] = [
   },
   {
     slug: "intermittent-fasting",
-    title: "16時間断食は痩せる？メリット・デメリットと正しいやり方",
-    description: "流行りの16時間断食を冷静に検証。向いている人・向かない人を解説",
+    title: "16時間断食の効果は？1ヶ月で何キロ痩せるかの目安と正しいやり方",
+    description: "16時間断食の効果を冷静に検証。1ヶ月で何キロ痩せるかの早見表、効果が出るまでの期間、痩せない理由を解説",
     date: "2026-07-19",
-    updated: "2026-09-13",
+    updated: "2026-11-01",
     emoji: "⏰",
     category: "habits",
     related: ["eating-order", "diet-plateau", "lowcarb-vs-lowfat"],

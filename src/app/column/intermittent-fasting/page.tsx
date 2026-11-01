@@ -4,22 +4,26 @@ import ColumnShell from "@/components/column/ColumnShell";
 import { columnMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = columnMetadata("intermittent-fasting", {
-  title: "16時間断食は痩せる？メリット・デメリットと正しいやり方 | サクメシ",
+  title: "16時間断食の効果は？1ヶ月で何キロ痩せるかの目安と正しいやり方 | サクメシ",
   description:
-    "16時間断食が痩せる仕組みを冷静に検証。オートファジーの実際、最大の弱点であるタンパク質不足の対処、生活パターン別の時間割、段階的な始め方、やめるべきサインまで解説します。",
+    "16時間断食の効果を冷静に検証。1ヶ月で何キロ痩せるかの早見表、効果が出るまでの期間、痩せない5つの理由、タンパク質不足の対処、段階的な始め方まで解説します。",
 });
 
 const TOC = [
+  { id: "quick", label: "結論：16時間断食の効果" },
   { id: "what", label: "16時間断食とは？" },
   { id: "truth", label: "痩せる仕組みの「本当のところ」" },
+  { id: "effect", label: "1ヶ月で何キロ痩せる？" },
+  { id: "timeline", label: "16時間断食の効果が出るまでの期間" },
   { id: "autophagy", label: "オートファジーはどこまで期待できるか" },
-  { id: "merit", label: "メリットとデメリット" },
+  { id: "merit", label: "16時間断食のメリット・デメリット" },
   { id: "protein", label: "最大の弱点：タンパク質をどう確保するか" },
   { id: "patterns", label: "生活パターン別の時間割" },
   { id: "who", label: "向いている人・向かない人" },
-  { id: "how", label: "始め方（4週間の段階プラン）" },
+  { id: "how", label: "16時間断食の正しいやり方（4週間の段階プラン）" },
+  { id: "not-losing", label: "16時間断食で痩せない5つの理由" },
   { id: "stop", label: "やめたほうがいいサイン" },
-  { id: "experience", label: "続けるなら残す部分と捨てる部分" },
+  { id: "experience", label: "やめても残したい習慣" },
   { id: "faq", label: "よくある質問" },
   { id: "summary", label: "まとめ" },
 ];
@@ -45,6 +49,52 @@ const PATTERNS = [
   },
 ];
 
+/** Breakfast calories cut per day, assuming they are not eaten back later. 1kg of body fat ≈ 7,700kcal. */
+const LOSS_TABLE = [
+  { kcal: 200, example: "ヨーグルト＋バナナ", month: "6,000kcal", fat: "約0.8kg" },
+  { kcal: 300, example: "おにぎり1個＋カフェラテ", month: "9,000kcal", fat: "約1.2kg" },
+  { kcal: 400, example: "トースト＋目玉焼き＋カフェラテ", month: "12,000kcal", fat: "約1.6kg" },
+  { kcal: 500, example: "菓子パン1個＋カフェラテ", month: "15,000kcal", fat: "約1.9kg" },
+];
+
+const TIMELINE = [
+  {
+    when: "最初の1週間",
+    what: "体重が早めに動くことがあるが、多くは水分や胃腸の中身の変化。体脂肪はまだほとんど減っていない",
+  },
+  {
+    when: "2〜4週間",
+    what: "朝食分の赤字が積み上がり、体脂肪の減少が週平均の体重に出始める。早見表の数字に近づくのはこのあたりから",
+  },
+  {
+    when: "1〜2ヶ月",
+    what: "ここで体重が止まるなら「1食目・2食目で取り返している」可能性が高い。食事の中身を見直すタイミング",
+  },
+];
+
+const NOT_LOSING = [
+  {
+    title: "1食目で取り返している",
+    desc: "空腹のまま食べ始めると、普段より量が増えます。朝食分の300kcalを昼に上乗せすれば、赤字はゼロです。",
+  },
+  {
+    title: "間食が「おやつ」になっている",
+    desc: "「8時間の中なら何を食べてもいい」わけではありません。16時の間食が菓子パンやスナックなら、むしろ体重が増えることもあります。",
+  },
+  {
+    title: "飲み物にカロリーがある",
+    desc: "断食中のカフェラテ、甘い缶コーヒー、スムージーは食事と同じです。無糖のお茶・水・ブラックコーヒーに限ります。",
+  },
+  {
+    title: "2食目が遅く、量も多い",
+    desc: "「20時までに食べ終える」が崩れて、寝る直前にまとめて食べるパターン。夜遅い食事は量が増えやすく、睡眠の質も落ちます。",
+  },
+  {
+    title: "睡眠不足で食欲が増えている",
+    desc: "寝不足の日は空腹を強く感じやすく、1食目の食べすぎにつながります。断食より先に睡眠を整えたほうが早い人もいます。",
+  },
+];
+
 const PROTEIN_PLAN = [
   { meal: "1食目（12:00）", menu: "鶏むね肉150g＋ごはん＋味噌汁＋サラダ", p: "約35g" },
   { meal: "間食（16:00）", menu: "プロテイン1杯＋ゆで卵1個", p: "約26g" },
@@ -52,6 +102,22 @@ const PROTEIN_PLAN = [
 ];
 
 const FAQS = [
+  {
+    q: "16時間断食で1ヶ月に何キロ痩せる？",
+    a: "抜いた朝食のカロリーをほかの食事で取り返さなければ、朝食300kcalで1ヶ月に体脂肪約1.2kg、400kcalで約1.6kgが目安です（体脂肪1kg＝約7,700kcalで計算）。最初の1週間に体重が大きく動いても、その多くは水分なので、早見表の数字とは分けて考えてください。",
+  },
+  {
+    q: "16時間断食の効果はいつから出る？",
+    a: "体脂肪の減少が体重に表れてくるのは、早くて2〜4週間後です。体重は1日で1kg前後上下することもあるので、1日ごとの数字ではなく1週間の平均で比べてください。",
+  },
+  {
+    q: "16時間断食をしているのに痩せないのはなぜ？",
+    a: "多いのは、1食目や間食で朝食分を取り返しているケースです。断食中の飲み物にカロリーがある、2食目が遅くて量が多い、睡眠不足で食欲が増えている、といった原因もあります。まずは2〜3日、8時間の中で食べたもの・飲んだものを書き出してみてください。",
+  },
+  {
+    q: "体重以外の効果（血糖値・血圧など）はある？",
+    a: "体重が減ることで血糖値や血圧などの数値が改善する人はいます。ただ、それが断食そのものの効果なのか、体重が減った結果なのかは、まだはっきりしていません。健康診断の数値を改善したい人や持病のある人は、自己判断で始めずに医師に相談してください。",
+  },
   {
     q: "断食中にコーヒーやお茶は飲んでいい？",
     a: "無糖であれば問題ありません。むしろ水分をしっかり摂ったほうが空腹感は紛れます。砂糖・ミルク入りは避けてください。カロリーゼロの甘味料入り飲料は、甘さへの欲求が残るので常用は勧めません。",
@@ -105,11 +171,41 @@ function FastingDayDiagram() {
   );
 }
 
+/**
+ * Calculation breakdown: skipped breakfast (-300kcal/day) x 30 days / 7,700kcal per kg of body fat.
+ * Numbers are taken from the article text and LOSS_TABLE only.
+ */
+function FastingLossDiagram() {
+  return (
+    <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="40" y="20" width="560" height="64" rx="10" fill="#E8F5E9" stroke="#66BB6A" strokeWidth="2" />
+      <text x="64" y="58" fontSize="18" fill="#374151">朝食を抜く（取り返さない）</text>
+      <text x="576" y="59" textAnchor="end" fontSize="22" fontWeight="bold" fill="#2E7D32">1日 −300kcal</text>
+
+      <line x1="120" y1="88" x2="120" y2="112" stroke="#4CAF50" strokeWidth="3" />
+      <path d="M112 110 L120 120 L128 110 Z" fill="#4CAF50" />
+      <text x="144" y="110" fontSize="18" fontWeight="bold" fill="#2E7D32">× 30日</text>
+
+      <rect x="40" y="124" width="560" height="64" rx="10" fill="#E8F5E9" stroke="#66BB6A" strokeWidth="2" />
+      <text x="64" y="162" fontSize="18" fill="#374151">1ヶ月の赤字</text>
+      <text x="576" y="163" textAnchor="end" fontSize="22" fontWeight="bold" fill="#2E7D32">9,000kcal</text>
+
+      <line x1="120" y1="192" x2="120" y2="216" stroke="#4CAF50" strokeWidth="3" />
+      <path d="M112 214 L120 224 L128 214 Z" fill="#4CAF50" />
+      <text x="144" y="214" fontSize="18" fontWeight="bold" fill="#2E7D32">÷ 体脂肪1kg＝約7,700kcal</text>
+
+      <rect x="40" y="228" width="560" height="76" rx="10" fill="#F57C00" />
+      <text x="64" y="274" fontSize="20" fontWeight="bold" fill="#FFFFFF">1ヶ月で減る体脂肪</text>
+      <text x="576" y="278" textAnchor="end" fontSize="30" fontWeight="bold" fill="#FFFFFF">約1.2kg</text>
+    </svg>
+  );
+}
+
 export default function IntermittentFasting() {
   return (
     <ColumnShell
       slug="intermittent-fasting"
-      h1="16時間断食は痩せる？メリット・デメリットと正しいやり方"
+      h1="16時間断食の効果は？1ヶ月で何キロ痩せるかの目安と正しいやり方"
       toc={TOC}
       faqs={FAQS}
     >
@@ -117,12 +213,31 @@ export default function IntermittentFasting() {
       <div className="space-y-4">
         <p>「16時間食べなければ痩せる」「オートファジーで若返る」——一度は聞いたことがあると思います。</p>
         <p>
-          結論から言うと、16時間断食は
-          <strong>合う人には便利な食事法だが、魔法ではない</strong>
-          です。良い面ときつい面の両方があります。
+          実際のところ、どれくらい痩せるのか。いつから効果が出るのか。この記事では、朝食1回分のカロリーから計算した現実的な目安と、うまくいかないときの原因をまとめます。
         </p>
-        <p>流行りに乗る前に、何が起きているのかと、失敗しやすいポイントを押さえておきましょう。</p>
+        <p>
+          先に言っておくと、16時間断食は<strong>合う人には便利な食事法ですが、魔法ではありません</strong>。
+        </p>
       </div>
+
+      <hr className="border-green-100" />
+
+      <section>
+        <h2 id="quick" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
+          結論：16時間断食の効果
+        </h2>
+        <div className="bg-green-50 rounded-xl p-5 border border-green-100 space-y-3">
+          <ul className="space-y-2 text-sm text-gray-700">
+            <li className="flex gap-2"><span className="text-green-600 shrink-0">✓</span><span><strong>痩せる効果の正体は「朝食1回分のカロリーが減ること」</strong>。断食そのものに特別な脂肪燃焼効果があるわけではない</span></li>
+            <li className="flex gap-2"><span className="text-green-600 shrink-0">✓</span><span>朝食300kcalを抜いて取り返さなければ、<strong>1ヶ月で体脂肪約1.2kg</strong>が目安</span></li>
+            <li className="flex gap-2"><span className="text-green-600 shrink-0">✓</span><span>体脂肪の減少が体重に出てくるのは<strong>2〜4週間後</strong>。最初の1週間に体重が動いても、多くは水分</span></li>
+            <li className="flex gap-2"><span className="text-green-600 shrink-0">✓</span><span>痩せない原因の多くは<strong>1食目や間食での取り返し</strong>。最大の弱点はタンパク質不足</span></li>
+          </ul>
+          <p className="text-sm text-gray-700">
+            何キロ痩せるかは<a href="#effect" className="text-green-700 underline hover:no-underline">早見表</a>、うまくいかないときは<a href="#not-losing" className="text-green-700 underline hover:no-underline">痩せない5つの理由</a>をご覧ください。
+          </p>
+        </div>
+      </section>
 
       <hr className="border-green-100" />
 
@@ -191,6 +306,86 @@ export default function IntermittentFasting() {
       <hr className="border-green-100" />
 
       <section>
+        <h2 id="effect" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
+          16時間断食の効果｜1ヶ月で何キロ痩せる？
+        </h2>
+        <div className="space-y-4">
+          <p>
+            12〜20時に食べるパターンなら、変わるのは<strong>「朝食が1回なくなる」</strong>ことです。抜いた朝食のカロリーを昼や夜で取り返さなければ、その分がそのまま1日の赤字になります。
+          </p>
+          <p>
+            体脂肪1kgを減らすのに必要な赤字は約7,700kcal。普段の朝食のカロリー別に、1ヶ月（30日）続けた場合の目安を出すとこうなります。
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-green-100 text-green-800">
+                  <th className="text-left p-2 border border-green-200">抜く朝食</th>
+                  <th className="text-left p-2 border border-green-200">朝食の例</th>
+                  <th className="text-left p-2 border border-green-200">1ヶ月の赤字</th>
+                  <th className="text-left p-2 border border-green-200">体脂肪の目安</th>
+                </tr>
+              </thead>
+              <tbody>
+                {LOSS_TABLE.map((row) => (
+                  <tr key={row.kcal} className="bg-white">
+                    <td className="p-2 border border-green-100 font-bold text-gray-800 whitespace-nowrap">{row.kcal}kcal</td>
+                    <td className="p-2 border border-green-100 text-gray-600">{row.example}</td>
+                    <td className="p-2 border border-green-100 text-gray-600 whitespace-nowrap">{row.month}</td>
+                    <td className="p-2 border border-green-100 font-bold text-green-700 whitespace-nowrap">{row.fat}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-gray-500">
+            ※ 朝食の例のカロリーはおおよその目安です。抜いた分をほかの食事で取り返さず、30日間毎日続けた場合の計算上の数字です。間食を新しく足した場合はその分を差し引いてください（例：朝食300kcalを抜いて200kcalの間食を足すと、1日の赤字は約100kcal）。週5日の運用なら、1ヶ月の目安はおよそ7割になります。
+          </p>
+          <ColumnFigure
+            caption="朝食300kcalを抜くと、1ヶ月で体脂肪約1.2kg"
+            alt="計算の流れを上から下に示した図。朝食を抜いて取り返さないと1日マイナス300kcal。これを30日続けると1ヶ月で9,000kcalの赤字。体脂肪1kgは約7,700kcalなので、9,000kcalを7,700kcalで割って体脂肪約1.2kg。"
+            note="朝食分を昼・夜で取り返さない場合の計算"
+          >
+            <FastingLossDiagram />
+          </ColumnFigure>
+          <p>
+            つまり、16時間断食で痩せる量は<strong>「普段の朝食が何kcalだったか」</strong>でほぼ決まります。朝食がもともとコーヒー1杯だけだった人は、時間を区切っても赤字がほとんど増えないので、体重はあまり動きません。
+          </p>
+          <p>
+            朝食分の赤字が自分にとって大きいのか小さいのかは、1日に必要なカロリーと比べると判断しやすくなります。自分の目安は
+            <a href="/column/daily-calories" className="text-green-700 underline hover:no-underline">1日の摂取カロリーの目安</a>
+            で確認できます。
+          </p>
+        </div>
+      </section>
+
+      <hr className="border-green-100" />
+
+      <section>
+        <h2 id="timeline" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
+          16時間断食の効果が出るまでの期間
+        </h2>
+        <div className="space-y-4">
+          <p>始めてすぐに体重が落ちても、それがそのまま体脂肪の減少だとは限りません。時期によって、体で起きていることは違います。</p>
+          <div className="space-y-2">
+            {TIMELINE.map((t) => (
+              <div key={t.when} className="bg-white rounded-xl p-4 border border-green-100">
+                <p className="font-bold text-green-700 text-sm mb-1">{t.when}</p>
+                <p className="text-sm text-gray-600">{t.what}</p>
+              </div>
+            ))}
+          </div>
+          <p>
+            体重は水分の出入りだけで、1日に1kg前後上下することも珍しくありません。効果を判断するときは、1日ごとの数字ではなく
+            <a href="/column/weight-weekly-average" className="text-green-700 underline hover:no-underline">1週間の平均体重</a>
+            で前の週と比べてください。最初の1週間で落ちた分が少し戻っても、失敗ではありません。
+          </p>
+        </div>
+      </section>
+
+      <hr className="border-green-100" />
+
+      <section>
         <h2 id="autophagy" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
           オートファジーはどこまで期待できるか
         </h2>
@@ -226,7 +421,7 @@ export default function IntermittentFasting() {
 
       <section>
         <h2 id="merit" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
-          メリットとデメリット
+          16時間断食のメリット・デメリット
         </h2>
         <div className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
@@ -263,8 +458,8 @@ export default function IntermittentFasting() {
         </h2>
         <div className="space-y-4">
           <p>
-            16時間断食で最も失敗しやすいのがここです。体重70kgの人が必要な
-            <strong>1日84g以上を2食で摂ろうとすると、1食42g</strong>
+            16時間断食で最も失敗しやすいのがここです。体重70kgの人が、減量中の目安とされる
+            <strong>1日84g（体重1kgあたり1.2g）を2食で摂ろうとすると、1食42g</strong>
             。鶏むね肉なら約190g分です。意識しないとまず届きません。
           </p>
           <p>現実的なのは、間食を「タンパク質を入れる枠」として使う組み立てです。</p>
@@ -288,7 +483,9 @@ export default function IntermittentFasting() {
             </p>
           </div>
           <p className="text-sm text-gray-500">
-            タンパク質が確保できないまま続けると、体重は落ちても筋肉が減り、代謝の土台が下がります。数ヶ月後に「同じ食事で太るようになった」という結果になりがちです。
+            タンパク質が確保できないまま続けると、体重は落ちても筋肉が減り、代謝の土台が下がります。数ヶ月後に「同じ食事で太るようになった」という結果になりがちです。1日に必要な量の考え方は
+            <a href="/column/protein-intake" className="text-green-700 underline hover:no-underline">タンパク質は1日どれくらい必要？</a>
+            で解説しています。
           </p>
         </div>
       </section>
@@ -365,7 +562,7 @@ export default function IntermittentFasting() {
 
       <section>
         <h2 id="how" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
-          始め方（4週間の段階プラン）
+          16時間断食の正しいやり方（4週間の段階プラン）
         </h2>
         <div className="space-y-4">
           <p>いきなり16時間にすると、反動でまとめて食べて終わります。少しずつ延ばしてください。</p>
@@ -385,6 +582,7 @@ export default function IntermittentFasting() {
               </div>
             ))}
           </div>
+          <p className="text-sm text-gray-500">段階的に始めると、最初の1ヶ月は早見表の数字より少なめになるのが普通です。</p>
           <div className="space-y-4 pt-2">
             <div>
               <p className="font-bold text-gray-800 mb-1">断食中の水分はしっかり摂る</p>
@@ -392,9 +590,52 @@ export default function IntermittentFasting() {
             </div>
             <div>
               <p className="font-bold text-gray-800 mb-1">1食目に食べすぎない工夫をする</p>
-              <p>空腹の状態で食べ始めるので、勢いで量が増えます。最初にサラダか汁物を食べる、主食は先によそって追加しない、といった手を打っておくと安定します。</p>
+              <p>
+                空腹の状態で食べ始めるので、勢いで量が増えます。最初にサラダか汁物を食べる、主食は先によそって追加しない、といった手を打っておくと安定します。順番の考え方は
+                <a href="/column/eating-order" className="text-green-700 underline hover:no-underline">食べる順番ダイエット</a>
+                で詳しく解説しています。
+              </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <hr className="border-green-100" />
+
+      <section>
+        <h2 id="not-losing" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
+          16時間断食で痩せない5つの理由
+        </h2>
+        <div className="space-y-4">
+          <p>
+            時間はきちんと守っているのに体重が動かない。その場合、ほとんどは
+            <strong>朝食を抜いた分の赤字がどこかで消えています</strong>。よくある原因はこの5つです。
+          </p>
+          <div className="space-y-2">
+            {NOT_LOSING.map((item, i) => (
+              <div key={item.title} className="flex gap-3 bg-white rounded-xl p-4 border border-green-100">
+                <span className="text-sm font-bold text-green-700 shrink-0">{i + 1}.</span>
+                <div>
+                  <p className="text-sm font-bold text-gray-800 mb-1">{item.title}</p>
+                  <p className="text-sm text-gray-600">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p>
+            まずは2〜3日、8時間の中で食べたもの・飲んだものを全部書き出してみてください。たいていはそれで原因が見えてきます。1食目の勢いを抑えるコツは
+            <a href="/column/appetite-control" className="text-green-700 underline hover:no-underline">食欲・空腹を抑える方法</a>
+            、寝不足との関係は
+            <a href="/column/sleep-diet" className="text-green-700 underline hover:no-underline">睡眠とダイエットの関係</a>
+            にまとめています。
+          </p>
+          <p className="text-sm text-gray-500">
+            しばらく順調に落ちていたのに、1ヶ月近く体重が止まっている場合は
+            <a href="/column/diet-plateau" className="text-green-700 underline hover:no-underline">停滞期</a>
+            の可能性もあります。最初から体重が動かない場合は、そもそも朝食分の赤字が小さい（普段の朝食が軽かった）ことも考えられます。夜が遅くなりがちな人は
+            <a href="/column/late-night-meal" className="text-green-700 underline hover:no-underline">夜遅い食事で太らない方法</a>
+            も参考にしてください。
+          </p>
         </div>
       </section>
 
@@ -431,23 +672,13 @@ export default function IntermittentFasting() {
 
       <section>
         <h2 id="experience" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
-          続けるなら残す部分と捨てる部分
+          やめても残したい習慣
         </h2>
         <div className="space-y-4">
           <p>
-            16時間断食で体重が落ちる場合、
-            <strong>効いているのは断食そのものより、食べる回数が減って1日の摂取カロリーが下がること</strong>
-            です。朝食を抜いた分を昼と夜で取り返してしまえば、時間を守っていても体重は動きません。
-          </p>
-          <p>
-            一方で、時間で区切るルールには別の価値があります。「20時で終わり」と決まっていると、帰宅後のだらだら食べがその場で消えます。
+            時間で区切るルールには、カロリーを減らす以外の価値もあります。「20時で終わり」と決まっていると、帰宅後のだらだら食べがその場で消えます。
             <strong>意志で我慢するより、時間で線を引くほうが守りやすい</strong>
             という点は、断食をやめたあとでも使えます。
-          </p>
-          <p>
-            注意したいのはタンパク質です。食事が2回になると、1日の必要量を2食で取り切るのは簡単ではありません。筋トレをしている人は特に、
-            <strong>間食にプロテインやゆで卵を入れるなどして不足を補う</strong>
-            前提で組んでください。
           </p>
           <p>
             会食や家族との食事で時間を守れない日が多いなら、無理に続ける必要はありません。3食に戻したうえで「20時以降は食べない」だけを残すなど、
@@ -482,11 +713,12 @@ export default function IntermittentFasting() {
         <div className="space-y-4">
           <ol className="space-y-2 bg-green-50 rounded-xl p-4 border border-green-100">
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">1.</span><span>痩せる理由は結局<strong>カロリー収支</strong>。時間を守っても食べすぎれば太る</span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">2.</span><span>オートファジーは<strong>減量目的では考えなくてよい</strong>。研究途上の話</span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">3.</span><span>最大の弱点は<strong>タンパク質不足</strong>。間食を「入れる枠」として使う</span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">4.</span><span><strong>12時間 → 14時間 → 16時間</strong>と段階的に。いきなりやらない</span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">5.</span><span>持病・服薬中・妊娠中・成長期の方は<strong>自己判断で始めない</strong></span></li>
-            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">6.</span><span>合わなければ<strong>やめる。効いていた部分だけ残す</strong></span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">2.</span><span>朝食300kcalを抜いて取り返さなければ<strong>1ヶ月で体脂肪約1.2kg</strong>。効果は2〜4週間後に、週平均の体重で確かめる</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">3.</span><span>オートファジーは<strong>減量目的では考えなくてよい</strong>。研究途上の話</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">4.</span><span>最大の弱点は<strong>タンパク質不足</strong>。間食を「入れる枠」として使う</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">5.</span><span><strong>12時間 → 14時間 → 16時間</strong>と段階的に。いきなりやらない</span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">6.</span><span>持病・服薬中・妊娠中・成長期の方は<strong>自己判断で始めない</strong></span></li>
+            <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">7.</span><span>合わなければ<strong>やめる。効いていた部分だけ残す</strong></span></li>
           </ol>
           <p>
             16時間断食をやるにしても、8時間の中で何を食べるかがすべてです。時間を区切っただけでは、栄養バランスは良くなりません。
