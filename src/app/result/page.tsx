@@ -50,6 +50,8 @@ export default function ResultPage() {
       router.push("/form");
       return;
     }
+    // Browser storage is only readable after mount; reading it during render would break hydration.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setResult(JSON.parse(stored));
     const storedAnswers = sessionStorage.getItem("userAnswers") ?? localStorage.getItem("userAnswers");
     if (storedAnswers) {
