@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     url: "https://sakumeshi.app",
     images: [
       {
-        url: "/og_sakumeshi.png",
+        url: "/og_sakumeshi.png?v=2",
         width: 1200,
         height: 630,
       },
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: "サクメシ - AIでサクッとダイエット計画を作成",
     description:
       "かんたんな質問に答えるだけ！AIがあなた専用のカロリー計算と1週間の食事メニューを作成します。",
-    images: ["/og_sakumeshi.png"],
+    images: ["/og_sakumeshi.png?v=2"],
   },
   verification: {
     google: "ZjWPPXKFHLaA28ucYVXLYd-MO0aZCkUEjSQ96J8qPJE",

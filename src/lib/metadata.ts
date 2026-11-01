@@ -17,7 +17,7 @@ import { getColumn } from "@/lib/columns";
 export const SITE_NAME = "サクメシ";
 
 /** Shared share image. 1200x630 is the size X and Facebook crop against. */
-const OG_IMAGE = { url: "/og_sakumeshi.png", width: 1200, height: 630 } as const;
+const OG_IMAGE = { url: "/og_sakumeshi.png?v=2", width: 1200, height: 630 } as const;
 
 interface PageMetadataInput {
   /** Root-relative path, resolved against `metadataBase` ("/column" etc.) */
