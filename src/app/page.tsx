@@ -69,7 +69,7 @@ const HOW_IT_WORKS = [
   {
     step: "1",
     title: "質問に答える",
-    detail: `年齢・体重・目標など${TOTAL_STEPS}つの質問に回答（約1分）`,
+    detail: `年齢・体重・目標など${TOTAL_STEPS}の質問に回答（約1分）`,
   },
   {
     step: "2",
@@ -114,7 +114,7 @@ export default function HomePage() {
 
         {/* 説明文 */}
         <p className="text-sm text-gray-500 leading-relaxed">
-          {TOTAL_STEPS}つの質問に答えるだけで、あなたにぴったりの食事メニューをサクッと作成します！
+          {TOTAL_STEPS}の質問に答えるだけで、あなたにぴったりの食事メニューをサクッと作成します！
         </p>
 
         {/* CTAボタン */}
