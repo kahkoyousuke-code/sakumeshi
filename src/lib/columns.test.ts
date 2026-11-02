@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   COLUMNS,
   COLUMN_CATEGORIES,
+  STARTER_COLUMNS,
   columnsByCategory,
   getColumn,
+  starterColumns,
 } from "./columns";
 
 describe("COLUMNS", () => {
@@ -36,5 +38,14 @@ describe("columnsByCategory", () => {
       const dates = columns.map((c) => c.date);
       expect(dates).toEqual([...dates].sort().reverse());
     }
+  });
+});
+
+describe("STARTER_COLUMNS", () => {
+  it("only points to columns that exist, without duplicates", () => {
+    const slugs = STARTER_COLUMNS.map((s) => s.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+    for (const slug of slugs) expect(getColumn(slug), slug).toBeDefined();
+    expect(starterColumns().map((c) => c.slug)).toEqual(slugs);
   });
 });

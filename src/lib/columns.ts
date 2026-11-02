@@ -420,6 +420,21 @@ export function columnsByCategory() {
   }));
 }
 
+/** "Start here" reading path shown at the top of /column, in reading order. */
+export const STARTER_COLUMNS: { slug: string; step: string }[] = [
+  { slug: "daily-calories", step: "自分に必要なカロリーを知る" },
+  { slug: "pfc-calculation", step: "何をどれだけ食べるかを決める" },
+  { slug: "diet-foods", step: "実際に買って食べるものを選ぶ" },
+  { slug: "diet-plateau", step: "体重が落ちなくなったときの対処" },
+];
+
+export function starterColumns(): (ColumnMeta & { step: string })[] {
+  return STARTER_COLUMNS.flatMap(({ slug, step }) => {
+    const column = getColumn(slug);
+    return column ? [{ ...column, step }] : [];
+  });
+}
+
 export function getRelatedColumns(slug: string): ColumnMeta[] {
   const current = getColumn(slug);
   const slugs = current?.related ?? [];

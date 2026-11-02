@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { COLUMNS, columnsByCategory, columnsByDateDesc } from "@/lib/columns";
+import { COLUMNS, columnsByCategory, columnsByDateDesc, starterColumns } from "@/lib/columns";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
@@ -14,6 +14,7 @@ export const metadata: Metadata = pageMetadata({
 export default function ColumnListPage() {
   const groups = columnsByCategory();
   const latestDate = columnsByDateDesc()[0]?.date;
+  const starters = starterColumns();
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
@@ -27,6 +28,49 @@ export default function ColumnListPage() {
         <br />
         全{COLUMNS.length}本をテーマ別に並べました。
       </p>
+
+      {/* Reading path for first-time visitors */}
+      <section
+        aria-labelledby="starter-heading"
+        className="mb-10 rounded-2xl border-2 border-[var(--primary)] bg-[var(--primary-light)] p-5"
+      >
+        <h2 id="starter-heading" className="text-lg font-bold text-[var(--accent)] mb-1">
+          はじめての人は、まずこの{starters.length}本
+        </h2>
+        <p className="text-sm text-gray-600 mb-4">
+          数字を知る → 食べ方を決める → 食材を選ぶ → つまずいたら、の順に読むと迷いません。
+        </p>
+
+        <ol className="space-y-3">
+          {starters.map((col, i) => (
+            <li key={col.slug}>
+              <Link
+                href={`/column/${col.slug}`}
+                className="flex items-start gap-3 bg-white rounded-xl border border-green-100 p-3 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <span
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--primary)] text-sm font-bold text-white"
+                  aria-hidden="true"
+                >
+                  {i + 1}
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-[var(--accent)] mb-0.5">{col.step}</p>
+                  <h3 className="text-sm font-bold text-gray-800 leading-snug">{col.title}</h3>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ol>
+
+        <p className="mt-4 text-sm text-gray-600">
+          計算が面倒なら、
+          <Link href="/form" className="font-bold text-[var(--accent)] underline underline-offset-2">
+            サクメシ
+          </Link>
+          が1〜3をまとめてやります（無料・登録不要）。
+        </p>
+      </section>
 
       {/* Jump links to each category */}
       <nav aria-label="テーマから探す" className="mb-10">
