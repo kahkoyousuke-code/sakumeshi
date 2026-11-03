@@ -6,7 +6,7 @@ import { columnMetadata } from "@/lib/metadata";
 export const metadata: Metadata = columnMetadata("diet-plateau", {
   title: "停滞期の乗り越え方｜体重が落ちなくなったらやるべきこと | サクメシ",
   description:
-    "ダイエットの停滞期はなぜ起きるのか、いつまで続くのかを解説。やってはいけないNG行動と、チートデイの正しいやり方も紹介します。",
+    "ダイエットの停滞期はなぜ起きるのか、いつまで続くのかを解説。やってはいけないNG行動と、ダイエットブレイクなどの抜け出し方も紹介します。",
 });
 
 const TOC = [
@@ -18,7 +18,7 @@ const TOC = [
   { id: "actions", label: "停滞期を抜けるための5つの対処法" },
   { id: "metrics", label: "体重以外に見るべき3つの指標" },
   { id: "break", label: "ダイエットブレイクという選択肢" },
-  { id: "cheatday", label: "チートデイの正しいやり方" },
+  { id: "cheatday", label: "チートデイを入れるなら（要点）" },
   { id: "experience", label: "停滞期かどうか、当時の自分には判定できなかった" },
   { id: "faq", label: "よくある質問" },
   { id: "summary", label: "まとめ" },
@@ -296,7 +296,7 @@ export default function DietPlateau() {
             </div>
             <div>
               <p className="font-bold text-gray-800 mb-1">5. チートデイを入れる（上級者向け）</p>
-              <p>正しくやれば省エネモードの解除に役立ちます。ただしやり方を間違えると単なる食べすぎに。次で詳しく解説します。</p>
+              <p>代謝を戻す効果ははっきりしていませんが、気持ちの区切りとして使う人は多い方法です。やり方を間違えると単なる食べすぎになるので、次で要点を紹介します。</p>
             </div>
           </div>
         </div>
@@ -387,11 +387,11 @@ export default function DietPlateau() {
 
       <section>
         <h2 id="cheatday" className="text-xl font-bold text-green-700 mb-4 pb-2 border-b border-green-100">
-          チートデイの正しいやり方
+          チートデイを入れるなら（要点）
         </h2>
         <div className="space-y-4">
           <p>
-            チートデイとは、<strong>意図的に多く食べて「飢餓じゃないよ」と体に教える日</strong>のこと。レプチンを回復させて省エネモードを解除するのが目的です。
+            チートデイとは、<strong>あらかじめ決めた日だけ意図的に多く食べる</strong>方法です。レプチンを回復させて省エネモードを解除する、とよく言われますが、研究はまだ少なく、効果ははっきりしていません。
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
@@ -422,7 +422,12 @@ export default function DietPlateau() {
             </table>
           </div>
           <p className="text-sm bg-yellow-50 border border-yellow-100 rounded-lg p-3 text-yellow-800">
-            ⚠️ チートデイが向いているのは、体脂肪率がある程度低く、食事管理がきっちりできている人。<strong>「食べたい言い訳」になりそうなら、やらないほうが確実に痩せます。</strong>
+            ⚠️ チートデイが向いているのは、体脂肪率がある程度低く、食事管理がきっちりできている人。<strong>「食べたい言い訳」になりそうなら、やらないほうが着実です。</strong>
+          </p>
+          <p className="text-sm text-gray-500">
+            1回のチートデイで1週間の赤字がどれだけ消えるか、何を食べるか、翌日からの戻し方は
+            <a href="/column/cheat-day" className="text-green-700 underline hover:no-underline">チートデイは意味ある？</a>
+            で詳しく解説しています。
           </p>
         </div>
       </section>
