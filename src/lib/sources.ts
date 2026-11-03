@@ -146,6 +146,7 @@ const COLUMN_SOURCE_KEYS: Partial<Record<string, SourceKey[]>> = {
   "quit-drinking-diet": ["alcoholGuideline", "alcoholEffects", "obesity"],
   "cutting-meal-plan": ["dietaryReference", "energyMetabolism", "protein"],
   "bulking-meal-plan": ["dietaryReference", "protein", "obesity"],
+  "cheat-day": ["energyMetabolism", "carbohydrate", "obesity"],
 };
 
 export function getSources(slug: string): Source[] {

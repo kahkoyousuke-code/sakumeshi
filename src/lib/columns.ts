@@ -400,6 +400,15 @@ export const COLUMNS: ColumnMeta[] = [
     category: "meals",
     related: ["cutting-meal-plan", "protein-intake", "workout-meal-timing"],
   },
+  {
+    slug: "cheat-day",
+    title: "チートデイは意味ある？頻度・量・翌日の体重増の正体と戻し方",
+    description: "1回で1週間の赤字がどれだけ消えるかを計算。頻度と量の目安、何を食べるか、翌日に体重が増える理由と戻し方",
+    date: "2026-11-03",
+    emoji: "🍰",
+    category: "trouble",
+    related: ["diet-plateau", "weight-weekly-average", "salt-swelling"],
+  },
 ];
 
 export function getColumn(slug: string): ColumnMeta | undefined {

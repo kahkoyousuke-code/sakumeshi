@@ -92,7 +92,7 @@ const config = {
     { kw: "たんぱく質", path: "/column/protein-intake" },
     { kw: "プロテイン", path: "/column/protein-intake" },
     { kw: "停滞期", path: "/column/diet-plateau" },
-    { kw: "チートデイ", path: "/column/diet-plateau" },
+    { kw: "チートデイ", path: "/column/cheat-day" },
     { kw: "睡眠", path: "/column/sleep-diet" },
     { kw: "寝不足", path: "/column/sleep-diet" },
     { kw: "水分", path: "/column/water-intake" },
