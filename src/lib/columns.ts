@@ -235,10 +235,10 @@ export const COLUMNS: ColumnMeta[] = [
   },
   {
     slug: "gi-index",
-    title: "GI値って何？血糖値を意識した食材選びで太りにくく",
-    description: "低GI食品の選び方と置き換え例、GI値だけに頼らない注意点を解説",
+    title: "GI値一覧表｜主食・果物・お菓子・飲み物の目安と太りにくい選び方",
+    description: "約45品目のGI値一覧表と低GI・高GIの区分、置き換え例、GI値だけに頼らない注意点を解説",
     date: "2026-07-19",
-    updated: "2026-09-13",
+    updated: "2026-11-07",
     emoji: "🍚",
     category: "basics",
     related: ["eating-order", "lowcarb-vs-lowfat", "convenience-diet"],
