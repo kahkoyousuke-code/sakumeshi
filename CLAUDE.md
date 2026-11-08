@@ -45,6 +45,7 @@ npm run seo:report  # 取得結果から「次にどこを直すか」の一覧�
 - **Framer Motion** でページアニメーション
 - **jsPDF + html2canvas** で PDF 生成（結果ページ）
 - Vercel にデプロイ（`maxDuration` を各 API route で設定済み）
+- **Vercel Web Analytics**（`@vercel/analytics`）：ルート `layout.tsx` の `<Analytics />` でページビューと流入元（note・Google など）を計測。Vercel ダッシュボードで Analytics を有効にしないと記録されない。Hobby プランのためカスタムイベントは使えない（クリック計測は Amazon の置き場所別トラッキングIDで代用）。開発環境ではデバッグ表示のみで送信しない
 
 ### ユーザーフロー
 
