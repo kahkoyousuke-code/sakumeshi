@@ -578,7 +578,7 @@ export default function BulkingMealPlan() {
             対策は減量期と同じで、<strong>仕込めなかった週の代わりを先に決めておく</strong>ことです。昼はコンビニのサラダチキン＋おにぎり2個、夜は冷凍の宅食を何食かストックしておき、ご飯を足して食べます。宅食はカロリーとタンパク質が表示されているので、足りない分が分かりやすくなります。
           </p>
           <p className="text-sm text-gray-600">
-            この記事の下に、サクメシが提携している宅食サービスを載せています（PR）。
+            宅食を使うか迷ったら、自炊・コンビニと1食の費用と手間を比べた<a href="/column/meal-delivery-diet" className="text-green-700 underline hover:no-underline">ダイエットに宅食は高い？</a>も参考にしてください。この記事の下には、サクメシが提携している宅食サービスを載せています（PR）。
           </p>
         </div>
       </section>

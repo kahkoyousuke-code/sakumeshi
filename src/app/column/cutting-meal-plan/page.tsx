@@ -487,7 +487,7 @@ export default function CuttingMealPlan() {
             対策は、<strong>仕込めなかった週の代わりを先に決めておく</strong>ことです。昼はコンビニの組み合わせ（上の「弁当を作れなかった日」）、夜は冷凍の宅食を何食かストックしておきます。宅食はカロリーとタンパク質が表示されているので、電子レンジで温めるだけで型の「夜」をそのまま置き換えられます。
           </p>
           <p className="text-sm text-gray-600">
-            この記事の下に、サクメシが提携している宅食サービスを載せています（PR）。
+            宅食を使うか迷ったら、自炊・コンビニと1食の費用と手間を比べた<a href="/column/meal-delivery-diet" className="text-green-700 underline hover:no-underline">ダイエットに宅食は高い？</a>も参考にしてください。この記事の下には、サクメシが提携している宅食サービスを載せています（PR）。
           </p>
         </div>
       </section>

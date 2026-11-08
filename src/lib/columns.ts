@@ -409,6 +409,15 @@ export const COLUMNS: ColumnMeta[] = [
     category: "trouble",
     related: ["diet-plateau", "weight-weekly-average", "salt-swelling"],
   },
+  {
+    slug: "meal-delivery-diet",
+    title: "ダイエットに宅食は高い？1食約1,400円を自炊・コンビニと比べて分かる「使うべき人」",
+    description: "自炊・コンビニ弁当・宅食を1食あたりの費用と手間で比較。宅食で痩せる仕組み、向いている人・向かない人、選ぶときの5つのチェック項目",
+    date: "2026-11-08",
+    emoji: "🍱",
+    category: "meals",
+    related: ["chicken-bento-1year", "cutting-meal-plan", "convenience-diet"],
+  },
 ];
 
 export function getColumn(slug: string): ColumnMeta | undefined {
