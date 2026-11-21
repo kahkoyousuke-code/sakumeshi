@@ -411,6 +411,11 @@ export default function MealPrep() {
             <strong>意志で量を決めない仕組み</strong>
             という点では、これが一番大きかったと思います。
           </p>
+          <p>
+            仕事の都合などで、どうしても作り置きできない週が続くこともあります。そういう週だけ宅食で埋めるなら、費用の比較と選び方を
+            <a href="/column/meal-delivery-diet" className="text-green-700 underline hover:no-underline">ダイエットに宅食は高い？</a>
+            にまとめています。
+          </p>
         </div>
       </section>
 

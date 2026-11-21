@@ -407,6 +407,11 @@ export default function ConvenienceDiet() {
             <li className="flex gap-2 text-sm"><span className="font-bold text-green-700 shrink-0">6.</span><span><strong>レジ横の揚げ物と甘い飲み物</strong>をやめるだけで1日300kcal変わる</span></li>
           </ol>
           <p>
+            買うものを決めること自体が負担なら、メニューと量があらかじめ決まっている宅食という手もあります。ただ、コンビニ弁当より高くつきやすいので、費用の違いは
+            <a href="/column/meal-delivery-diet" className="text-green-700 underline hover:no-underline">ダイエットに宅食は高い？</a>
+            で確かめてみてください。
+          </p>
+          <p>
             コンビニは、使い方さえ決めればダイエットの強い味方になります。まずは自分の1食あたりの目安カロリーを知るところから始めてください。サクメシなら質問に答えるだけで、必要カロリーとPFC、1週間分の献立まで出せます。
           </p>
         </div>

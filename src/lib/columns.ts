@@ -101,7 +101,7 @@ export const COLUMNS: ColumnMeta[] = [
     updated: "2026-08-08",
     emoji: "🏪",
     category: "eating-out",
-    related: ["diet-foods", "diet-snacks", "meal-prep"],
+    related: ["diet-foods", "meal-prep", "meal-delivery-diet"],
   },
   {
     slug: "workout-meal-timing",
@@ -211,7 +211,7 @@ export const COLUMNS: ColumnMeta[] = [
     updated: "2026-08-08",
     emoji: "🍱",
     category: "meals",
-    related: ["diet-foods", "no-exercise-diet", "convenience-diet"],
+    related: ["diet-foods", "convenience-diet", "meal-delivery-diet"],
   },
   {
     slug: "diet-over-40",
@@ -348,7 +348,7 @@ export const COLUMNS: ColumnMeta[] = [
     date: "2026-09-06",
     emoji: "🐔",
     category: "meals",
-    related: ["meal-prep", "eating-out-92kg", "protein-intake"],
+    related: ["meal-prep", "eating-out-92kg", "meal-delivery-diet"],
   },
   {
     slug: "scale-vs-mirror",
