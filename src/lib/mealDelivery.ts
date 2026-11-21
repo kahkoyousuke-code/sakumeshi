@@ -29,6 +29,14 @@ export const MEAL_DELIVERY_SERVICES: MealDeliveryService[] = [
     pixel: "https://www17.a8.net/0.gif?a8mat=3HGD1K+D0KDKY+4CPY+5YRHE",
   },
   {
+    id: "watami-direct",
+    name: "ワタミの宅食ダイレクト",
+    emoji: "🥢",
+    detail: "管理栄養士が設計した冷凍おかず。ごはんの量は自分で決められる",
+    url: "https://px.a8.net/svt/ejp?a8mat=4BGLS3+2J3K1U+3YYE+BX3J6",
+    pixel: "https://www18.a8.net/0.gif?a8mat=4BGLS3+2J3K1U+3YYE+BX3J6",
+  },
+  {
     id: "nosh",
     name: "nosh（ナッシュ）",
     emoji: "🍱",

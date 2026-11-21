@@ -412,8 +412,9 @@ export const COLUMNS: ColumnMeta[] = [
   {
     slug: "meal-delivery-diet",
     title: "ダイエットに宅食は高い？1食約1,400円を自炊・コンビニと比べて分かる「使うべき人」",
-    description: "自炊・コンビニ弁当・宅食を1食あたりの費用と手間で比較。宅食で痩せる仕組み、向いている人・向かない人、選ぶときの5つのチェック項目",
+    description: "自炊・コンビニ弁当と、高たんぱくの宅食（約1,400円）・おかずだけの宅食（約560円）を1食あたりの費用と手間で比較。向いている人、選ぶときの5つのチェック項目",
     date: "2026-11-08",
+    updated: "2026-11-21",
     emoji: "🍱",
     category: "meals",
     related: ["chicken-bento-1year", "cutting-meal-plan", "convenience-diet"],
